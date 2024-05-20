@@ -28,7 +28,7 @@ output "link" {
 }
 
 output "private_access_host" {
-  value       = var.allow_private_access ? data.external.route53_a_record.0.result.name : ""
+  value       = try(data.external.route53_a_record.0.result.name, "UNDEFINED")
   description = "Route 53 record name for the A record created by Cloud Map Service Discovery"
 }
 
