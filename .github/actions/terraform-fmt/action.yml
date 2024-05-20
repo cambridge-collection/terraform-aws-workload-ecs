@@ -1,0 +1,7 @@
+runs:
+  using: docker
+  image: 'docker://hashicorp/terraform:1.7.5'
+  args:
+    - fmt
+    - -recursive
+    - -check
