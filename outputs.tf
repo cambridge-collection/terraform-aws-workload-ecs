@@ -10,6 +10,8 @@ data "external" "route53_a_record" {
   query = {
     HostedZoneId = aws_service_discovery_private_dns_namespace.this.0.hosted_zone
   }
+
+  depends_on = [aws_service_discovery_private_dns_namespace.this.0, aws_service_discovery_service.this.0]
 }
 
 output "name_prefix" {
