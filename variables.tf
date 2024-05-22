@@ -101,6 +101,12 @@ variable "ecs_service_container_port" {
   description = "Container port number associated load balancer configuration in the ECS service. This must match a container port in the container definition port mappings"
 }
 
+variable "ecs_service_iam_role" {
+  type        = string
+  description = "ARN of an IAM role to call load balancer for non-awsvpc network modes. AWSServiceRoleForECS is suitable, but AWS will generate an error if the value is used and the role already exists in the account"
+  default     = null
+}
+
 variable "ecs_task_def_container_definitions" {
   type        = string
   description = "Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html"

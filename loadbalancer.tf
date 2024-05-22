@@ -1,6 +1,8 @@
 resource "aws_lb_listener_certificate" "this" {
   listener_arn    = var.alb_listener_arn
   certificate_arn = aws_acm_certificate.this.arn
+
+  depends_on = [aws_acm_certificate_validation.this]
 }
 
 resource "aws_lb_listener_rule" "this" {

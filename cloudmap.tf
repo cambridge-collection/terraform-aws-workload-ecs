@@ -17,7 +17,7 @@ resource "aws_service_discovery_service" "this" {
     # NOTE for bridge networks, DNS record type must be SRV
     dns_records {
       ttl  = 60
-      type = "SRV"
+      type = var.ecs_network_mode == "awsvpc" ? "A" : "SRV"
     }
   }
 }

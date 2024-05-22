@@ -37,10 +37,9 @@ resource "aws_ecs_service" "this" {
   task_definition                    = aws_ecs_task_definition.this.arn
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
-  # NOTE iam_role argument can cause problems 
-  # iam_role                           = "arn:aws:iam::${var.account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS" // standard AWS role
-  scheduling_strategy = "REPLICA"
-  propagate_tags      = "SERVICE"
+  iam_role                           = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_iam_role
+  scheduling_strategy                = "REPLICA"
+  propagate_tags                     = "SERVICE"
 
   ordered_placement_strategy {
     type  = "binpack"
