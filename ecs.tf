@@ -1,21 +1,33 @@
 resource "aws_ecs_task_definition" "this" {
   container_definitions = var.ecs_task_def_container_definitions
-
-  family             = var.name_prefix
-  task_role_arn      = aws_iam_role.task_role.arn
-  execution_role_arn = aws_iam_role.task_execution_role.arn
-  network_mode       = var.ecs_network_mode
+  family                = var.name_prefix
+  task_role_arn         = aws_iam_role.task_role.arn
+  execution_role_arn    = aws_iam_role.task_execution_role.arn
+  network_mode          = var.ecs_network_mode
+  cpu                   = var.ecs_task_def_cpu
+  memory                = var.ecs_task_def_memory
 
   requires_compatibilities = [
     "EC2"
   ]
-  cpu    = var.ecs_task_def_cpu
-  memory = var.ecs_task_def_memory
 
   dynamic "volume" {
     for_each = toset(var.ecs_task_def_volumes)
     content {
       name = join("-", [var.name_prefix, volume.key])
+
+      dynamic "efs_volume_configuration" {
+        for_each = var.use_efs_persistence ? [1] : []
+
+        content {
+          file_system_id     = aws_efs_file_system.this.0.id
+          transit_encryption = "ENABLED"
+
+          authorization_config {
+            iam = "ENABLED"
+          }
+        }
+      }
     }
   }
 

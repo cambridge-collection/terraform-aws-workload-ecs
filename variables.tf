@@ -25,9 +25,21 @@ variable "allow_private_access" {
   default     = false
 }
 
+variable "use_efs_persistence" {
+  type        = bool
+  description = "Whether to use EFS to persist data"
+  default     = false
+}
+
 variable "vpc_id" {
   type        = string
   description = "ID of the VPC for the deployment"
+}
+
+variable "vpc_subnet_ids" {
+  type        = list(string)
+  description = "VPC Subnet IDs to use with EFS Mount Points"
+  default     = []
 }
 
 variable "alb_arn" {
