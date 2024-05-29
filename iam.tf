@@ -80,6 +80,22 @@ data "aws_iam_policy_document" "task_role_permissions" {
       resources = var.s3_task_role_bucket_arns
     }
   }
+  # NOTE see https://docs.aws.amazon.com/efs/latest/ug/security_iam_resource-based-policy-examples.html
+  dynamic "statement" {
+    for_each = var.use_efs_persistence ? [1] : []
+    content {
+      actions = [
+        "elasticfilesystem:ClientWrite",
+        "elasticfilesystem:ClientMount"
+      ]
+      resources = [aws_efs_file_system.this.0.arn]
+      condition {
+        test     = "Bool"
+        variable = "elasticfilesystem:AccessedViaMountTarget"
+        values   = ["true"]
+      }
+    }
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "task_policy_attachment" {
