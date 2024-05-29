@@ -288,3 +288,27 @@ variable "acm_certificate_validation_timeout" {
   description = "Length of time to wait for the public ACM certificate to validate"
   default     = "10m"
 }
+
+variable "efs_root_directory_path" {
+  type        = string
+  description = "Root directory for EFS access point"
+  default     = "/data"
+}
+
+variable "efs_root_directory_permissions" {
+  type        = number
+  description = "POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits"
+  default     = 777
+}
+
+variable "efs_posix_user_gid" {
+  type        = number
+  description = "POSIX group ID used for all file system operations using the EFS access point"
+  default     = 1000
+}
+
+variable "efs_posix_user_uid" {
+  type        = number
+  description = "POSIX user ID used for all file system operations using the EFS access point"
+  default     = 1000
+}

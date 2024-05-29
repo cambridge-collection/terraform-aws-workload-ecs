@@ -30,4 +30,27 @@ resource "aws_efs_mount_target" "this" {
   subnet_id      = data.aws_subnet.efs[count.index].id
 }
 
-# NOTE EFS does not need an access point as only the Docker containers need access, not the host
+resource "aws_efs_access_point" "this" {
+  count = var.use_efs_persistence ? 1 : 0
+
+  file_system_id = aws_efs_file_system.this.0.id
+
+  posix_user {
+    gid = var.efs_posix_user_gid
+    uid = var.efs_posix_user_uid
+  }
+
+  root_directory {
+    path = var.efs_root_directory_path
+
+    creation_info {
+      owner_gid   = var.efs_posix_user_gid
+      owner_uid   = var.efs_posix_user_uid
+      permissions = var.efs_root_directory_permissions
+    }
+  }
+
+  tags = {
+    Name = "${var.name_prefix}-efs-access-point"
+  }
+}
