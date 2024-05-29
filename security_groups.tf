@@ -53,3 +53,39 @@ resource "aws_security_group_rule" "private_access_egress" {
   from_port                = var.alb_target_group_port
   to_port                  = var.alb_target_group_port
 }
+
+resource "aws_security_group" "efs" {
+  count = var.use_efs_persistence ? 1 : 0
+
+  name        = "${var.name_prefix}-efs"
+  description = "Allows access to EFS mount targets for ${var.name_prefix}"
+  vpc_id      = var.vpc_id
+
+  tags = {
+    Name = "${var.name_prefix}-efs"
+  }
+}
+
+resource "aws_security_group_rule" "efs_ingress_nfs" {
+  count = var.use_efs_persistence ? 1 : 0
+
+  type                     = "ingress"
+  protocol                 = "tcp"
+  description              = "EFS Ingress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
+  security_group_id        = aws_security_group.efs.0.id
+  source_security_group_id = var.asg_security_group_id
+  from_port                = var.efs_nfs_mount_port
+  to_port                  = var.efs_nfs_mount_port
+}
+
+resource "aws_security_group_rule" "asg_egress_nfs" {
+  count = var.use_efs_persistence ? 1 : 0
+
+  type                     = "egress"
+  protocol                 = "tcp"
+  description              = "ASG Egress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
+  security_group_id        = var.asg_security_group_id
+  source_security_group_id = aws_security_group.efs.0.id
+  from_port                = var.efs_nfs_mount_port
+  to_port                  = var.efs_nfs_mount_port
+}

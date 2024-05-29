@@ -26,12 +26,13 @@ resource "aws_efs_file_system" "this" {
 resource "aws_efs_mount_target" "this" {
   count = var.use_efs_persistence ? length(var.vpc_subnet_ids) : 0
 
-  file_system_id = aws_efs_file_system.this.0.id
-  subnet_id      = data.aws_subnet.efs[count.index].id
+  file_system_id  = aws_efs_file_system.this.0.id
+  subnet_id       = data.aws_subnet.efs[count.index].id
+  security_groups = [aws_security_group.efs.0.id]
 }
 
 resource "aws_efs_access_point" "this" {
-  count = var.use_efs_persistence ? 1 : 0
+  count = var.use_efs_persistence && var.efs_use_access_point ? 1 : 0
 
   file_system_id = aws_efs_file_system.this.0.id
 

@@ -23,9 +23,12 @@ resource "aws_ecs_task_definition" "this" {
           file_system_id     = aws_efs_file_system.this.0.id
           transit_encryption = "ENABLED"
 
-          authorization_config {
-            access_point_id = aws_efs_access_point.this.0.id
-            iam             = "ENABLED"
+          dynamic "authorization_config" {
+            for_each = var.use_efs_persistence && var.efs_use_access_point ? [1] : []
+            content {
+              access_point_id = aws_efs_access_point.this.0.id
+              iam             = "ENABLED"
+            }
           }
         }
       }

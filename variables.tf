@@ -295,6 +295,12 @@ variable "efs_root_directory_path" {
   default     = "/data"
 }
 
+variable "efs_use_access_point" {
+  type        = bool
+  description = "Whether to use EFS access point"
+  default     = false
+}
+
 variable "efs_root_directory_permissions" {
   type        = number
   description = "POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits"
@@ -303,12 +309,18 @@ variable "efs_root_directory_permissions" {
 
 variable "efs_posix_user_gid" {
   type        = number
-  description = "POSIX group ID used for all file system operations using the EFS access point"
+  description = "POSIX group ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux"
   default     = 1000
 }
 
 variable "efs_posix_user_uid" {
   type        = number
-  description = "POSIX user ID used for all file system operations using the EFS access point"
+  description = "POSIX user ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux"
   default     = 1000
+}
+
+variable "efs_nfs_mount_port" {
+  type        = number
+  description = "NFS protocol port for EFS mounts"
+  default     = 2049
 }
