@@ -109,8 +109,8 @@ No modules.
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_route53_record.acm_validation_cname](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.cloudfront_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_s3_object.cluster_object](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_s3_object.data_source_object](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
-| [aws_s3_object.env_object](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_security_group.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.private_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.alb_egress_to_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -174,19 +174,19 @@ No modules.
 | <a name="input_ecs_task_def_memory"></a> [ecs\_task\_def\_memory](#input\_ecs\_task\_def\_memory) | Amount (in MiB) of memory used by the task. Note if this is unset, all container definitions must set memory and/or memoryReservation | `number` | `1024` | no |
 | <a name="input_ecs_task_def_volumes"></a> [ecs\_task\_def\_volumes](#input\_ecs\_task\_def\_volumes) | List of volume names to attach to the ECS Task Definition | `list(string)` | `[]` | no |
 | <a name="input_efs_nfs_mount_port"></a> [efs\_nfs\_mount\_port](#input\_efs\_nfs\_mount\_port) | NFS protocol port for EFS mounts | `number` | `2049` | no |
-| <a name="input_efs_posix_user_gid"></a> [efs\_posix\_user\_gid](#input\_efs\_posix\_user\_gid) | POSIX group ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux | `number` | `1000` | no |
+| <a name="input_efs_posix_user_gid"></a> [efs\_posix\_user\_gid](#input\_efs\_posix\_user\_gid) | POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
 | <a name="input_efs_posix_user_secondary_gids"></a> [efs\_posix\_user\_secondary\_gids](#input\_efs\_posix\_user\_secondary\_gids) | Secondary POSIX group IDs used for all file system operations using the EFS access point | `list(number)` | `[]` | no |
-| <a name="input_efs_posix_user_uid"></a> [efs\_posix\_user\_uid](#input\_efs\_posix\_user\_uid) | POSIX user ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux | `number` | `1000` | no |
-| <a name="input_efs_root_directory_path"></a> [efs\_root\_directory\_path](#input\_efs\_root\_directory\_path) | Root directory for EFS access point | `string` | `"/data"` | no |
+| <a name="input_efs_posix_user_uid"></a> [efs\_posix\_user\_uid](#input\_efs\_posix\_user\_uid) | POSIX user ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
+| <a name="input_efs_root_directory_path"></a> [efs\_root\_directory\_path](#input\_efs\_root\_directory\_path) | Root directory for EFS access point | `string` | `"/"` | no |
 | <a name="input_efs_root_directory_permissions"></a> [efs\_root\_directory\_permissions](#input\_efs\_root\_directory\_permissions) | POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits | `number` | `777` | no |
 | <a name="input_efs_use_access_point"></a> [efs\_use\_access\_point](#input\_efs\_use\_access\_point) | Whether to use EFS access point | `bool` | `false` | no |
 | <a name="input_efs_use_iam_task_role"></a> [efs\_use\_iam\_task\_role](#input\_efs\_use\_iam\_task\_role) | Whether to use Amazon ECS task IAM role when mounting EFS | `bool` | `true` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to add to resource names | `string` | n/a | yes |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | ID of the Route 53 Hosted Zone for records | `string` | n/a | yes |
-| <a name="input_s3_data_source_bucket"></a> [s3\_data\_source\_bucket](#input\_s3\_data\_source\_bucket) | Name of the date source S3 Bucket | `string` | n/a | yes |
+| <a name="input_s3_service_bucket"></a> [s3\_cluster\_bucket](#input\_s3\_cluster\_bucket) | Name of the bucket relating to the ECS Cluster for storage of static data for services | `string` | n/a | yes |
+| <a name="input_s3_service_objects"></a> [s3\_cluster\_objects](#input\_s3\_cluster\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the cluster bucket | `map(string)` | `{}` | no |
+| <a name="input_s3_data_source_bucket"></a> [s3\_data\_source\_bucket](#input\_s3\_data\_source\_bucket) | Name of the data source S3 Bucket | `string` | n/a | yes |
 | <a name="input_s3_data_source_objects"></a> [s3\_data\_source\_objects](#input\_s3\_data\_source\_objects) | Map of S3 bucket keys (file names) and file contents for upload | `map(string)` | `{}` | no |
-| <a name="input_s3_env_bucket"></a> [s3\_env\_bucket](#input\_s3\_env\_bucket) | Name of the bucket where the environment file should be located | `string` | n/a | yes |
-| <a name="input_s3_env_objects"></a> [s3\_env\_objects](#input\_s3\_env\_objects) | Map of S3 bucket keys (file names) and file contents for upload | `map(string)` | `{}` | no |
 | <a name="input_s3_task_execution_role_bucket_arns"></a> [s3\_task\_execution\_role\_bucket\_arns](#input\_s3\_task\_execution\_role\_bucket\_arns) | List of S3 Bucket ARNs for adding to IAM task execution role policy | `list(string)` | n/a | yes |
 | <a name="input_s3_task_role_bucket_arns"></a> [s3\_task\_role\_bucket\_arns](#input\_s3\_task\_role\_bucket\_arns) | List of S3 Bucket ARNs for adding to IAM task role policy | `list(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |

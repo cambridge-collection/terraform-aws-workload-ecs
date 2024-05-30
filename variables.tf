@@ -177,21 +177,21 @@ variable "alb_listener_rule_priority" {
   default     = null
 }
 
-variable "s3_env_bucket" {
+variable "s3_service_bucket" {
   type        = string
-  description = "Name of the bucket where the environment file should be located"
+  description = "Name of the bucket for storage of static data for services"
 }
 
-variable "s3_env_objects" {
+variable "s3_service_objects" {
   type        = map(string)
-  description = "Map of S3 bucket keys (file names) and file contents for upload"
+  description = "Map of S3 bucket keys (file names) and file contents for upload to the service bucket"
   default     = {}
   sensitive   = true
 }
 
 variable "s3_data_source_bucket" {
   type        = string
-  description = "Name of the date source S3 Bucket"
+  description = "Name of the data source S3 Bucket"
 }
 
 variable "s3_data_source_objects" {
