@@ -180,6 +180,13 @@ variable "alb_listener_rule_priority" {
 variable "s3_service_bucket" {
   type        = string
   description = "Name of the bucket for storage of static data for services"
+  default     = null
+}
+
+variable "s3_service_bucket_arn" {
+  type        = string
+  description = "ARN of the bucket for storage of static data for services"
+  default     = null
 }
 
 variable "s3_service_objects" {
@@ -192,6 +199,7 @@ variable "s3_service_objects" {
 variable "s3_data_source_bucket" {
   type        = string
   description = "Name of the data source S3 Bucket"
+  default     = null
 }
 
 variable "s3_data_source_objects" {
@@ -335,4 +343,10 @@ variable "efs_nfs_mount_port" {
   type        = number
   description = "NFS protocol port for EFS mounts"
   default     = 2049
+}
+
+variable "datasync_s3_service_objects_to_efs" {
+  type        = bool
+  description = "Whether to use DataSync to replicate S3 objects to EFS file system"
+  default     = false
 }
