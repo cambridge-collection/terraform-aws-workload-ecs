@@ -301,6 +301,12 @@ variable "efs_use_access_point" {
   default     = false
 }
 
+variable "efs_use_iam_task_role" {
+  type        = bool
+  description = "Whether to use Amazon ECS task IAM role when mounting EFS"
+  default     = true
+}
+
 variable "efs_root_directory_permissions" {
   type        = number
   description = "POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits"
@@ -317,6 +323,12 @@ variable "efs_posix_user_uid" {
   type        = number
   description = "POSIX user ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux"
   default     = 1000
+}
+
+variable "efs_posix_user_secondary_gids" {
+  type        = list(number)
+  description = "Secondary POSIX group IDs used for all file system operations using the EFS access point"
+  default     = []
 }
 
 variable "efs_nfs_mount_port" {

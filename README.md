@@ -175,10 +175,12 @@ No modules.
 | <a name="input_ecs_task_def_volumes"></a> [ecs\_task\_def\_volumes](#input\_ecs\_task\_def\_volumes) | List of volume names to attach to the ECS Task Definition | `list(string)` | `[]` | no |
 | <a name="input_efs_nfs_mount_port"></a> [efs\_nfs\_mount\_port](#input\_efs\_nfs\_mount\_port) | NFS protocol port for EFS mounts | `number` | `2049` | no |
 | <a name="input_efs_posix_user_gid"></a> [efs\_posix\_user\_gid](#input\_efs\_posix\_user\_gid) | POSIX group ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux | `number` | `1000` | no |
+| <a name="input_efs_posix_user_secondary_gids"></a> [efs\_posix\_user\_secondary\_gids](#input\_efs\_posix\_user\_secondary\_gids) | Secondary POSIX group IDs used for all file system operations using the EFS access point | `list(number)` | `[]` | no |
 | <a name="input_efs_posix_user_uid"></a> [efs\_posix\_user\_uid](#input\_efs\_posix\_user\_uid) | POSIX user ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux | `number` | `1000` | no |
 | <a name="input_efs_root_directory_path"></a> [efs\_root\_directory\_path](#input\_efs\_root\_directory\_path) | Root directory for EFS access point | `string` | `"/data"` | no |
 | <a name="input_efs_root_directory_permissions"></a> [efs\_root\_directory\_permissions](#input\_efs\_root\_directory\_permissions) | POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits | `number` | `777` | no |
 | <a name="input_efs_use_access_point"></a> [efs\_use\_access\_point](#input\_efs\_use\_access\_point) | Whether to use EFS access point | `bool` | `false` | no |
+| <a name="input_efs_use_iam_task_role"></a> [efs\_use\_iam\_task\_role](#input\_efs\_use\_iam\_task\_role) | Whether to use Amazon ECS task IAM role when mounting EFS | `bool` | `true` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to add to resource names | `string` | n/a | yes |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | ID of the Route 53 Hosted Zone for records | `string` | n/a | yes |
 | <a name="input_s3_data_source_bucket"></a> [s3\_data\_source\_bucket](#input\_s3\_data\_source\_bucket) | Name of the date source S3 Bucket | `string` | n/a | yes |
