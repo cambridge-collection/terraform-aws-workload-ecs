@@ -292,7 +292,7 @@ variable "acm_certificate_validation_timeout" {
 variable "efs_root_directory_path" {
   type        = string
   description = "Root directory for EFS access point"
-  default     = "/data"
+  default     = "/"
 }
 
 variable "efs_use_access_point" {
@@ -315,14 +315,14 @@ variable "efs_root_directory_permissions" {
 
 variable "efs_posix_user_gid" {
   type        = number
-  description = "POSIX group ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux"
-  default     = 1000
+  description = "POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux"
+  default     = 0
 }
 
 variable "efs_posix_user_uid" {
   type        = number
-  description = "POSIX user ID used for all file system operations using the EFS access point. Default maps to ec2-user on Amazon Linux"
-  default     = 1000
+  description = "POSIX user ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux"
+  default     = 0
 }
 
 variable "efs_posix_user_secondary_gids" {
