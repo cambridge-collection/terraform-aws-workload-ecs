@@ -1,3 +1,7 @@
+data "aws_vpc" "this" {
+  id = var.vpc_id
+}
+
 resource "aws_security_group_rule" "alb_egress_to_asg" {
   type                     = "egress"
   protocol                 = "tcp"
@@ -66,7 +70,7 @@ resource "aws_security_group" "efs" {
   }
 }
 
-resource "aws_security_group_rule" "efs_ingress_nfs" {
+resource "aws_security_group_rule" "efs_ingress_nfs_from_asg" {
   count = var.use_efs_persistence ? 1 : 0
 
   type                     = "ingress"
@@ -78,7 +82,19 @@ resource "aws_security_group_rule" "efs_ingress_nfs" {
   to_port                  = var.efs_nfs_mount_port
 }
 
-resource "aws_security_group_rule" "asg_egress_nfs" {
+resource "aws_security_group_rule" "efs_ingress_nfs_from_vpc" {
+  count = var.use_efs_persistence && var.datasync_s3_service_objects_to_efs ? 1 : 0
+
+  type                     = "ingress"
+  protocol                 = "tcp"
+  description              = "EFS Ingress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
+  security_group_id        = aws_security_group.efs.0.id
+  cidr_blocks              = [data.aws_vpc.this.cidr_block]
+  from_port                = var.efs_nfs_mount_port
+  to_port                  = var.efs_nfs_mount_port
+}
+
+resource "aws_security_group_rule" "asg_egress_nfs_to_efs" {
   count = var.use_efs_persistence ? 1 : 0
 
   type                     = "egress"
