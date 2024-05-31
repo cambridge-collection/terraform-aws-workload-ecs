@@ -350,3 +350,27 @@ variable "datasync_s3_service_objects_to_efs" {
   description = "Whether to use DataSync to replicate S3 objects to EFS file system"
   default     = false
 }
+
+variable "datasync_bytes_per_second" {
+  type        = number
+  description = "Limits the bandwidth used by a DataSync task"
+  default     = -1
+}
+
+variable "datasync_preserve_deleted_files" {
+  type        = string
+  description = "Specifies whether files in the destination location that don't exist in the source should be preserved"
+  default     = "PRESERVE"
+}
+
+variable "datasync_overwrite_mode" {
+  type        = string
+  description = "Specifies whether DataSync should modify or preserve data at the destination location"
+  default     = "ALWAYS"
+}
+
+variable "datasync_transfer_mode" {
+  type        = string
+  description = "The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location"
+  default     = "CHANGED"
+}

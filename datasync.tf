@@ -33,8 +33,11 @@ resource "aws_datasync_task" "s3_to_efs" {
   destination_location_arn = aws_datasync_location_efs.this[count.index].arn
 
   options {
-    bytes_per_second       = -1
-    preserve_deleted_files = "REMOVE"
-    overwrite_mode         = "ALWAYS"
+    bytes_per_second       = var.datasync_bytes_per_second
+    preserve_deleted_files = var.datasync_preserve_deleted_files
+    overwrite_mode         = var.datasync_overwrite_mode
+    transfer_mode          = var.datasync_transfer_mode
   }
+
+  depends_on = [aws_s3_object.service_object] # NOTE this resource should not be created until S3 objects in source have been created
 }
