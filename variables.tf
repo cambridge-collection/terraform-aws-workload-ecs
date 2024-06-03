@@ -351,6 +351,12 @@ variable "datasync_s3_service_objects_to_efs" {
   default     = false
 }
 
+variable "datasync_s3_subdirectory" {
+  type        = string
+  description = "Allows a custom S3 subdirectory for DataSync source to be specified"
+  default     = ""
+}
+
 variable "datasync_bytes_per_second" {
   type        = number
   description = "Limits the bandwidth used by a DataSync task"
