@@ -82,12 +82,25 @@ resource "aws_security_group_rule" "efs_ingress_nfs_from_asg" {
   to_port                  = var.efs_nfs_mount_port
 }
 
-resource "aws_security_group_rule" "efs_ingress_nfs_from_s3" {
+resource "aws_security_group_rule" "efs_ingress_nfs_from_vpc" {
   count = var.use_efs_persistence && var.datasync_s3_service_objects_to_efs ? 1 : 0
 
   type                     = "ingress"
   protocol                 = "tcp"
   description              = "EFS Ingress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
+  security_group_id        = aws_security_group.efs.0.id
+  cidr_blocks              = [data.aws_vpc.this.cidr_block]
+  ipv6_cidr_blocks         = data.aws_vpc.this.ipv6_cidr_block != "" ? [data.aws_vpc.this.ipv6_cidr_block] : []
+  from_port                = var.efs_nfs_mount_port
+  to_port                  = var.efs_nfs_mount_port
+}
+
+resource "aws_security_group_rule" "efs_egress_nfs_to_vpc" {
+  count = var.use_efs_persistence && var.datasync_s3_service_objects_to_efs ? 1 : 0
+
+  type                     = "egress"
+  protocol                 = "tcp"
+  description              = "EFS Egress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
   security_group_id        = aws_security_group.efs.0.id
   cidr_blocks              = [data.aws_vpc.this.cidr_block]
   ipv6_cidr_blocks         = data.aws_vpc.this.ipv6_cidr_block != "" ? [data.aws_vpc.this.ipv6_cidr_block] : []
