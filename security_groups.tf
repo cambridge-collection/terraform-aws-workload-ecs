@@ -1,5 +1,7 @@
-data "aws_vpc" "this" {
-  id = var.vpc_id
+data "aws_region" "current" {}
+
+data "aws_ec2_managed_prefix_list" "s3" {
+  name = "com.amazonaws.${data.aws_region.current.name}.s3"
 }
 
 resource "aws_security_group_rule" "alb_egress_to_asg" {
@@ -82,14 +84,14 @@ resource "aws_security_group_rule" "efs_ingress_nfs_from_asg" {
   to_port                  = var.efs_nfs_mount_port
 }
 
-resource "aws_security_group_rule" "efs_ingress_nfs_from_vpc" {
+resource "aws_security_group_rule" "efs_ingress_nfs_from_s3" {
   count = var.use_efs_persistence && var.datasync_s3_service_objects_to_efs ? 1 : 0
 
   type                     = "ingress"
   protocol                 = "tcp"
   description              = "EFS Ingress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
   security_group_id        = aws_security_group.efs.0.id
-  cidr_blocks              = [data.aws_vpc.this.cidr_block]
+  prefix_list_ids          = [data.aws_ec2_managed_prefix_list.s3.id]
   from_port                = var.efs_nfs_mount_port
   to_port                  = var.efs_nfs_mount_port
 }
