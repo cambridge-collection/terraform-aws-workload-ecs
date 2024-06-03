@@ -90,6 +90,7 @@ resource "aws_security_group_rule" "efs_ingress_nfs_from_s3" {
   description              = "EFS Ingress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
   security_group_id        = aws_security_group.efs.0.id
   cidr_blocks              = [data.aws_vpc.this.cidr_block]
+  ipv6_cidr_blocks         = data.aws_vpc.this.ipv6_cidr_block != "" ? [data.aws_vpc.this.ipv6_cidr_block] : []
   from_port                = var.efs_nfs_mount_port
   to_port                  = var.efs_nfs_mount_port
 }
