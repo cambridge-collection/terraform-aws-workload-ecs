@@ -63,6 +63,36 @@ If `ecr_repositories_exist` is set to true the module will lookup the repositori
 
 An output `ecr_repository_urls` shows the URIs indicated by the input `ecr_repository_names`. These have the format `<aws account id>.dkr.ecr.<aws region>.amazonaws.com/<repository name>`
 
+## EFS Persistence
+
+The module can optionally create an EFS file system, mount targets and access point, as well as a dedicated Security Group for the EFS mount targets. The input `use_efs_persistence` should be set to `true` if this is desired. An EFS mount target is created for each subnet in the input `vpc_subnet_ids`, allowing EFS to be accessed from inside the subnets specified. A reference to the EFS file systen is created in the ECS Task Definition. For each item in the input `ecs_task_def_volumes`, if `use_efs_persistence` is set to `true`, a reference is created between the volume and the EFS file system, effectively mounting the ECS volume on the EFS file system. 
+
+The EFS Access Point is used to modify the permissions on the EFS file system. In testing, this was necessary to enable ECS to mount the file system correctly. The access point defaults to setting the mount to be owned by the root user on the host, with permissions allowing read, write and executable access. Changing the default settings may lead to ECS being unable to modify the permissions on the root directory, or otherwise Docker on the host being able to create files in the file system where the container user is non-root.
+
+## S3 File Storage
+
+Files can be stored in S3 if needed by ECS. There are two distinct S3 bucket inputs for use by either ECS tasks, or ECS task execution. 
+
+### Task Execution File Storage in S3
+
+The inputs `s3_task_execution_bucket` and `s3_task_execution_additional_buckets` are used to control IAM permissions for task execution requiring access to S3. The input `s3_task_execution_bucket` is the name of the main bucket required by ECS task execution, which can be omitted if no S3 permissions are needed. The input `s3_task_execution_additional_buckets` is a list of additional bucket names that may also be needed for task execution. Objects can be uploaded to the bucket named in the input `s3_task_execution_bucket` using the input `s3_task_execution_bucket_objects`, which is a map of bucket paths and file contents. 
+
+### Task File Storage in S3
+
+The input `s3_task_bucket` is used to control IAM permissions for ECS tasks requring access to S3. Objects can be uploaded to the task bucket using the input `s3_task_bucket_objects`: this is a map of bucket paths and file contents.
+
+### Sensitive Inputs
+
+Both the `s3_task_execution_bucket_objects` and `s3_task_bucket_objects` inputs are set to `sensitive`, meaning the contents of the uploaded files are not displayed in Terraform output.
+
+## DataSync S3 to EFS
+
+The input `datasync_s3_objects_to_efs` can be used to enable AWS DataSync between an S3 bucket and EFS. Note this has no effect if the input `use_efs_persistence` is set to false.
+
+If `datasync_s3_objects_to_efs` and `use_efs_persistence` are both true, DataSync source and target locations will be built. The DataSync source is the S3 bucket named in the input `s3_task_execution_bucket`, the target is the EFS file system created when `use_efs_persistence` is set to `true`. A DataSync task will be created allowing data to be transferred between S3 and EFS. Additionally, security group rules will be created on the security group `aws_security_group.efs` allowing traffic on port 2049 (NFS protocol) to and from the VPC CIDR: this is a requirement for DataSync communication.
+
+The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. If omitted this will default to the `name_prefix` path: it is assumed that the `s3_task_execution_bucket` will be shared by several services and the `name_prefix` will by default be used to distinguish them.
+
 ## Requirements
 
 | Name | Version |
@@ -74,9 +104,9 @@ An output `ecr_repository_urls` shows the URIs indicated by the input `ecr_repos
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.44.0 |
-| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | ~> 5.44.0 |
-| <a name="provider_external"></a> [external](#provider\_external) | ~> 2.3.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
+| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | 5.44.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | 2.3.3 |
 
 ## Modules
 
@@ -115,8 +145,8 @@ No modules.
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_route53_record.acm_validation_cname](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.cloudfront_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_s3_object.data_source_object](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
-| [aws_s3_object.service_object](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_s3_object.task](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_s3_object.task_execution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_security_group.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.private_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.alb_egress_to_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -171,7 +201,7 @@ No modules.
 | <a name="input_datasync_bytes_per_second"></a> [datasync\_bytes\_per\_second](#input\_datasync\_bytes\_per\_second) | Limits the bandwidth used by a DataSync task | `number` | `-1` | no |
 | <a name="input_datasync_overwrite_mode"></a> [datasync\_overwrite\_mode](#input\_datasync\_overwrite\_mode) | Specifies whether DataSync should modify or preserve data at the destination location | `string` | `"ALWAYS"` | no |
 | <a name="input_datasync_preserve_deleted_files"></a> [datasync\_preserve\_deleted\_files](#input\_datasync\_preserve\_deleted\_files) | Specifies whether files in the destination location that don't exist in the source should be preserved | `string` | `"PRESERVE"` | no |
-| <a name="input_datasync_s3_service_objects_to_efs"></a> [datasync\_s3\_service\_objects\_to\_efs](#input\_datasync\_s3\_service\_objects\_to\_efs) | Whether to use DataSync to replicate S3 objects to EFS file system | `bool` | `false` | no |
+| <a name="input_datasync_s3_objects_to_efs"></a> [datasync\_s3\_objects\_to\_efs](#input\_datasync\_s3\_objects\_to\_efs) | Whether to use DataSync to replicate S3 objects to EFS file system | `bool` | `false` | no |
 | <a name="input_datasync_s3_subdirectory"></a> [datasync\_s3\_subdirectory](#input\_datasync\_s3\_subdirectory) | Allows a custom S3 subdirectory for DataSync source to be specified | `string` | `""` | no |
 | <a name="input_datasync_transfer_mode"></a> [datasync\_transfer\_mode](#input\_datasync\_transfer\_mode) | The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location | `string` | `"CHANGED"` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain Name to be used for the ACM certificate and Route 53 record | `string` | n/a | yes |
@@ -197,17 +227,14 @@ No modules.
 | <a name="input_efs_posix_user_uid"></a> [efs\_posix\_user\_uid](#input\_efs\_posix\_user\_uid) | POSIX user ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
 | <a name="input_efs_root_directory_path"></a> [efs\_root\_directory\_path](#input\_efs\_root\_directory\_path) | Root directory for EFS access point | `string` | `"/"` | no |
 | <a name="input_efs_root_directory_permissions"></a> [efs\_root\_directory\_permissions](#input\_efs\_root\_directory\_permissions) | POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits | `number` | `777` | no |
-| <a name="input_efs_use_access_point"></a> [efs\_use\_access\_point](#input\_efs\_use\_access\_point) | Whether to use EFS access point | `bool` | `false` | no |
 | <a name="input_efs_use_iam_task_role"></a> [efs\_use\_iam\_task\_role](#input\_efs\_use\_iam\_task\_role) | Whether to use Amazon ECS task IAM role when mounting EFS | `bool` | `true` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to add to resource names | `string` | n/a | yes |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | ID of the Route 53 Hosted Zone for records | `string` | n/a | yes |
-| <a name="input_s3_data_source_bucket"></a> [s3\_data\_source\_bucket](#input\_s3\_data\_source\_bucket) | Name of the data source S3 Bucket | `string` | `null` | no |
-| <a name="input_s3_data_source_objects"></a> [s3\_data\_source\_objects](#input\_s3\_data\_source\_objects) | Map of S3 bucket keys (file names) and file contents for upload | `map(string)` | `{}` | no |
-| <a name="input_s3_service_bucket"></a> [s3\_service\_bucket](#input\_s3\_service\_bucket) | Name of the bucket for storage of static data for services | `string` | `null` | no |
-| <a name="input_s3_service_bucket_arn"></a> [s3\_service\_bucket\_arn](#input\_s3\_service\_bucket\_arn) | ARN of the bucket for storage of static data for services | `string` | `null` | no |
-| <a name="input_s3_service_objects"></a> [s3\_service\_objects](#input\_s3\_service\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the service bucket | `map(string)` | `{}` | no |
-| <a name="input_s3_task_execution_role_bucket_arns"></a> [s3\_task\_execution\_role\_bucket\_arns](#input\_s3\_task\_execution\_role\_bucket\_arns) | List of S3 Bucket ARNs for adding to IAM task execution role policy | `list(string)` | n/a | yes |
-| <a name="input_s3_task_role_bucket_arns"></a> [s3\_task\_role\_bucket\_arns](#input\_s3\_task\_role\_bucket\_arns) | List of S3 Bucket ARNs for adding to IAM task role policy | `list(string)` | n/a | yes |
+| <a name="input_s3_task_bucket"></a> [s3\_task\_bucket](#input\_s3\_task\_bucket) | Name of the S3 Bucket for use by ECS tasks on the host (i.e. running containers) | `string` | `null` | no |
+| <a name="input_s3_task_bucket_objects"></a> [s3\_task\_bucket\_objects](#input\_s3\_task\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task bucket | `map(string)` | `{}` | no |
+| <a name="input_s3_task_execution_additional_buckets"></a> [s3\_task\_execution\_additional\_buckets](#input\_s3\_task\_execution\_additional\_buckets) | Names of additional buckets for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
+| <a name="input_s3_task_execution_bucket"></a> [s3\_task\_execution\_bucket](#input\_s3\_task\_execution\_bucket) | Name of the bucket for storage of static data for services | `string` | `null` | no |
+| <a name="input_s3_task_execution_bucket_objects"></a> [s3\_task\_execution\_bucket\_objects](#input\_s3\_task\_execution\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task execution bucket | `map(string)` | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |
 | <a name="input_use_efs_persistence"></a> [use\_efs\_persistence](#input\_use\_efs\_persistence) | Whether to use EFS to persist data | `bool` | `false` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC for the deployment | `string` | n/a | yes |

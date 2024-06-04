@@ -32,7 +32,7 @@ resource "aws_efs_mount_target" "this" {
 }
 
 resource "aws_efs_access_point" "this" {
-  count = var.use_efs_persistence && var.efs_use_access_point ? 1 : 0
+  count = var.use_efs_persistence ? 1 : 0
 
   file_system_id = aws_efs_file_system.this.0.id
 

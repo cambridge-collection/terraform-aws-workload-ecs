@@ -6,7 +6,7 @@ locals {
 resource "aws_datasync_location_s3" "source" {
   count = local.use_datasync ? 1 : 0
 
-  s3_bucket_arn = var.s3_service_bucket_arn
+  s3_bucket_arn = local.s3_task_execution_bucket_arn
   subdirectory  = local.s3_subdirectory
 
   s3_config {
