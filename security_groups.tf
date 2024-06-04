@@ -83,7 +83,7 @@ resource "aws_security_group_rule" "efs_ingress_nfs_from_asg" {
 }
 
 resource "aws_security_group_rule" "efs_ingress_nfs_from_vpc" {
-  count = var.use_efs_persistence && var.datasync_s3_service_objects_to_efs ? 1 : 0
+  count = var.use_efs_persistence && var.datasync_s3_objects_to_efs ? 1 : 0
 
   type              = "ingress"
   protocol          = "tcp"
@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "efs_ingress_nfs_from_vpc" {
 }
 
 resource "aws_security_group_rule" "efs_egress_nfs_to_vpc" {
-  count = var.use_efs_persistence && var.datasync_s3_service_objects_to_efs ? 1 : 0
+  count = var.use_efs_persistence && var.datasync_s3_objects_to_efs ? 1 : 0
 
   type              = "egress"
   protocol          = "tcp"

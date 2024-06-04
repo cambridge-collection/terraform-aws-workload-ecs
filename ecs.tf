@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "this" {
           dynamic "authorization_config" {
             for_each = var.use_efs_persistence && var.efs_use_iam_task_role ? [1] : []
             content {
-              access_point_id = var.efs_use_access_point ? aws_efs_access_point.this.0.id : null
+              access_point_id = aws_efs_access_point.this.0.id
               iam             = "ENABLED"
             }
           }

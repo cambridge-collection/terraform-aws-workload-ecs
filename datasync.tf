@@ -1,12 +1,12 @@
 locals {
-  use_datasync    = var.use_efs_persistence && var.datasync_s3_service_objects_to_efs
+  use_datasync    = var.use_efs_persistence && var.datasync_s3_objects_to_efs
   s3_subdirectory = format("/%s/", length(var.datasync_s3_subdirectory) > 0 ? var.datasync_s3_subdirectory : var.name_prefix)
 }
 
 resource "aws_datasync_location_s3" "source" {
   count = local.use_datasync ? 1 : 0
 
-  s3_bucket_arn = var.s3_service_bucket_arn
+  s3_bucket_arn = local.s3_task_execution_bucket_arn
   subdirectory  = local.s3_subdirectory
 
   s3_config {
@@ -40,5 +40,5 @@ resource "aws_datasync_task" "s3_to_efs" {
     transfer_mode          = var.datasync_transfer_mode
   }
 
-  depends_on = [aws_s3_object.service_object] # NOTE this resource should not be created until S3 objects in source have been created
+  depends_on = [aws_s3_object.task_execution] # NOTE this resource should not be created until S3 objects in source have been created
 }

@@ -177,46 +177,36 @@ variable "alb_listener_rule_priority" {
   default     = null
 }
 
-variable "s3_service_bucket" {
+variable "s3_task_execution_bucket" {
   type        = string
   description = "Name of the bucket for storage of static data for services"
   default     = null
 }
 
-variable "s3_service_bucket_arn" {
-  type        = string
-  description = "ARN of the bucket for storage of static data for services"
-  default     = null
+variable "s3_task_execution_additional_buckets" {
+  type        = list(string)
+  description = "Names of additional buckets for adding to the task execution IAM role permissions"
+  default     = []
 }
 
-variable "s3_service_objects" {
+variable "s3_task_execution_bucket_objects" {
   type        = map(string)
-  description = "Map of S3 bucket keys (file names) and file contents for upload to the service bucket"
+  description = "Map of S3 bucket keys (file names) and file contents for upload to the task execution bucket"
   default     = {}
   sensitive   = true
 }
 
-variable "s3_data_source_bucket" {
+variable "s3_task_bucket" {
   type        = string
-  description = "Name of the data source S3 Bucket"
+  description = "Name of the S3 Bucket for use by ECS tasks on the host (i.e. running containers)"
   default     = null
 }
 
-variable "s3_data_source_objects" {
+variable "s3_task_bucket_objects" {
   type        = map(string)
-  description = "Map of S3 bucket keys (file names) and file contents for upload"
+  description = "Map of S3 bucket keys (file names) and file contents for upload to the task bucket"
   default     = {}
   sensitive   = true
-}
-
-variable "s3_task_execution_role_bucket_arns" {
-  type        = list(string)
-  description = "List of S3 Bucket ARNs for adding to IAM task execution role policy"
-}
-
-variable "s3_task_role_bucket_arns" {
-  type        = list(string)
-  description = "List of S3 Bucket ARNs for adding to IAM task role policy"
 }
 
 variable "cloudwatch_log_group_arn" {
@@ -303,12 +293,6 @@ variable "efs_root_directory_path" {
   default     = "/"
 }
 
-variable "efs_use_access_point" {
-  type        = bool
-  description = "Whether to use EFS access point"
-  default     = false
-}
-
 variable "efs_use_iam_task_role" {
   type        = bool
   description = "Whether to use Amazon ECS task IAM role when mounting EFS"
@@ -345,7 +329,7 @@ variable "efs_nfs_mount_port" {
   default     = 2049
 }
 
-variable "datasync_s3_service_objects_to_efs" {
+variable "datasync_s3_objects_to_efs" {
   type        = bool
   description = "Whether to use DataSync to replicate S3 objects to EFS file system"
   default     = false

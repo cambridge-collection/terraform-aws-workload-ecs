@@ -51,10 +51,10 @@ data "aws_iam_policy_document" "task_execution_role_permissions" {
     resources = ["${var.cloudwatch_log_group_arn}:log-stream:*"]
   }
   dynamic "statement" {
-    for_each = length(var.s3_task_execution_role_bucket_arns) > 0 ? [1] : []
+    for_each = length(local.s3_task_execution_bucket_arns_iam) > 0 ? [1] : []
     content {
       actions   = ["s3:*"]
-      resources = var.s3_task_execution_role_bucket_arns
+      resources = local.s3_task_execution_bucket_arns_iam
     }
   }
 }
@@ -82,10 +82,10 @@ resource "aws_iam_policy" "task_policy" {
 
 data "aws_iam_policy_document" "task_role_permissions" {
   dynamic "statement" {
-    for_each = length(var.s3_task_role_bucket_arns) > 0 ? [1] : []
+    for_each = length(local.s3_task_role_bucket_arns_iam) > 0 ? [1] : []
     content {
       actions   = ["s3:Get*", "s3:List*"]
-      resources = var.s3_task_role_bucket_arns
+      resources = local.s3_task_role_bucket_arns_iam
     }
   }
   # NOTE see https://docs.aws.amazon.com/efs/latest/ug/security_iam_resource-based-policy-examples.html
@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "datasync_assume_role" {
 }
 
 data "aws_iam_policy_document" "datasync_permissions" {
-  count = local.use_datasync && var.s3_service_bucket_arn != null ? 1 : 0
+  count = local.use_datasync && local.s3_task_execution_bucket_arn != null ? 1 : 0
 
   statement {
     actions = [
@@ -143,7 +143,7 @@ data "aws_iam_policy_document" "datasync_permissions" {
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads"
     ]
-    resources = [var.s3_service_bucket_arn]
+    resources = [local.s3_task_execution_bucket_arn]
   }
   statement {
     actions = [
@@ -154,12 +154,12 @@ data "aws_iam_policy_document" "datasync_permissions" {
       "s3:GetObjectVersionTagging",
       "s3:ListMultipartUploadParts"
     ]
-    resources = ["${var.s3_service_bucket_arn}/*"]
+    resources = ["${local.s3_task_execution_bucket_arn}/*"]
   }
 }
 
 resource "aws_iam_policy" "datasync" {
-  count = local.use_datasync && var.s3_service_bucket_arn != null ? 1 : 0
+  count = local.use_datasync && local.s3_task_execution_bucket_arn != null ? 1 : 0
 
   name        = "${local.iam_role_prefix}-datasync"
   path        = "/"
@@ -178,7 +178,7 @@ resource "aws_iam_role" "datasync" {
 }
 
 resource "aws_iam_role_policy_attachment" "datasync" {
-  count = local.use_datasync && var.s3_service_bucket_arn != null ? 1 : 0
+  count = local.use_datasync && local.s3_task_execution_bucket_arn != null ? 1 : 0
 
   role       = aws_iam_role.datasync.0.name
   policy_arn = aws_iam_policy.datasync.0.arn
