@@ -183,3 +183,31 @@ resource "aws_iam_role_policy_attachment" "datasync" {
   role       = aws_iam_role.datasync.0.name
   policy_arn = aws_iam_policy.datasync.0.arn
 }
+
+data "aws_iam_policy_document" "codedeploy_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["codedeploy.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "codedeploy" {
+  count = var.use_codedeploy ? 1 : 0
+
+  name                 = trimprefix(substr("${local.iam_role_prefix}-codedeploy", -64, -1), "-")
+  description          = "Assumed by CodeDeploy for ${local.iam_role_prefix}"
+  assume_role_policy = data.aws_iam_policy_document.codedeploy_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "codedeploy" {
+  count = var.use_codedeploy ? 1 : 0
+
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+  role       = aws_iam_role.codedeploy.0.name
+}
