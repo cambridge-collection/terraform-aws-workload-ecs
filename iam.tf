@@ -211,3 +211,10 @@ resource "aws_iam_role_policy_attachment" "codedeploy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
   role       = aws_iam_role.codedeploy.0.name
 }
+
+resource "aws_iam_role_policy_attachment" "codedeploy_ecs" {
+  count = var.use_codedeploy ? 1 : 0
+
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
+  role       = aws_iam_role.codedeploy.0.name
+}
