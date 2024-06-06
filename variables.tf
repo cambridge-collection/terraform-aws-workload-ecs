@@ -25,6 +25,12 @@ variable "allow_private_access" {
   default     = false
 }
 
+variable "use_codedeploy" {
+  type        = bool
+  description = "Whether to use CodeDeploy to control ECS deployments"
+  default     = false
+}
+
 variable "use_efs_persistence" {
   type        = bool
   description = "Whether to use EFS to persist data"

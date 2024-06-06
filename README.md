@@ -99,6 +99,7 @@ The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. I
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.44.0 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.3.3 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.6.2 |
 
 ## Providers
 
@@ -107,6 +108,7 @@ The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. I
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
 | <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | 5.44.0 |
 | <a name="provider_external"></a> [external](#provider\_external) | 2.3.3 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ## Modules
 
@@ -121,7 +123,10 @@ No modules.
 | [aws_acm_certificate_validation.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
 | [aws_appautoscaling_target.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
 | [aws_autoscaling_attachment.automatic_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_attachment) | resource |
+| [aws_autoscaling_attachment.green](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_attachment) | resource |
 | [aws_cloudfront_distribution.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
+| [aws_codedeploy_app.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codedeploy_app) | resource |
+| [aws_codedeploy_deployment_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codedeploy_deployment_group) | resource |
 | [aws_datasync_location_efs.target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/datasync_location_efs) | resource |
 | [aws_datasync_location_s3.source](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/datasync_location_s3) | resource |
 | [aws_datasync_task.s3_to_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/datasync_task) | resource |
@@ -142,6 +147,7 @@ No modules.
 | [aws_iam_role_policy_attachment.task_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_lb_listener_certificate.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_certificate) | resource |
 | [aws_lb_listener_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
+| [aws_lb_target_group.green](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_route53_record.acm_validation_cname](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.cloudfront_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
@@ -159,6 +165,7 @@ No modules.
 | [aws_security_group_rule.private_access_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_service_discovery_private_dns_namespace.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_private_dns_namespace) | resource |
 | [aws_service_discovery_service.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_service) | resource |
+| [random_integer.green_port](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 | [aws_cloudfront_cache_policy.managed_caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_cloudfront_origin_request_policy.managed_all_viewer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_origin_request_policy) | data source |
 | [aws_ecr_repository.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecr_repository) | data source |
@@ -236,6 +243,7 @@ No modules.
 | <a name="input_s3_task_execution_bucket"></a> [s3\_task\_execution\_bucket](#input\_s3\_task\_execution\_bucket) | Name of the bucket for storage of static data for services | `string` | `null` | no |
 | <a name="input_s3_task_execution_bucket_objects"></a> [s3\_task\_execution\_bucket\_objects](#input\_s3\_task\_execution\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task execution bucket | `map(string)` | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |
+| <a name="input_use_codedeploy"></a> [use\_codedeploy](#input\_use\_codedeploy) | Whether to use CodeDeploy to control ECS deployments | `bool` | `false` | no |
 | <a name="input_use_efs_persistence"></a> [use\_efs\_persistence](#input\_use\_efs\_persistence) | Whether to use EFS to persist data | `bool` | `false` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC for the deployment | `string` | n/a | yes |
 | <a name="input_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#input\_vpc\_subnet\_ids) | VPC Subnet IDs to use with EFS Mount Points | `list(string)` | `[]` | no |
