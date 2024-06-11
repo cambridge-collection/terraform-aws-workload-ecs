@@ -75,11 +75,11 @@ Files can be stored in S3 if needed by ECS. There are two distinct S3 bucket inp
 
 ### Task Execution File Storage in S3
 
-The inputs `s3_task_execution_bucket` and `s3_task_execution_additional_buckets` are used to control IAM permissions for task execution requiring access to S3. The input `s3_task_execution_bucket` is the name of the main bucket required by ECS task execution, which can be omitted if no S3 permissions are needed. The input `s3_task_execution_additional_buckets` is a list of additional bucket names that may also be needed for task execution. Objects can be uploaded to the bucket named in the input `s3_task_execution_bucket` using the input `s3_task_execution_bucket_objects`, which is a map of bucket paths and file contents. 
+The inputs `s3_task_execution_bucket` and `s3_task_execution_additional_buckets` are used to control IAM permissions for task execution requiring access to S3. The input `s3_task_execution_bucket` is the name of the main bucket required by ECS task execution, which can be omitted if no S3 permissions are needed. The input `s3_task_execution_additional_buckets` is a list of additional bucket names that may also be needed for task execution. Objects can be uploaded to the bucket named in the input `s3_task_execution_bucket` using the input `s3_task_execution_bucket_objects`, which is a map of bucket paths and file contents. Note that if the input `s3_task_execution_bucket_objects` is supplied, `s3_task_execution_bucket` must also be defined.
 
 ### Task File Storage in S3
 
-The input `s3_task_bucket` is used to control IAM permissions for ECS tasks requring access to S3. Objects can be uploaded to the task bucket using the input `s3_task_bucket_objects`: this is a map of bucket paths and file contents.
+The input `s3_task_bucket` is used to control IAM permissions for ECS tasks requring access to S3. Objects can be uploaded to the task bucket using the input `s3_task_bucket_objects`: this is a map of bucket paths and file contents. If the input `s3_task_bucket_objects` is supplied, the input `s3_task_bucket` must also be defined.
 
 ### Sensitive Inputs
 
@@ -90,6 +90,8 @@ Both the `s3_task_execution_bucket_objects` and `s3_task_bucket_objects` inputs 
 The input `datasync_s3_objects_to_efs` can be used to enable AWS DataSync between an S3 bucket and EFS. Note this has no effect if the input `use_efs_persistence` is set to false.
 
 If `datasync_s3_objects_to_efs` and `use_efs_persistence` are both true, DataSync source and target locations will be built. The DataSync source is the S3 bucket named in the input `s3_task_execution_bucket`, the target is the EFS file system created when `use_efs_persistence` is set to `true`. A DataSync task will be created allowing data to be transferred between S3 and EFS. Additionally, security group rules will be created on the security group `aws_security_group.efs` allowing traffic on port 2049 (NFS protocol) to and from the VPC CIDR: this is a requirement for DataSync communication.
+
+Note that if `datasync_s3_objects_to_efs` is set to `true`, the input `s3_task_execution_bucket` must be supplied.
 
 The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. If omitted this will default to the `name_prefix` path: it is assumed that the `s3_task_execution_bucket` will be shared by several services and the `name_prefix` will by default be used to distinguish them.
 

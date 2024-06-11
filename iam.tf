@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "datasync_assume_role" {
 }
 
 data "aws_iam_policy_document" "datasync_permissions" {
-  count = local.use_datasync && local.s3_task_execution_bucket_arn != null ? 1 : 0
+  count = local.use_datasync ? 1 : 0
 
   statement {
     actions = [
@@ -159,7 +159,7 @@ data "aws_iam_policy_document" "datasync_permissions" {
 }
 
 resource "aws_iam_policy" "datasync" {
-  count = local.use_datasync && local.s3_task_execution_bucket_arn != null ? 1 : 0
+  count = local.use_datasync ? 1 : 0
 
   name        = "${local.iam_role_prefix}-datasync"
   path        = "/"
@@ -178,7 +178,7 @@ resource "aws_iam_role" "datasync" {
 }
 
 resource "aws_iam_role_policy_attachment" "datasync" {
-  count = local.use_datasync && local.s3_task_execution_bucket_arn != null ? 1 : 0
+  count = local.use_datasync ? 1 : 0
 
   role       = aws_iam_role.datasync.0.name
   policy_arn = aws_iam_policy.datasync.0.arn
