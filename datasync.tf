@@ -24,6 +24,8 @@ resource "aws_datasync_location_efs" "target" {
     subnet_arn          = data.aws_subnet.efs[count.index].arn
     security_group_arns = [aws_security_group.efs.0.arn]
   }
+
+  depends_on = [aws_efs_mount_target.this] # NOTE needs a dependency as the datasync location needs a mount target in each subnet
 }
 
 resource "aws_datasync_task" "s3_to_efs" {
