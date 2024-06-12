@@ -278,7 +278,18 @@ variable "asg_security_group_id" {
 
 variable "alb_security_group_id" {
   type        = string
-  description = "ID of the ALB Security Group for creating ingress from from ALB"
+  description = "ID of the ALB Security Group for creating ingress to the ALB"
+}
+
+variable "ingress_security_group_id" {
+  type        = string
+  description = "ID of a security group to grant acess to container instances"
+}
+
+variable "update_ingress_security_group" {
+  type        = bool
+  description = "Whether to update external security group by creating an egress rule to this service"
+  default     = false
 }
 
 variable "acm_certificate_validation_timeout" {
