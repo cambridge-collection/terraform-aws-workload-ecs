@@ -284,6 +284,7 @@ variable "alb_security_group_id" {
 variable "ingress_security_group_id" {
   type        = string
   description = "ID of a security group to grant acess to container instances"
+  default     = null
 }
 
 variable "update_ingress_security_group" {
