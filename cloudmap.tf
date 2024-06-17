@@ -21,3 +21,10 @@ resource "aws_service_discovery_service" "this" {
     }
   }
 }
+
+resource "aws_route53_zone_association" "cloudmap" {
+  count = var.allow_private_access ? length(var.cloudmap_associate_vpc_ids) : 0
+
+  zone_id = aws_service_discovery_private_dns_namespace.this.0.hosted_zone
+  vpc_id  = var.cloudmap_associate_vpc_ids[count.index]
+}

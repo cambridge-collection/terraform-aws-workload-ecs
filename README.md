@@ -147,6 +147,7 @@ No modules.
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_route53_record.acm_validation_cname](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.cloudfront_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_zone_association.cloudmap](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone_association) | resource |
 | [aws_s3_object.task](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_s3_object.task_execution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_security_group.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -198,6 +199,7 @@ No modules.
 | <a name="input_cloudfront_allowed_methods"></a> [cloudfront\_allowed\_methods](#input\_cloudfront\_allowed\_methods) | List of methods allowed by the CloudFront Distribution | `list(string)` | <pre>[<br>  "HEAD",<br>  "GET",<br>  "OPTIONS"<br>]</pre> | no |
 | <a name="input_cloudfront_cached_methods"></a> [cloudfront\_cached\_methods](#input\_cloudfront\_cached\_methods) | List of methods cached by the CloudFront Distribution | `list(string)` | <pre>[<br>  "HEAD",<br>  "GET"<br>]</pre> | no |
 | <a name="input_cloudfront_waf_acl_arn"></a> [cloudfront\_waf\_acl\_arn](#input\_cloudfront\_waf\_acl\_arn) | ARN of the WAF Web ACL for use by CloudFront | `string` | n/a | yes |
+| <a name="input_cloudmap_associate_vpc_ids"></a> [cloudmap\_associate\_vpc\_ids](#input\_cloudmap\_associate\_vpc\_ids) | List of VPC IDs to associate with Cloud Map Service Discovery | `list(string)` | `[]` | no |
 | <a name="input_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#input\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch Log Group for adding to IAM task execution role policy | `string` | n/a | yes |
 | <a name="input_datasync_bytes_per_second"></a> [datasync\_bytes\_per\_second](#input\_datasync\_bytes\_per\_second) | Limits the bandwidth used by a DataSync task | `number` | `-1` | no |
 | <a name="input_datasync_overwrite_mode"></a> [datasync\_overwrite\_mode](#input\_datasync\_overwrite\_mode) | Specifies whether DataSync should modify or preserve data at the destination location | `string` | `"ALWAYS"` | no |
@@ -229,7 +231,7 @@ No modules.
 | <a name="input_efs_root_directory_path"></a> [efs\_root\_directory\_path](#input\_efs\_root\_directory\_path) | Root directory for EFS access point | `string` | `"/"` | no |
 | <a name="input_efs_root_directory_permissions"></a> [efs\_root\_directory\_permissions](#input\_efs\_root\_directory\_permissions) | POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits | `number` | `777` | no |
 | <a name="input_efs_use_iam_task_role"></a> [efs\_use\_iam\_task\_role](#input\_efs\_use\_iam\_task\_role) | Whether to use Amazon ECS task IAM role when mounting EFS | `bool` | `true` | no |
-| <a name="input_ingress_security_group_id"></a> [ingress\_security\_group\_id](#input\_ingress\_security\_group\_id) | ID of a security group to grant acess to container instances | `string` | n/a | yes |
+| <a name="input_ingress_security_group_id"></a> [ingress\_security\_group\_id](#input\_ingress\_security\_group\_id) | ID of a security group to grant acess to container instances | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to add to resource names | `string` | n/a | yes |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | ID of the Route 53 Hosted Zone for records | `string` | n/a | yes |
 | <a name="input_s3_task_bucket"></a> [s3\_task\_bucket](#input\_s3\_task\_bucket) | Name of the S3 Bucket for use by ECS tasks on the host (i.e. running containers) | `string` | `null` | no |

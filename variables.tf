@@ -42,6 +42,12 @@ variable "vpc_subnet_ids" {
   default     = []
 }
 
+variable "cloudmap_associate_vpc_ids" {
+  type        = list(string)
+  description = "List of VPC IDs to associate with Cloud Map Service Discovery"
+  default     = []
+}
+
 variable "alb_arn" {
   type        = string
   description = "ARN of the ALB used by the listener"
