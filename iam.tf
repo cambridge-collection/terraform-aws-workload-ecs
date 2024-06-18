@@ -74,7 +74,7 @@ resource "aws_iam_role" "task_role" {
 }
 
 resource "aws_iam_policy" "task_policy" {
-  count = data.aws_iam_policy_document.task_role_permissions.statement != null ? 1 : 0
+  count       = data.aws_iam_policy_document.task_role_permissions.statement != null ? 1 : 0
   name        = "${local.iam_role_prefix}-task-policy"
   path        = "/"
   description = "Policy for ${local.iam_role_prefix}-task-role"

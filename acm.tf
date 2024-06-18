@@ -11,6 +11,11 @@ resource "aws_acm_certificate" "this" {
 
   lifecycle {
     create_before_destroy = true
+
+    precondition {
+      condition     = endswith(local.domain_name, data.aws_route53_zone.domain.name)
+      error_message = "The domain name ${local.domain_name} does not end with Route 53 domain ${data.aws_route53_zone.domain.name}"
+    }
   }
 }
 
@@ -33,5 +38,10 @@ resource "aws_acm_certificate" "us-east-1" {
 
   lifecycle {
     create_before_destroy = true
+
+    precondition {
+      condition     = endswith(local.domain_name, data.aws_route53_zone.domain.name)
+      error_message = "The domain name ${local.domain_name} does not end with Route 53 domain ${data.aws_route53_zone.domain.name}"
+    }
   }
 }
