@@ -32,6 +32,13 @@ resource "aws_security_group_rule" "asg_ingress_private_access" {
   source_security_group_id = var.ingress_security_group_id
   from_port                = var.alb_target_group_port
   to_port                  = var.alb_target_group_port
+
+  lifecycle {
+    precondition {
+      condition     = var.ingress_security_group_id != null
+      error_message = "Input ingress_security_group_id must not be null if allow_private_access is set to true"
+    }
+  }
 }
 
 # NOTE this may be needed where the security group owned by an external client
