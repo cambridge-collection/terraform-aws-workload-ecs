@@ -38,8 +38,3 @@ output "private_access_port" {
   value       = var.allow_private_access ? tostring(var.alb_target_group_port) : ""
   description = "Port number for accessing service via private access host name"
 }
-
-output "security_group_private_access_id" {
-  value       = var.allow_private_access ? aws_security_group.private_access.0.id : ""
-  description = "ID of the private access security group"
-}

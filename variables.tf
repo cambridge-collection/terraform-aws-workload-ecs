@@ -42,6 +42,12 @@ variable "vpc_subnet_ids" {
   default     = []
 }
 
+variable "cloudmap_associate_vpc_ids" {
+  type        = list(string)
+  description = "List of VPC IDs to associate with Cloud Map Service Discovery"
+  default     = []
+}
+
 variable "alb_arn" {
   type        = string
   description = "ARN of the ALB used by the listener"
@@ -278,7 +284,19 @@ variable "asg_security_group_id" {
 
 variable "alb_security_group_id" {
   type        = string
-  description = "ID of the ALB Security Group for creating ingress from from ALB"
+  description = "ID of the ALB Security Group for creating ingress to the ALB"
+}
+
+variable "ingress_security_group_id" {
+  type        = string
+  description = "ID of a security group to grant acess to container instances"
+  default     = null
+}
+
+variable "update_ingress_security_group" {
+  type        = bool
+  description = "Whether to update external security group by creating an egress rule to this service"
+  default     = false
 }
 
 variable "acm_certificate_validation_timeout" {
