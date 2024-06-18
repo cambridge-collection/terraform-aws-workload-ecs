@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v1.0.0...v1.1.0) (2024-06-18)
+
+
+### Features
+
+* **cloudmap:** Add route 53 zone associations for Cloud Map ([c7f5cc7](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c7f5cc7d54ddc9cf6784ff818b98ca8f413a5821))
+* **security:** Remove private_access security group ([121bf86](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/121bf86d29d7ede3919252e144cf32fc9cc6bf92))
+
+
+### Bug Fixes
+
+* **datasync:** Add dependency on EFS mount targets in aws_datasync_location_efs resources ([64ec243](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/64ec24350ea22fc2bd4fbeb04684ef1ea8d7a618))
+* **iam:** Fix error building permissions for DataSync ([a219906](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/a219906b13e5af717e2348c49fbda784032daac4))
+* **s3:** Fix error with for_each loop on aws_s3_object resources ([c40c90d](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c40c90df4655c12c54ed102dc24cac3dbe1d87a8))
+* **security:** Add null default value to ingress_security_group_id variable ([2c0ed60](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/2c0ed604fd06a1b01d09ff2a77c7e3da4bd78f52))
+
 ## 1.0.0 (2024-06-05)
 
 
