@@ -1,3 +1,7 @@
+data "aws_route53_zone" "domain" {
+  zone_id = var.route53_zone_id
+}
+
 resource "aws_route53_record" "cloudfront_alias" {
   name = aws_acm_certificate.us-east-1.domain_name # NOTE match CloudFront Distribution alias
   type = "A"
@@ -6,7 +10,7 @@ resource "aws_route53_record" "cloudfront_alias" {
     zone_id                = aws_cloudfront_distribution.this.hosted_zone_id
     evaluate_target_health = false
   }
-  zone_id = var.route53_zone_id
+  zone_id = data.aws_route53_zone.domain.zone_id
 }
 
 resource "aws_route53_record" "acm_validation_cname" {
@@ -23,5 +27,5 @@ resource "aws_route53_record" "acm_validation_cname" {
   records         = [each.value.record]
   ttl             = 300
   type            = each.value.type
-  zone_id         = var.route53_zone_id
+  zone_id         = data.aws_route53_zone.domain.zone_id
 }

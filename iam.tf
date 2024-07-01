@@ -74,6 +74,7 @@ resource "aws_iam_role" "task_role" {
 }
 
 resource "aws_iam_policy" "task_policy" {
+  count       = data.aws_iam_policy_document.task_role_permissions.statement != null ? 1 : 0
   name        = "${local.iam_role_prefix}-task-policy"
   path        = "/"
   description = "Policy for ${local.iam_role_prefix}-task-role"
@@ -107,8 +108,10 @@ data "aws_iam_policy_document" "task_role_permissions" {
 }
 
 resource "aws_iam_role_policy_attachment" "task_policy_attachment" {
+  count = data.aws_iam_policy_document.task_role_permissions.statement != null ? 1 : 0
+
   role       = aws_iam_role.task_role.name
-  policy_arn = aws_iam_policy.task_policy.arn
+  policy_arn = aws_iam_policy.task_policy.0.arn
 }
 
 data "aws_iam_policy_document" "datasync_assume_role" {

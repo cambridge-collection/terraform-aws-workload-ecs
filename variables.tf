@@ -81,11 +81,6 @@ variable "ecr_repository_force_delete" {
   default     = false
 }
 
-variable "ecs_cluster_name" {
-  type        = string
-  description = "Name of the ECS cluster for use by aws_appautoscaling_target resource"
-}
-
 variable "ecs_cluster_arn" {
   type        = string
   description = "ARN of the ECS cluster to which this workload should be deployed"
