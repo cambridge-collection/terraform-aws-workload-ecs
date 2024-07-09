@@ -7,8 +7,8 @@ resource "aws_s3_object" "task_execution" {
 }
 
 resource "aws_s3_object" "task" {
-  for_each = nonsensitive(toset(keys(var.s3_task_bucket_objects)))
-  bucket   = var.s3_task_bucket
+  for_each = length(var.s3_task_buckets) > 0 ? nonsensitive(toset(keys(var.s3_task_bucket_objects))) : []
+  bucket   = var.s3_task_buckets[0]
   key      = each.key
   content  = var.s3_task_bucket_objects[each.key]
 }
