@@ -61,6 +61,7 @@ variable "alb_dns_name" {
 variable "cloudfront_waf_acl_arn" {
   type        = string
   description = "ARN of the WAF Web ACL for use by CloudFront"
+  default     = null
 }
 
 variable "cloudfront_allowed_methods" {
@@ -376,4 +377,22 @@ variable "datasync_transfer_mode" {
   type        = string
   description = "The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location"
   default     = "CHANGED"
+}
+
+variable "create_waf" {
+  type        = bool
+  description = "Whether to create a WAF Web ACL"
+  default     = false
+}
+
+variable "waf_additional_rules" {
+  type        = list(any)
+  description = "List of additional rules for adding to Web ACL"
+  default     = []
+}
+
+variable "waf_ip_set_addresses" {
+  type        = list(string)
+  description = "List of IPs for WAF IP Set Safelist"
+  default     = ["131.111.0.0/16"]
 }

@@ -14,7 +14,7 @@ resource "aws_cloudfront_distribution" "this" {
   comment         = "${aws_acm_certificate.us-east-1.domain_name} CloudFront Distribution"
   price_class     = "PriceClass_100"
   enabled         = true
-  web_acl_id      = var.cloudfront_waf_acl_arn
+  web_acl_id      = var.create_waf ? aws_wafv2_web_acl.this.0.arn : var.cloudfront_waf_acl_arn
   http_version    = "http2"
   is_ipv6_enabled = true
   aliases = [
