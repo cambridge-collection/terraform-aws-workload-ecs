@@ -35,7 +35,7 @@ resource "aws_codedeploy_deployment_group" "this" {
   }
 
   ecs_service {
-    cluster_name = var.ecs_cluster_name
+    cluster_name = regex("(?:service/)(?P<cluster_name>\\S+)(?:/)", aws_ecs_service.this.id).cluster_name
     service_name = aws_ecs_service.this.name
   }
 
