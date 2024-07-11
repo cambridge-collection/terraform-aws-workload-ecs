@@ -69,6 +69,10 @@ resource "aws_ecs_service" "this" {
     field = "memory"
   }
 
+  deployment_controller {
+    type = var.use_codedeploy ? "CODE_DEPLOY" : "ECS"
+  }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = var.ecs_service_container_name
