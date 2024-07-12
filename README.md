@@ -65,9 +65,13 @@ An output `ecr_repository_urls` shows the URIs indicated by the input `ecr_repos
 
 ## EFS Persistence
 
-The module can optionally create an EFS file system, mount targets and access point, as well as a dedicated Security Group for the EFS mount targets. The input `use_efs_persistence` should be set to `true` if this is desired. An EFS mount target is created for each subnet in the input `vpc_subnet_ids`, allowing EFS to be accessed from inside the subnets specified. A reference to the EFS file system is created in the ECS Task Definition. For each item in the input `ecs_task_def_volumes`, if `use_efs_persistence` is set to `true`, a reference is created between the volume and the EFS file system, effectively mounting the ECS volume on the EFS file system. 
+The module can optionally create an EFS file system, mount targets and access point, as well as a dedicated Security Group for the EFS mount targets. The input `use_efs_persistence` should be set to `true` if this is desired. An EFS mount target is created for each subnet in the input `vpc_subnet_ids`, allowing EFS to be accessed from inside the subnets specified. Note that the list input `vpc_subnet_ids` must have a non-zero length if `use_efs_persistence` is true, as ECS services deployed in a VPC require the mount targets to exist in each subnet used: the mount targets allow the DNS address of the EFS file system to be resolved.
+
+A reference to the EFS file system is created in the ECS Task Definition. If `use_efs_persistence` is set to `true`, a reference is created between the volume and the EFS file system for each item in the input `ecs_task_def_volumes`, effectively mounting the ECS volume on the EFS file system. 
 
 The EFS Access Point is used to modify the permissions on the EFS file system. In testing, this was necessary to enable ECS to mount the file system correctly. The access point defaults to setting the mount to be owned by the root user on the host, with permissions allowing read, write and executable access. Changing the default settings may lead to ECS being unable to modify the permissions on the root directory, or otherwise Docker on the host being able to create files in the file system where the container user is non-root.
+
+Note that services deployed in a VPC that need access to EFS may need a VPC Endpoint for the service `elasticfilesystem` if they don't have a route to the public interface for EFS.
 
 ## S3 File Storage
 
