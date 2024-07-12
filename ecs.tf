@@ -74,7 +74,7 @@ resource "aws_ecs_service" "this" {
     content {
       registry_arn   = aws_service_discovery_service.this.0.arn
       container_name = var.ecs_service_container_name
-      container_port = var.ecs_service_container_port
+      container_port = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_container_port
     }
   }
 }
