@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v1.1.0...v2.0.0) (2024-07-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **iam:** input s3_task_bucket renamed to s3_task_buckets
+* **ecs:** Input variable ecs_cluster_name removed
+
+### Bug Fixes
+
+* **acm:** Validate domain name ([c384433](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c38443318db31832e383bc15ac800f7786b6ec2a))
+* **ecs:** Address potentially invalid ecs_cluster_name ([28531dc](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/28531dc5779f97d00584322a3730917675e8d6fd))
+* **iam:** Fix error with count values ([286d522](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/286d5227539f3c8a626e5b12a3010a2f4184a8d5))
+* **iam:** Fix malformed policy document error on Task IAM policy ([6759486](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/6759486a354e609a9b8c804404c34b007aa0e25d))
+* **security:** Add precondition to aws_security_group_rule.asg_ingress_private_access ([6a9c3c3](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/6a9c3c32f2569415a97710cafd9ff6a3217a1154))
+
 ## [1.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v1.0.0...v1.1.0) (2024-06-18)
 
 
