@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "this" {
   }
   port        = var.alb_target_group_port
   protocol    = var.alb_target_group_protocol
-  target_type = "instance"
+  target_type = var.ecs_network_mode == "awsvpc" ? "ip" : "instance"
   vpc_id      = var.vpc_id
 }
 
