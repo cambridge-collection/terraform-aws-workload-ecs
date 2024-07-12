@@ -197,10 +197,10 @@ variable "s3_task_execution_bucket_objects" {
   sensitive   = true
 }
 
-variable "s3_task_bucket" {
-  type        = string
-  description = "Name of the S3 Bucket for use by ECS tasks on the host (i.e. running containers)"
-  default     = null
+variable "s3_task_buckets" {
+  type        = list(string)
+  description = "Names of the S3 Buckets for use by ECS tasks on the host (i.e. running containers)"
+  default     = []
 }
 
 variable "s3_task_bucket_objects" {
