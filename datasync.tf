@@ -15,13 +15,13 @@ resource "aws_datasync_location_s3" "source" {
 }
 
 resource "aws_datasync_location_efs" "target" {
-  count = local.use_datasync ? length(data.aws_subnet.efs.*.arn) : 0
+  count = local.use_datasync ? length(data.aws_subnet.ecs.*.arn) : 0
 
   efs_file_system_arn = aws_efs_file_system.this.0.arn
   subdirectory        = "/" # NOTE replicated data would normally go in root of file system
 
   ec2_config {
-    subnet_arn          = data.aws_subnet.efs[count.index].arn
+    subnet_arn          = data.aws_subnet.ecs[count.index].arn
     security_group_arns = [aws_security_group.efs.0.arn]
   }
 
@@ -29,7 +29,7 @@ resource "aws_datasync_location_efs" "target" {
 }
 
 resource "aws_datasync_task" "s3_to_efs" {
-  count = local.use_datasync ? length(data.aws_subnet.efs.*.arn) : 0
+  count = local.use_datasync ? length(data.aws_subnet.ecs.*.arn) : 0
 
   name                     = "${var.name_prefix}-s3-to-efs"
   source_location_arn      = aws_datasync_location_s3.source.0.arn

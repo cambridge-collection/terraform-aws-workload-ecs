@@ -41,7 +41,7 @@ resource "aws_lb_target_group" "this" {
 
 # Automatically register autoscaling group instances with load balancer
 resource "aws_autoscaling_attachment" "automatic_attachment" {
-  count =  var.ecs_network_mode == "awsvpc" ? 0 : 1 # NOTE autoscaling attachments only support instance targets
+  count = var.ecs_network_mode == "awsvpc" ? 0 : 1 # NOTE autoscaling attachments only support instance targets
 
   autoscaling_group_name = var.asg_name
   lb_target_group_arn    = aws_lb_target_group.this.arn
