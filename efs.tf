@@ -21,6 +21,13 @@ resource "aws_efs_file_system" "this" {
   tags = {
     Name = "${var.name_prefix}-efs"
   }
+
+  lifecycle {
+    precondition {
+      condition     = length(var.vpc_subnet_ids) > 0
+      error_message = "EFS resources require the vpc_subnet_ids input to be provided."
+    }
+  }
 }
 
 resource "aws_efs_mount_target" "this" {
@@ -29,6 +36,13 @@ resource "aws_efs_mount_target" "this" {
   file_system_id  = aws_efs_file_system.this.0.id
   subnet_id       = data.aws_subnet.efs[count.index].id
   security_groups = [aws_security_group.efs.0.id]
+
+  lifecycle {
+    precondition {
+      condition     = length(var.vpc_subnet_ids) > 0
+      error_message = "EFS resources require the vpc_subnet_ids input to be provided."
+    }
+  }
 }
 
 resource "aws_efs_access_point" "this" {
@@ -54,5 +68,12 @@ resource "aws_efs_access_point" "this" {
 
   tags = {
     Name = "${var.name_prefix}-efs-access-point"
+  }
+
+  lifecycle {
+    precondition {
+      condition     = length(var.vpc_subnet_ids) > 0
+      error_message = "EFS resources require the vpc_subnet_ids input to be provided."
+    }
   }
 }
