@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.0.0...v2.0.1) (2024-07-15)
+
+
+### Bug Fixes
+
+* **efs:** Add precondition blocks to EFS resources ([ae99b81](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/ae99b8108477a2037ff89d84c86c91f86f0449ff))
+
 ## [2.0.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v1.1.0...v2.0.0) (2024-07-12)
 
 
