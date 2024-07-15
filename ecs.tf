@@ -95,6 +95,13 @@ resource "aws_ecs_service" "this" {
       security_groups = [var.asg_security_group_id]
     }
   }
+
+  dynamic "lifecycle" {
+    for_each = var.use_codedeploy ? [1] : []
+    content {
+      ignore_changes = [task_definition]
+    }
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs" {
