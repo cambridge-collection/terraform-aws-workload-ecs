@@ -65,7 +65,7 @@ resource "aws_lb_target_group" "green" {
   }
   port        = random_integer.green_port.0.result
   protocol    = var.alb_target_group_protocol
-  target_type = "instance"
+  target_type = var.ecs_network_mode == "awsvpc" ? "ip" : "instance"
   vpc_id      = var.vpc_id
 }
 
@@ -78,7 +78,7 @@ resource "aws_autoscaling_attachment" "automatic_attachment" {
 }
 
 resource "aws_autoscaling_attachment" "green" {
-  count = var.use_codedeploy ? 1 : 0
+  count = var.use_codedeploy && var.ecs_network_mode != "awsvpc" ? 1 : 0 # NOTE autoscaling attachments only support instance targets
 
   autoscaling_group_name = var.asg_name
   lb_target_group_arn    = aws_lb_target_group.green.0.arn
