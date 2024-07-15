@@ -41,7 +41,7 @@ resource "aws_lb_target_group" "this" {
 
 resource "random_integer" "green_port" {
   count = var.use_codedeploy ? 1 : 0
-  
+
   min = 45000
   max = 47000
   keepers = {

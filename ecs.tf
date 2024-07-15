@@ -54,6 +54,50 @@ resource "aws_ecs_task_definition" "this" {
 }
 
 resource "aws_ecs_service" "this" {
+  count = var.use_codedeploy ? 0 : 1
+
+  name                               = "${var.name_prefix}-service"
+  cluster                            = var.ecs_cluster_arn
+  desired_count                      = var.ecs_service_desired_count
+  task_definition                    = aws_ecs_task_definition.this.arn
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 100
+  iam_role                           = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_iam_role
+  scheduling_strategy                = "REPLICA"
+  propagate_tags                     = "SERVICE"
+
+  ordered_placement_strategy {
+    type  = "binpack"
+    field = "memory"
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.this.arn
+    container_name   = var.ecs_service_container_name
+    container_port   = var.ecs_service_container_port
+  }
+
+  dynamic "service_registries" {
+    for_each = var.allow_private_access ? [1] : []
+    content {
+      registry_arn   = aws_service_discovery_service.this.0.arn
+      container_name = var.ecs_service_container_name
+      container_port = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_container_port
+    }
+  }
+
+  dynamic "network_configuration" {
+    for_each = var.ecs_network_mode == "awsvpc" ? [1] : []
+    content {
+      subnets         = data.aws_subnet.ecs.*.id
+      security_groups = [var.asg_security_group_id]
+    }
+  }
+}
+
+resource "aws_ecs_service" "codedeploy" {
+  count = var.use_codedeploy ? 1 : 0
+
   name                               = "${var.name_prefix}-service"
   cluster                            = var.ecs_cluster_arn
   desired_count                      = var.ecs_service_desired_count
@@ -70,7 +114,7 @@ resource "aws_ecs_service" "this" {
   }
 
   deployment_controller {
-    type = var.use_codedeploy ? "CODE_DEPLOY" : "ECS"
+    type = "CODE_DEPLOY"
   }
 
   load_balancer {
@@ -96,11 +140,10 @@ resource "aws_ecs_service" "this" {
     }
   }
 
-  dynamic "lifecycle" {
-    for_each = var.use_codedeploy ? [1] : []
-    content {
-      ignore_changes = [task_definition]
-    }
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+    ]
   }
 }
 

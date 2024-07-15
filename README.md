@@ -99,6 +99,7 @@ Note that if `datasync_s3_objects_to_efs` is set to `true`, the input `s3_task_e
 
 The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. If omitted this will default to the `name_prefix` path: it is assumed that the `s3_task_execution_bucket` will be shared by several services and the `name_prefix` will by default be used to distinguish them.
 
+
 ## Requirements
 
 | Name | Version |
@@ -111,10 +112,10 @@ The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. I
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
-| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | 5.44.0 |
-| <a name="provider_external"></a> [external](#provider\_external) | 2.3.3 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.44.0 |
+| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | ~> 5.44.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | ~> 2.3.3 |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.6.2 |
 
 ## Modules
 
@@ -137,6 +138,7 @@ No modules.
 | [aws_datasync_location_s3.source](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/datasync_location_s3) | resource |
 | [aws_datasync_task.s3_to_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/datasync_task) | resource |
 | [aws_ecr_repository.new](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
+| [aws_ecs_service.codedeploy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
 | [aws_ecs_service.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
 | [aws_ecs_task_definition.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
 | [aws_efs_access_point.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_access_point) | resource |
@@ -186,7 +188,7 @@ No modules.
 | [aws_iam_policy_document.task_role_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_route53_zone.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
-| [aws_subnet.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
+| [aws_subnet.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 | [external_external.route53_a_record](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 

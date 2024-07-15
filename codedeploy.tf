@@ -35,8 +35,8 @@ resource "aws_codedeploy_deployment_group" "this" {
   }
 
   ecs_service {
-    cluster_name = regex("(?:service/)(?P<cluster_name>\\S+)(?:/)", aws_ecs_service.this.id).cluster_name
-    service_name = aws_ecs_service.this.name
+    cluster_name = regex("(?:service/)(?P<cluster_name>\\S+)(?:/)", aws_ecs_service.codedeploy.0.id).cluster_name
+    service_name = aws_ecs_service.codedeploy.0.name
   }
 
   load_balancer_info {

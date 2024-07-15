@@ -203,8 +203,8 @@ data "aws_iam_policy_document" "codedeploy_assume_role" {
 resource "aws_iam_role" "codedeploy" {
   count = var.use_codedeploy ? 1 : 0
 
-  name                 = trimprefix(substr("${local.iam_role_prefix}-codedeploy", -64, -1), "-")
-  description          = "Assumed by CodeDeploy for ${local.iam_role_prefix}"
+  name               = trimprefix(substr("${local.iam_role_prefix}-codedeploy", -64, -1), "-")
+  description        = "Assumed by CodeDeploy for ${local.iam_role_prefix}"
   assume_role_policy = data.aws_iam_policy_document.codedeploy_assume_role.json
 }
 
