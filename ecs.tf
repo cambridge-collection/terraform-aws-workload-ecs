@@ -58,8 +58,8 @@ resource "aws_ecs_service" "this" {
   cluster                            = var.ecs_cluster_arn
   desired_count                      = var.ecs_service_desired_count
   task_definition                    = aws_ecs_task_definition.this.arn
-  deployment_maximum_percent         = 200
-  deployment_minimum_healthy_percent = 100
+  deployment_maximum_percent         = var.ecs_service_deployment_maximum_percent
+  deployment_minimum_healthy_percent = var.ecs_service_deployment_minimum_healthy_percent
   iam_role                           = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_iam_role
   scheduling_strategy                = "REPLICA"
   propagate_tags                     = "SERVICE"
