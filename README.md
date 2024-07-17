@@ -89,6 +89,12 @@ The input `s3_task_bucket` is used to control IAM permissions for ECS tasks requ
 
 Both the `s3_task_execution_bucket_objects` and `s3_task_bucket_objects` inputs are set to `sensitive`, meaning the contents of the uploaded files are not displayed in Terraform output.
 
+### ECS Deployments
+
+The number of tasks kept running by ECS during a deployment is controlled by two inputs `ecs_service_deployment_maximum_percent` and `ecs_service_deployment_minimum_healthy_percent`. The default of the latter input is `100` meaning 100% of the desired count of tasks must be running during a deployment. This may prevent ECS from successfully deploying a new version of the task definition if all available infrastructure is consumed by existing running tasks. In a non-production environment the value of `ecs_service_deployment_minimum_healthy_percent` can be set to less than 100 in order to allow the new version to be deployed. Setting the value to 0 may lead to a brief loss of service as connections are drained from existing tasks and new tasks are deployed. Note that if the new version of the task definition is broken this may lead to a complete loss of service until the change is reversed.
+
+In a production environment it may be desirable to retain the default value of 100 for the input `ecs_service_deployment_minimum_healthy_percent` and manually scale out new infrastructure allowing new tasks to be deployed. This will ensure that at least one task is always running to support live traffic.
+
 ## DataSync S3 to EFS
 
 The input `datasync_s3_objects_to_efs` can be used to enable AWS DataSync between an S3 bucket and EFS. Note this has no effect if the input `use_efs_persistence` is set to false.
@@ -110,9 +116,9 @@ The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. I
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
-| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | 5.44.0 |
-| <a name="provider_external"></a> [external](#provider\_external) | 2.3.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.44.0 |
+| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | ~> 5.44.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | ~> 2.3.3 |
 
 ## Modules
 
@@ -220,6 +226,8 @@ No modules.
 | <a name="input_ecs_network_mode"></a> [ecs\_network\_mode](#input\_ecs\_network\_mode) | Networking mode specified in the ECS Task Definition. One of host, bridge, awsvpc | `string` | `"bridge"` | no |
 | <a name="input_ecs_service_container_name"></a> [ecs\_service\_container\_name](#input\_ecs\_service\_container\_name) | Name of container to associated with the load balancer configuration in the ECS service | `string` | n/a | yes |
 | <a name="input_ecs_service_container_port"></a> [ecs\_service\_container\_port](#input\_ecs\_service\_container\_port) | Container port number associated load balancer configuration in the ECS service. This must match a container port in the container definition port mappings | `number` | n/a | yes |
+| <a name="input_ecs_service_deployment_maximum_percent"></a> [ecs\_service\_deployment\_maximum\_percent](#input\_ecs\_service\_deployment\_maximum\_percent) | Maximum percentage of tasks to allowed to run during a deployment (percentage of desired count) | `number` | `200` | no |
+| <a name="input_ecs_service_deployment_minimum_healthy_percent"></a> [ecs\_service\_deployment\_minimum\_healthy\_percent](#input\_ecs\_service\_deployment\_minimum\_healthy\_percent) | Minimum percentage of tasks to keep running during a deployment (percentage of desired count) | `number` | `100` | no |
 | <a name="input_ecs_service_desired_count"></a> [ecs\_service\_desired\_count](#input\_ecs\_service\_desired\_count) | Sets the Desired Count for the ECS Service | `number` | `1` | no |
 | <a name="input_ecs_service_iam_role"></a> [ecs\_service\_iam\_role](#input\_ecs\_service\_iam\_role) | ARN of an IAM role to call load balancer for non-awsvpc network modes. AWSServiceRoleForECS is suitable, but AWS will generate an error if the value is used and the role already exists in the account | `string` | `null` | no |
 | <a name="input_ecs_service_max_capacity"></a> [ecs\_service\_max\_capacity](#input\_ecs\_service\_max\_capacity) | Sets the Maximum Capacity for the ECS Service | `number` | `2` | no |

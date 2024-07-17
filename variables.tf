@@ -104,6 +104,18 @@ variable "ecs_service_min_capacity" {
   default     = 1
 }
 
+variable "ecs_service_deployment_maximum_percent" {
+  type        = number
+  description = "Maximum percentage of tasks to allowed to run during a deployment (percentage of desired count)"
+  default     = 200
+}
+
+variable "ecs_service_deployment_minimum_healthy_percent" {
+  type        = number
+  description = "Minimum percentage of tasks to keep running during a deployment (percentage of desired count)"
+  default     = 100
+}
+
 variable "ecs_service_container_name" {
   type        = string
   description = "Name of container to associated with the load balancer configuration in the ECS service"
