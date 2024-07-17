@@ -383,3 +383,9 @@ variable "datasync_transfer_mode" {
   description = "The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location"
   default     = "CHANGED"
 }
+
+variable "codedeploy_deployment_type" {
+  type        = string
+  description = "Deployment type for CodeDeploy deployment group. Valid values are BLUE_GREEN or IN_PLACE"
+  default     = "IN_PLACE"
+}

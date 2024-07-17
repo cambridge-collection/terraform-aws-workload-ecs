@@ -50,7 +50,7 @@ resource "random_integer" "green_port" {
 }
 
 resource "aws_lb_target_group" "green" {
-  count = var.use_codedeploy ? 1 : 0
+  count = var.use_codedeploy && var.codedeploy_deployment_type == "BLUE_GREEN" ? 1 : 0
 
   name = trim(substr("${var.name_prefix}-alb-green-tg", -32, -1), "-")
   health_check {
@@ -78,7 +78,7 @@ resource "aws_autoscaling_attachment" "automatic_attachment" {
 }
 
 resource "aws_autoscaling_attachment" "green" {
-  count = var.use_codedeploy && var.ecs_network_mode != "awsvpc" ? 1 : 0 # NOTE autoscaling attachments only support instance targets
+  count = var.use_codedeploy && var.codedeploy_deployment_type == "BLUE_GREEN" && var.ecs_network_mode != "awsvpc" ? 1 : 0 # NOTE autoscaling attachments only support instance targets
 
   autoscaling_group_name = var.asg_name
   lb_target_group_arn    = aws_lb_target_group.green.0.arn
