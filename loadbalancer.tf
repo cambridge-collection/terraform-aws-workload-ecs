@@ -63,7 +63,7 @@ resource "aws_lb_target_group" "green" {
     healthy_threshold   = var.alb_target_group_health_check_healthy_threshold
     matcher             = var.alb_target_group_health_check_status_code
   }
-  port        = random_integer.green_port.0.result
+  port        = var.alb_target_group_port
   protocol    = var.alb_target_group_protocol
   target_type = var.ecs_network_mode == "awsvpc" ? "ip" : "instance"
   vpc_id      = var.vpc_id
