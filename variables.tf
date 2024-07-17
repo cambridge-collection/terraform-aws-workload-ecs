@@ -389,3 +389,13 @@ variable "codedeploy_deployment_type" {
   description = "Deployment type for CodeDeploy deployment group. Valid values are BLUE_GREEN or IN_PLACE"
   default     = "BLUE_GREEN" # NOTE for ECS deployment, the deployment type must be BLUE_GREEN
 }
+
+variable "ecs_service_deployment_maximum_percent" {
+  type    = number
+  default = 200
+}
+
+variable "ecs_service_deployment_minimum_healthy_percent" {
+  type    = number
+  default = 0
+}
