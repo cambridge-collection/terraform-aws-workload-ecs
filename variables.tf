@@ -387,5 +387,5 @@ variable "datasync_transfer_mode" {
 variable "codedeploy_deployment_type" {
   type        = string
   description = "Deployment type for CodeDeploy deployment group. Valid values are BLUE_GREEN or IN_PLACE"
-  default     = "IN_PLACE"
+  default     = "BLUE_GREEN" # NOTE for ECS deployment, the deployment type must be BLUE_GREEN
 }
