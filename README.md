@@ -110,9 +110,9 @@ The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. I
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
-| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | 5.44.0 |
-| <a name="provider_external"></a> [external](#provider\_external) | 2.3.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.44.0 |
+| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | ~> 5.44.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | ~> 2.3.3 |
 
 ## Modules
 
@@ -125,7 +125,6 @@ No modules.
 | [aws_acm_certificate.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate.us-east-1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
-| [aws_appautoscaling_target.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
 | [aws_autoscaling_attachment.automatic_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_attachment) | resource |
 | [aws_cloudfront_distribution.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_datasync_location_efs.target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/datasync_location_efs) | resource |
@@ -175,7 +174,7 @@ No modules.
 | [aws_iam_policy_document.task_role_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_route53_zone.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
-| [aws_subnet.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
+| [aws_subnet.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 | [external_external.route53_a_record](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
@@ -224,6 +223,7 @@ No modules.
 | <a name="input_ecs_service_iam_role"></a> [ecs\_service\_iam\_role](#input\_ecs\_service\_iam\_role) | ARN of an IAM role to call load balancer for non-awsvpc network modes. AWSServiceRoleForECS is suitable, but AWS will generate an error if the value is used and the role already exists in the account | `string` | `null` | no |
 | <a name="input_ecs_service_max_capacity"></a> [ecs\_service\_max\_capacity](#input\_ecs\_service\_max\_capacity) | Sets the Maximum Capacity for the ECS Service | `number` | `2` | no |
 | <a name="input_ecs_service_min_capacity"></a> [ecs\_service\_min\_capacity](#input\_ecs\_service\_min\_capacity) | Sets the Minimum Capacity for the ECS Service | `number` | `1` | no |
+| <a name="input_ecs_service_scheduling_strategy"></a> [ecs\_service\_scheduling\_strategy](#input\_ecs\_service\_scheduling\_strategy) | ECS Service scheduling strategy, either REPLICA or DAEMON | `string` | `"REPLICA"` | no |
 | <a name="input_ecs_task_def_container_definitions"></a> [ecs\_task\_def\_container\_definitions](#input\_ecs\_task\_def\_container\_definitions) | Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html | `string` | n/a | yes |
 | <a name="input_ecs_task_def_cpu"></a> [ecs\_task\_def\_cpu](#input\_ecs\_task\_def\_cpu) | Number of cpu units used by the task | `number` | `null` | no |
 | <a name="input_ecs_task_def_memory"></a> [ecs\_task\_def\_memory](#input\_ecs\_task\_def\_memory) | Amount (in MiB) of memory used by the task. Note if this is unset, all container definitions must set memory and/or memoryReservation | `number` | `1024` | no |

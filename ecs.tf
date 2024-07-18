@@ -61,13 +61,8 @@ resource "aws_ecs_service" "this" {
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
   iam_role                           = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_iam_role
-  scheduling_strategy                = "REPLICA"
+  scheduling_strategy                = var.ecs_service_scheduling_strategy
   propagate_tags                     = "SERVICE"
-
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "memory"
-  }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
