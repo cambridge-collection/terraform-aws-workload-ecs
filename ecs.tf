@@ -92,11 +92,3 @@ resource "aws_ecs_service" "this" {
     }
   }
 }
-
-resource "aws_appautoscaling_target" "ecs" {
-  max_capacity       = var.ecs_service_max_capacity
-  min_capacity       = var.ecs_service_min_capacity
-  resource_id        = local.ecs_service_resource_id
-  scalable_dimension = "ecs:service:DesiredCount"
-  service_namespace  = "ecs"
-}
