@@ -63,6 +63,14 @@ If `ecr_repositories_exist` is set to true the module will lookup the repositori
 
 An output `ecr_repository_urls` shows the URIs indicated by the input `ecr_repository_names`. These have the format `<aws account id>.dkr.ecr.<aws region>.amazonaws.com/<repository name>`
 
+### ECS Deployments
+
+Setting the input `ecs_service_capacity_provider_name` allows scaling of the ECS service to be managed by an ECS capacity provider. When this input is unset, the `launch_type` property of the ECS service defaults to "EC2".
+
+An ECS capacity provider can be created in Terraform using a `aws_ecs_capacity_provider` resource, and associated with an ECS cluster using a `aws_ecs_cluster_capacity_providers` resource. The `aws_ecs_capacity_provider` must be connected to an Auto Scaling Group, allowing it to manage capacity in the ASG. When associated with the ECS service using the `ecs_service_capacity_provider_name` input, the capacity provider responds to deployments in the ECS service. When a service is deployed the capacity provider will provision new EC2 instances to meet the estimated requirements of the deployment. To allow this, the Auto Scaling Group must have a maximum capacity size slightly greater than the desired capacity, allowing the desired capacity to increase to accept the new deployment. If the deployment is successful, connections will be drained from the old tasks and unused EC2 instances terminated as the desired capacity is reduced. The deployment lifecycle will be completely managed by a combination of the capacity provider, autoscaling group and ECS service.
+
+See the article https://aws.amazon.com/blogs/containers/deep-dive-on-amazon-ecs-cluster-auto-scaling/ for further details of ECS Cluster Auto Scaling using capacity providers
+
 ## EFS Persistence
 
 The module can optionally create an EFS file system, mount targets and access point, as well as a dedicated Security Group for the EFS mount targets. The input `use_efs_persistence` should be set to `true` if this is desired. An EFS mount target is created for each subnet in the input `vpc_subnet_ids`, allowing EFS to be accessed from inside the subnets specified. Note that the list input `vpc_subnet_ids` must have a non-zero length if `use_efs_persistence` is true, as ECS services deployed in a VPC require the mount targets to exist in each subnet used: the mount targets allow the DNS address of the EFS file system to be resolved.
