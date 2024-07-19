@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.0.1...v2.1.0) (2024-07-19)
+
+
+### Features
+
+* **ecs:** Add network_configuration block to aws_ecs_service.this ([98b2076](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/98b20769496750b4e61b8f0da4e9c013bf57fb6f))
+
+
+### Bug Fixes
+
+* **asg:** Add count to aws_autoscaling_attachment resource based on ecs_network_mode input ([ef765e2](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/ef765e2df50c53422210ea4c658379b78217ca2e))
+* **ecs:** Add condition to container_port argument of service_registries in aws_ecs_service.this ([56cf781](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/56cf7816d300060eab9ebfc49e4e90050b79dac5))
+* **lb:** Fix target type for aws_lb_target_group when network mode is awsvpc ([d114437](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/d114437658a59a790945b9be0f926d71ccc53939))
+
 ## [2.0.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.0.0...v2.0.1) (2024-07-15)
 
 
