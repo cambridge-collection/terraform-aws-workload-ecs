@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.1.1...v2.2.0) (2024-07-23)
+
+
+### Features
+
+* **appautoscaling:** Remove aws_appautoscaling_policy.ecs ([49cac2d](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/49cac2db2c87a1471f45f282019f7bf3b857be92))
+* **ecs:** Add capacity_provider_strategy block to aws_ecs_service ([c215d16](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c215d16abdd4eb95e7fe7a11bf2d9d84861f82ff))
+* **ecs:** Add input ecs_service_scheduling_strategy ([c7cdddb](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c7cdddb75eef00c0cf79677de453faa7c3a481f5))
+
 ## [2.1.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.1.0...v2.1.1) (2024-07-23)
 
 
