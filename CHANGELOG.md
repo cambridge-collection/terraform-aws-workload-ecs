@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.1.0...v2.1.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* **ecs:** Set deployment properties of ECS service using inputs ([81edf9c](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/81edf9cc982e3acc09a725e2e9f89468c3e703aa))
+
 ## [2.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.0.1...v2.1.0) (2024-07-19)
 
 
