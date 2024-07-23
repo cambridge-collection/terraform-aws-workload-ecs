@@ -61,13 +61,8 @@ resource "aws_ecs_service" "this" {
   deployment_maximum_percent         = var.ecs_service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.ecs_service_deployment_minimum_healthy_percent
   iam_role                           = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_iam_role
-  scheduling_strategy                = "REPLICA"
+  scheduling_strategy                = var.ecs_service_scheduling_strategy
   propagate_tags                     = "SERVICE"
-
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "memory"
-  }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
@@ -91,12 +86,13 @@ resource "aws_ecs_service" "this" {
       security_groups = [var.asg_security_group_id]
     }
   }
-}
 
-resource "aws_appautoscaling_target" "ecs" {
-  max_capacity       = var.ecs_service_max_capacity
-  min_capacity       = var.ecs_service_min_capacity
-  resource_id        = local.ecs_service_resource_id
-  scalable_dimension = "ecs:service:DesiredCount"
-  service_namespace  = "ecs"
+  dynamic "capacity_provider_strategy" {
+    for_each = var.ecs_service_capacity_provider_name != null ? [1] : []
+    content {
+      capacity_provider = var.ecs_service_capacity_provider_name
+      base              = 1
+      weight            = 100
+    }
+  }
 }

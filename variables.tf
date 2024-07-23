@@ -132,6 +132,18 @@ variable "ecs_service_iam_role" {
   default     = null
 }
 
+variable "ecs_service_scheduling_strategy" {
+  type        = string
+  description = "ECS Service scheduling strategy, either REPLICA or DAEMON"
+  default     = "REPLICA"
+}
+
+variable "ecs_service_capacity_provider_name" {
+  type        = string
+  description = "Name of an ECS Capacity Provider"
+  default     = null
+}
+
 variable "ecs_task_def_container_definitions" {
   type        = string
   description = "Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html"
