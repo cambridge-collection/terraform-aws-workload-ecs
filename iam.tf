@@ -57,6 +57,19 @@ data "aws_iam_policy_document" "task_execution_role_permissions" {
       resources = local.s3_task_execution_bucket_arns_iam
     }
   }
+
+  dynamic "statement" {
+    for_each = length(var.ssm_task_execution_parameter_arns) > 0 ? [1] : []
+    content {
+      actions = [
+        "ssm:DescribeParameters",
+        "ssm:GetParameters",
+        "ssm:GetParameter",
+        "ssm:GetParameterHistory"
+      ]
+      resources = var.ssm_task_execution_parameter_arns
+    }
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "task_execution_policy_attachment" {
