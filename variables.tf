@@ -401,3 +401,9 @@ variable "datasync_transfer_mode" {
   description = "The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location"
   default     = "CHANGED"
 }
+
+variable "ssm_task_execution_parameter_arns" {
+  type        = list(string)
+  description = "Names of SSM parameters for adding to the task execution IAM role permissions"
+  default     = []
+}
