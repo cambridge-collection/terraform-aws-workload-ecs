@@ -19,7 +19,7 @@ resource "aws_cloudwatch_event_target" "cloud_watch" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs_stopped_tasks" {
-  name = "/ecs/ECSStoppedTasksEvent"
+  name = "/aws/events/ECSStoppedTasksEvent"
 }
 
 resource "aws_cloudwatch_log_resource_policy" "ecs_stopped_tasks" {
