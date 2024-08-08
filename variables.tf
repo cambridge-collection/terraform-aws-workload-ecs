@@ -401,3 +401,9 @@ variable "datasync_transfer_mode" {
   description = "The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location"
   default     = "CHANGED"
 }
+
+variable "eventbridge_monitor_stopped_tasks" {
+  type        = bool
+  description = "Whether to capture details of stopped tasks in AWS EventBridge"
+  default     = true
+}
