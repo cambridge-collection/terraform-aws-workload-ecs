@@ -29,7 +29,7 @@ resource "aws_cloudwatch_log_resource_policy" "ecs_stopped_tasks" {
 
 data "aws_iam_policy_document" "create_log_events" {
   statement {
-    sid    = "LogEventsPolicy"
+    sid    = "LogEventsCreateLogStream"
     effect = "Allow"
     principals {
       type = "Service"
@@ -40,9 +40,24 @@ data "aws_iam_policy_document" "create_log_events" {
     }
     actions = [
       "logs:CreateLogStream",
-      "logs:PutLogEvents"
     ]
-    resources = [aws_cloudwatch_log_group.ecs_stopped_tasks.arn]
+    resources = ["${aws_cloudwatch_log_group.ecs_stopped_tasks.arn}:*"]
+  }
+
+  statement {
+    sid    = "LogEventsPutLogEvents"
+    effect = "Allow"
+    principals {
+      type = "Service"
+      identifiers = [
+        "delivery.logs.amazonaws.com",
+        "events.amazonaws.com"
+      ]
+    }
+    actions = [
+      "logs:PutLogEvents",
+    ]
+    resources = ["${aws_cloudwatch_log_group.ecs_stopped_tasks.arn}:*:*"]
     condition {
       test     = "ArnEquals"
       values   = [aws_cloudwatch_event_rule.ecs_stopped_tasks.arn]
