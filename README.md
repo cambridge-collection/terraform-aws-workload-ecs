@@ -182,6 +182,7 @@ No modules.
 | [aws_iam_policy_document.task_role_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_route53_zone.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+| [aws_s3_bucket.datasync](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
 | [aws_subnet.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 | [external_external.route53_a_record](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
@@ -216,8 +217,9 @@ No modules.
 | <a name="input_datasync_bytes_per_second"></a> [datasync\_bytes\_per\_second](#input\_datasync\_bytes\_per\_second) | Limits the bandwidth used by a DataSync task | `number` | `-1` | no |
 | <a name="input_datasync_overwrite_mode"></a> [datasync\_overwrite\_mode](#input\_datasync\_overwrite\_mode) | Specifies whether DataSync should modify or preserve data at the destination location | `string` | `"ALWAYS"` | no |
 | <a name="input_datasync_preserve_deleted_files"></a> [datasync\_preserve\_deleted\_files](#input\_datasync\_preserve\_deleted\_files) | Specifies whether files in the destination location that don't exist in the source should be preserved | `string` | `"PRESERVE"` | no |
+| <a name="input_datasync_s3_bucket_name"></a> [datasync\_s3\_bucket\_name](#input\_datasync\_s3\_bucket\_name) | Name of an S3 bucket to use as DataSync source | `string` | `""` | no |
 | <a name="input_datasync_s3_objects_to_efs"></a> [datasync\_s3\_objects\_to\_efs](#input\_datasync\_s3\_objects\_to\_efs) | Whether to use DataSync to replicate S3 objects to EFS file system | `bool` | `false` | no |
-| <a name="input_datasync_s3_subdirectory"></a> [datasync\_s3\_subdirectory](#input\_datasync\_s3\_subdirectory) | Allows a custom S3 subdirectory for DataSync source to be specified | `string` | `""` | no |
+| <a name="input_datasync_s3_subdirectory"></a> [datasync\_s3\_subdirectory](#input\_datasync\_s3\_subdirectory) | Allows a custom S3 subdirectory for DataSync source to be specified | `string` | `"/"` | no |
 | <a name="input_datasync_transfer_mode"></a> [datasync\_transfer\_mode](#input\_datasync\_transfer\_mode) | The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location | `string` | `"CHANGED"` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain Name to be used for the ACM certificate and Route 53 record | `string` | n/a | yes |
 | <a name="input_ecr_repositories_exist"></a> [ecr\_repositories\_exist](#input\_ecr\_repositories\_exist) | Whether the ECR repositories in ecr\_repository\_names already exist | `bool` | `false` | no |

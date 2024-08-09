@@ -1,13 +1,19 @@
 locals {
   use_datasync    = var.use_efs_persistence && var.datasync_s3_objects_to_efs
-  s3_subdirectory = format("/%s/", length(var.datasync_s3_subdirectory) > 0 ? var.datasync_s3_subdirectory : var.name_prefix)
+  datasync_s3_bucket_arn = length(var.datasync_s3_bucket_name) > 0 ? data.aws_s3_bucket.datasync.0.arn : local.s3_task_execution_bucket_arn
+}
+
+data "aws_s3_bucket" "datasync" {
+  count = length(var.datasync_s3_bucket_name) > 0 ? 1 : 0
+
+  bucket = var.datasync_s3_bucket_name
 }
 
 resource "aws_datasync_location_s3" "source" {
   count = local.use_datasync ? 1 : 0
 
-  s3_bucket_arn = local.s3_task_execution_bucket_arn
-  subdirectory  = local.s3_subdirectory
+  s3_bucket_arn = local.datasync_s3_bucket_arn
+  subdirectory  = var.datasync_s3_subdirectory
 
   s3_config {
     bucket_access_role_arn = aws_iam_role.datasync.0.arn
