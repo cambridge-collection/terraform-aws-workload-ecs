@@ -165,7 +165,7 @@ data "aws_iam_policy_document" "datasync_permissions" {
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads"
     ]
-    resources = [local.s3_task_execution_bucket_arn]
+    resources = [local.datasync_s3_bucket_arn]
   }
   statement {
     actions = [
@@ -176,7 +176,7 @@ data "aws_iam_policy_document" "datasync_permissions" {
       "s3:GetObjectVersionTagging",
       "s3:ListMultipartUploadParts"
     ]
-    resources = ["${local.s3_task_execution_bucket_arn}/*"]
+    resources = ["${local.datasync_s3_bucket_arn}/*"]
   }
 }
 
