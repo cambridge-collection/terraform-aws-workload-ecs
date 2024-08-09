@@ -393,6 +393,12 @@ variable "datasync_s3_objects_to_efs" {
 variable "datasync_s3_subdirectory" {
   type        = string
   description = "Allows a custom S3 subdirectory for DataSync source to be specified"
+  default     = "/"
+}
+
+variable "datasync_s3_source_bucket_name" {
+  type        = string
+  description = "Name of an S3 bucket to use as DataSync source"
   default     = ""
 }
 
