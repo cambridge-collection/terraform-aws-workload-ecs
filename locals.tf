@@ -8,4 +8,6 @@ locals {
   s3_task_execution_bucket_arns_iam        = distinct(concat(local.s3_task_execution_bucket_arns, [for bucket in local.s3_task_execution_bucket_arns : format("%s/*", bucket)]))
   s3_task_role_bucket_arns                 = [for bucket in var.s3_task_buckets : format("arn:aws:s3:::%s", bucket)]
   s3_task_role_bucket_arns_iam             = concat(local.s3_task_role_bucket_arns, [for arn in local.s3_task_role_bucket_arns : format("%s/*", arn)])
+  ecs_task_definition_mount_efs            = var.use_efs_persistence || var.efs_file_system_id != null ? true : false
+  efs_create_file_system                   = var.use_efs_persistence && var.efs_file_system_id == null ? true : false
 }

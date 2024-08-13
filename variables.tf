@@ -342,6 +342,12 @@ variable "acm_certificate_validation_timeout" {
   default     = "10m"
 }
 
+variable "efs_file_system_id" {
+  type        = string
+  description = "ID of an existing EFS File System"
+  default     = null
+}
+
 variable "efs_root_directory_path" {
   type        = string
   description = "Root directory for EFS access point"
