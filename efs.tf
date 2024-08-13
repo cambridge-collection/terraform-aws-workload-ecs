@@ -1,6 +1,6 @@
 # NOTE EFS File System must be multi-AZ as we do not know in advance in which AZ the task will be placed
 resource "aws_efs_file_system" "this" {
-  count = var.use_efs_persistence ? 1 : 0
+  count = local.efs_create_file_system ? 1 : 0
 
   encrypted = true
 
@@ -25,7 +25,7 @@ resource "aws_efs_file_system" "this" {
 }
 
 resource "aws_efs_mount_target" "this" {
-  count = var.use_efs_persistence ? length(var.vpc_subnet_ids) : 0
+  count = local.efs_create_file_system ? length(var.vpc_subnet_ids) : 0
 
   file_system_id  = aws_efs_file_system.this.0.id
   subnet_id       = data.aws_subnet.ecs[count.index].id
@@ -40,7 +40,7 @@ resource "aws_efs_mount_target" "this" {
 }
 
 resource "aws_efs_access_point" "this" {
-  count = var.use_efs_persistence ? 1 : 0
+  count = local.efs_create_file_system ? 1 : 0
 
   file_system_id = aws_efs_file_system.this.0.id
 
