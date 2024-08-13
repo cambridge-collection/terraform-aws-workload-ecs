@@ -21,6 +21,12 @@ data "aws_iam_policy_document" "ecs_assume_role" {
   }
 }
 
+data "aws_efs_file_system" "other" {
+  count = var.efs_file_system_id != null ? 1 : 0
+
+  file_system_id = var.efs_file_system_id
+}
+
 resource "aws_iam_role" "task_execution_role" {
   path                 = "/"
   description          = "Executes ECS Tasks for ${local.iam_role_prefix}"
@@ -91,13 +97,13 @@ data "aws_iam_policy_document" "task_role_permissions" {
   }
   # NOTE see https://docs.aws.amazon.com/efs/latest/ug/security_iam_resource-based-policy-examples.html
   dynamic "statement" {
-    for_each = var.use_efs_persistence ? [1] : []
+    for_each = local.ecs_task_definition_mount_efs ? [1] : []
     content {
       actions = [
         "elasticfilesystem:ClientWrite",
         "elasticfilesystem:ClientMount"
       ]
-      resources = [aws_efs_file_system.this.0.arn]
+      resources = [try(aws_efs_file_system.this.0.id, data.aws_efs_file_system.other.0.arn)]
       condition {
         test     = "Bool"
         variable = "elasticfilesystem:AccessedViaMountTarget"
