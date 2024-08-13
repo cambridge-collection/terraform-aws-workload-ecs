@@ -1,5 +1,5 @@
 locals {
-  use_datasync = var.use_efs_persistence && var.datasync_s3_objects_to_efs
+  use_datasync = local.ecs_task_definition_mount_efs && var.datasync_s3_objects_to_efs
 }
 
 data "aws_s3_bucket" "datasync" {
