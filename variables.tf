@@ -25,9 +25,9 @@ variable "allow_private_access" {
   default     = false
 }
 
-variable "use_efs_persistence" {
+variable "efs_create_file_system" {
   type        = bool
-  description = "Whether to use EFS to persist data"
+  description = "Whether to create an EFS File System to persist data"
   default     = false
 }
 
@@ -327,6 +327,12 @@ variable "acm_certificate_validation_timeout" {
 variable "efs_file_system_id" {
   type        = string
   description = "ID of an existing EFS File System"
+  default     = null
+}
+
+variable "efs_access_point_id" {
+  type        = string
+  description = "ID of an existing EFS Access Point"
   default     = null
 }
 
