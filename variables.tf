@@ -330,6 +330,12 @@ variable "efs_file_system_id" {
   default     = null
 }
 
+variable "efs_use_existing_filesystem" {
+  type        = bool
+  description = "Whether to use an existing EFS file system"
+  default     = false
+}
+
 variable "efs_access_point_id" {
   type        = string
   description = "ID of an existing EFS Access Point"

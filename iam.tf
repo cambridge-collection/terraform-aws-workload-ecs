@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "ecs_assume_role" {
 }
 
 data "aws_efs_file_system" "other" {
-  count = var.efs_file_system_id != null ? 1 : 0
+  count = var.efs_use_existing_filesystem ? 1 : 0
 
   file_system_id = var.efs_file_system_id
 }
@@ -103,7 +103,7 @@ data "aws_iam_policy_document" "task_role_permissions" {
         "elasticfilesystem:ClientWrite",
         "elasticfilesystem:ClientMount"
       ]
-      resources = [try(aws_efs_file_system.this.0.id, data.aws_efs_file_system.other.0.arn)]
+      resources = [try(aws_efs_file_system.this.0.arn, data.aws_efs_file_system.other.0.arn)]
       condition {
         test     = "Bool"
         variable = "elasticfilesystem:AccessedViaMountTarget"
