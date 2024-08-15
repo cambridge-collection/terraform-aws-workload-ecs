@@ -366,7 +366,7 @@ variable "efs_access_point_id" {
   default     = null
 }
 
-variable "efs_root_directory_path" {
+variable "efs_access_point_root_directory_path" {
   type        = string
   description = "Root directory for EFS access point"
   default     = "/"
@@ -378,25 +378,25 @@ variable "efs_use_iam_task_role" {
   default     = true
 }
 
-variable "efs_root_directory_permissions" {
+variable "efs_access_point_root_directory_permissions" {
   type        = number
   description = "POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits"
   default     = 777
 }
 
-variable "efs_posix_user_gid" {
+variable "efs_access_point_posix_user_gid" {
   type        = number
   description = "POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux"
   default     = 0
 }
 
-variable "efs_posix_user_uid" {
+variable "efs_access_point_posix_user_uid" {
   type        = number
   description = "POSIX user ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux"
   default     = 0
 }
 
-variable "efs_posix_user_secondary_gids" {
+variable "efs_access_point_posix_user_secondary_gids" {
   type        = list(number)
   description = "Secondary POSIX group IDs used for all file system operations using the EFS access point"
   default     = []

@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "this" {
 
         content {
           file_system_id     = try(aws_efs_file_system.this.0.id, var.efs_file_system_id)
-          root_directory     = var.efs_root_directory_path # NOTE this is ignored if authorization_config is used
+          root_directory     = var.efs_access_point_root_directory_path # NOTE this is ignored if authorization_config is used
           transit_encryption = "ENABLED"
 
           dynamic "authorization_config" {
