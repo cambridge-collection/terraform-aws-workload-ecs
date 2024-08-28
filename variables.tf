@@ -407,3 +407,9 @@ variable "datasync_transfer_mode" {
   description = "The default states DataSync copies only data or metadata that is new or different content from the source location to the destination location"
   default     = "CHANGED"
 }
+
+variable "datasync_s3_to_efs_pattern" {
+  type        = string
+  description = "Pattern to filter DataSync transfer task from S3 to EFS"
+  default     = null
+}

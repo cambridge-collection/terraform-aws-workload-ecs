@@ -1,5 +1,5 @@
 locals {
-  use_datasync    = var.use_efs_persistence && var.datasync_s3_objects_to_efs
+  use_datasync           = var.use_efs_persistence && var.datasync_s3_objects_to_efs
   datasync_s3_bucket_arn = length(var.datasync_s3_bucket_name) > 0 ? data.aws_s3_bucket.datasync.0.arn : local.s3_task_execution_bucket_arn
 }
 
@@ -46,6 +46,15 @@ resource "aws_datasync_task" "s3_to_efs" {
     preserve_deleted_files = var.datasync_preserve_deleted_files
     overwrite_mode         = var.datasync_overwrite_mode
     transfer_mode          = var.datasync_transfer_mode
+  }
+
+  dynamic "includes" {
+    for_each = var.datasync_s3_to_efs_pattern != null ? [1] : []
+
+    content {
+      filter_type = "SIMPLE_PATTERN"
+      value       = var.datasync_s3_to_efs_pattern
+    }
   }
 
   depends_on = [aws_s3_object.task_execution] # NOTE this resource should not be created until S3 objects in source have been created
