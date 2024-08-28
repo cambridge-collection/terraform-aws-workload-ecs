@@ -168,6 +168,12 @@ variable "ecs_task_def_volumes" {
   default     = []
 }
 
+variable "ecs_task_def_persistent_volumes" {
+  type        = list(string)
+  description = "List of persistent volume names to attach to the ECS Task Definition"
+  default     = []
+}
+
 variable "ecs_network_mode" {
   type        = string
   description = "Networking mode specified in the ECS Task Definition. One of host, bridge, awsvpc"

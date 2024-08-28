@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "this" {
       name = join("-", [var.name_prefix, volume.key])
 
       dynamic "efs_volume_configuration" {
-        for_each = var.use_efs_persistence ? [1] : []
+        for_each = var.use_efs_persistence && contains(setintersection(var.ecs_task_def_volumes, var.ecs_task_def_persistent_volumes), volume.key) ? [1] : []
 
         content {
           file_system_id     = aws_efs_file_system.this.0.id
