@@ -21,7 +21,7 @@ resource "aws_datasync_location_s3" "source" {
 }
 
 resource "aws_datasync_location_efs" "target" {
-  for_each = { for subnet in data.aws_subnet.ecs : subnet.id => subnet }
+  for_each = local.use_datasync ? { for subnet in data.aws_subnet.ecs : subnet.id => subnet } : {}
 
   efs_file_system_arn = aws_efs_file_system.this.0.arn
   subdirectory        = "/" # NOTE replicated data would normally go in root of file system
@@ -35,7 +35,7 @@ resource "aws_datasync_location_efs" "target" {
 }
 
 resource "aws_datasync_task" "s3_to_efs" {
-  for_each = { for subnet in data.aws_subnet.ecs : subnet.id => subnet }
+  for_each = local.use_datasync ? { for subnet in data.aws_subnet.ecs : subnet.id => subnet } : {}
 
   name                     = "${var.name_prefix}-s3-to-efs-${each.value.availability_zone}"
   source_location_arn      = aws_datasync_location_s3.source.0.arn
