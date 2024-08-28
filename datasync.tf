@@ -48,5 +48,14 @@ resource "aws_datasync_task" "s3_to_efs" {
     transfer_mode          = var.datasync_transfer_mode
   }
 
+  dynamic "includes" {
+    for_each = var.datasync_s3_to_efs_pattern != null ? [1] : []
+
+    content {
+      filter_type = "SIMPLE_PATTERN"
+      value       = var.datasync_s3_to_efs_pattern
+    }
+  }
+
   depends_on = [aws_s3_object.task_execution] # NOTE this resource should not be created until S3 objects in source have been created
 }

@@ -431,3 +431,9 @@ variable "ssm_task_execution_parameter_arns" {
   description = "Names of SSM parameters for adding to the task execution IAM role permissions"
   default     = []
 }
+
+variable "datasync_s3_to_efs_pattern" {
+  type        = string
+  description = "Pattern to filter DataSync transfer task from S3 to EFS"
+  default     = null
+}
