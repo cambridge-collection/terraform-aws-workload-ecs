@@ -381,7 +381,7 @@ variable "datasync_s3_subdirectory" {
 variable "datasync_s3_bucket_name" {
   type        = string
   description = "Name of an S3 bucket to use as DataSync source"
-  default     = ""
+  default     = null
 }
 
 variable "datasync_bytes_per_second" {
