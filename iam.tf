@@ -39,22 +39,41 @@ resource "aws_iam_policy" "task_execution_policy" {
 
 data "aws_iam_policy_document" "task_execution_role_permissions" {
   statement {
-    actions   = ["ecr:*"]
-    resources = local.ecr_repository_arns
-  }
-  statement {
     actions   = ["ecr:GetAuthorizationToken"]
     resources = ["*"]
   }
+
   statement {
     actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
     resources = ["${var.cloudwatch_log_group_arn}:log-stream:*"]
   }
+
+  dynamic "statement" {
+    for_each = length(local.ecr_repository_arns) > 0 ? [1] : []
+    content {
+      actions   = ["ecr:*"]
+      resources = local.ecr_repository_arns
+    }
+  }
+
   dynamic "statement" {
     for_each = length(local.s3_task_execution_bucket_arns_iam) > 0 ? [1] : []
     content {
       actions   = ["s3:*"]
       resources = local.s3_task_execution_bucket_arns_iam
+    }
+  }
+
+  dynamic "statement" {
+    for_each = length(var.ssm_task_execution_parameter_arns) > 0 ? [1] : []
+    content {
+      actions = [
+        "ssm:DescribeParameters",
+        "ssm:GetParameters",
+        "ssm:GetParameter",
+        "ssm:GetParameterHistory"
+      ]
+      resources = var.ssm_task_execution_parameter_arns
     }
   }
 }
@@ -146,7 +165,7 @@ data "aws_iam_policy_document" "datasync_permissions" {
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads"
     ]
-    resources = [local.datasync_s3_bucket_arn]
+    resources = [data.aws_s3_bucket.datasync.0.arn]
   }
   statement {
     actions = [
@@ -157,7 +176,7 @@ data "aws_iam_policy_document" "datasync_permissions" {
       "s3:GetObjectVersionTagging",
       "s3:ListMultipartUploadParts"
     ]
-    resources = ["${local.datasync_s3_bucket_arn}/*"]
+    resources = ["${data.aws_s3_bucket.datasync.0.arn}/*"]
   }
 }
 

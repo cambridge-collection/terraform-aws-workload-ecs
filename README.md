@@ -257,6 +257,7 @@ No modules.
 | <a name="input_s3_task_execution_additional_buckets"></a> [s3\_task\_execution\_additional\_buckets](#input\_s3\_task\_execution\_additional\_buckets) | Names of additional buckets for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
 | <a name="input_s3_task_execution_bucket"></a> [s3\_task\_execution\_bucket](#input\_s3\_task\_execution\_bucket) | Name of the bucket for storage of static data for services | `string` | `null` | no |
 | <a name="input_s3_task_execution_bucket_objects"></a> [s3\_task\_execution\_bucket\_objects](#input\_s3\_task\_execution\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task execution bucket | `map(string)` | `{}` | no |
+| <a name="input_ssm_task_execution_parameter_arns"></a> [ssm\_task\_execution\_parameter\_arns](#input\_ssm\_task\_execution\_parameter\_arns) | Names of SSM parameters for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |
 | <a name="input_update_ingress_security_group"></a> [update\_ingress\_security\_group](#input\_update\_ingress\_security\_group) | Whether to update external security group by creating an egress rule to this service | `bool` | `false` | no |
 | <a name="input_use_efs_persistence"></a> [use\_efs\_persistence](#input\_use\_efs\_persistence) | Whether to use EFS to persist data | `bool` | `false` | no |
