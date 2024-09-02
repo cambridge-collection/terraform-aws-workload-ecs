@@ -107,6 +107,19 @@ Note that if `datasync_s3_objects_to_efs` is set to `true`, the input `s3_task_e
 
 The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. If omitted this will default to the `name_prefix` path: it is assumed that the `s3_task_execution_bucket` will be shared by several services and the `name_prefix` will by default be used to distinguish them.
 
+
+## ECS Task VPC Networking
+
+When `ecs_network_mode` is set to "awsvpc", AWS assigns the task an private IP address inside the VPC. This allows the task to be assigned its own network configuration. This is configured as a dynamic `network_configuration` block on the `aws_ecs_service.this` resource. Subnets must be specified with the `vpc_subnet_ids` input variable. This input is _not_ required when `ecs_network_mode` is set to "bridge" (the default value). When using the `awsvpc` network mode additional security groups for the task can be specified with the `vpc_security_groups_extra` optional input.
+
+Attempting to use the `network_configuration` block in `aws_ecs_service.this` when `ecs_network_mode` is set to anything other than `awsvpc` lead to an error:
+
+```
+InvalidParameterException: Network Configuration is not valid for the given networkMode of this task definition.
+```
+
+The inputs `vpc_subnet_ids` and `vpc_security_groups_extra` are ignored if the `ecs_network_mode` value is not "awsvpc".
+
 ## Requirements
 
 | Name | Version |
@@ -261,6 +274,7 @@ No modules.
 | <a name="input_update_ingress_security_group"></a> [update\_ingress\_security\_group](#input\_update\_ingress\_security\_group) | Whether to update external security group by creating an egress rule to this service | `bool` | `false` | no |
 | <a name="input_use_efs_persistence"></a> [use\_efs\_persistence](#input\_use\_efs\_persistence) | Whether to use EFS to persist data | `bool` | `false` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC for the deployment | `string` | n/a | yes |
+| <a name="input_vpc_security_groups_extra"></a> [vpc\_security\_groups\_extra](#input\_vpc\_security\_groups\_extra) | Additional VPC Security Groups to add to the service | `list(string)` | `[]` | no |
 | <a name="input_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#input\_vpc\_subnet\_ids) | VPC Subnet IDs to use with EFS Mount Points | `list(string)` | `[]` | no |
 
 ## Outputs

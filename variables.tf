@@ -42,6 +42,12 @@ variable "vpc_subnet_ids" {
   default     = []
 }
 
+variable "vpc_security_groups_extra" {
+  type        = list(string)
+  description = "Additional VPC Security Groups to add to the service"
+  default     = []
+}
+
 variable "cloudmap_associate_vpc_ids" {
   type        = list(string)
   description = "List of VPC IDs to associate with Cloud Map Service Discovery"
