@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.2.0...v2.3.0) (2024-09-04)
+
+
+### Features
+
+* **iam:** Add dynamic block for ecr permission in task execution role ([b638be0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/b638be0b5dbb6f17aaa2049c440341cb41779922))
+* **iam:** Add SSM permission to task execution role ([1159a38](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/1159a38954d5383d993bffd6342c8fdf2f607360))
+
 ## [2.2.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.1.1...v2.2.0) (2024-07-23)
 
 
