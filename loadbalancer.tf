@@ -22,7 +22,14 @@ resource "aws_lb_listener_rule" "this" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name = trimsuffix(substr("${var.name_prefix}-alb-tg", 0, 32), "-")
+  name                 = trimsuffix(substr("${var.name_prefix}-alb-tg", 0, 32), "-")
+  port                 = var.alb_target_group_port
+  protocol             = var.alb_target_group_protocol
+  target_type          = var.ecs_network_mode == "awsvpc" ? "ip" : "instance"
+  vpc_id               = var.vpc_id
+  deregistration_delay = var.alb_target_group_deregistration_delay
+  slow_start           = var.alb_target_group_slow_start
+
   health_check {
     interval            = var.alb_target_group_health_check_interval
     path                = var.alb_target_group_health_check_path
@@ -33,10 +40,6 @@ resource "aws_lb_target_group" "this" {
     healthy_threshold   = var.alb_target_group_health_check_healthy_threshold
     matcher             = var.alb_target_group_health_check_status_code
   }
-  port        = var.alb_target_group_port
-  protocol    = var.alb_target_group_protocol
-  target_type = var.ecs_network_mode == "awsvpc" ? "ip" : "instance"
-  vpc_id      = var.vpc_id
 }
 
 # Automatically register autoscaling group instances with load balancer

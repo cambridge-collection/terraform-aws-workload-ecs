@@ -250,6 +250,18 @@ variable "alb_target_group_protocol" {
   default     = "HTTP"
 }
 
+variable "alb_target_group_deregistration_delay" {
+  type        = number
+  description = "Amount time for ELB to wait before changing the state of a deregistering target from draining to unused"
+  default     = 300
+}
+
+variable "alb_target_group_slow_start" {
+  type        = number
+  description = "Amount time for targets to warm up before the load balancer sends them a full share of requests"
+  default     = 0
+}
+
 variable "alb_target_group_health_check_status_code" {
   type        = string
   description = "HTTP Status Code to use in target group health check"
