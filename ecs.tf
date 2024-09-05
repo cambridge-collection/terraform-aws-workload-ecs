@@ -83,7 +83,7 @@ resource "aws_ecs_service" "this" {
     for_each = var.ecs_network_mode == "awsvpc" ? [1] : []
     content {
       subnets         = data.aws_subnet.ecs.*.id
-      security_groups = [var.asg_security_group_id]
+      security_groups = concat([var.asg_security_group_id], var.vpc_security_groups_extra)
     }
   }
 
