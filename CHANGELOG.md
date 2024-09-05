@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.3.0...v2.4.0) (2024-09-05)
+
+
+### Features
+
+* **alb:** Add deregistration_delay and slow_start to target group ([5e832db](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/5e832dbaa561f52f0b0ecbe77320a589ad38ff3e))
+
 ## [2.3.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.2.0...v2.3.0) (2024-09-04)
 
 
