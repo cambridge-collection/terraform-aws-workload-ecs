@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.4.0...v2.5.0) (2024-09-05)
+
+
+### Features
+
+* **vpc:** Additional VPC Security Groups can be added to the service ([3edec0a](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/3edec0aa942c22c102fad68d6ab5a32ba1602515))
+
 ## [2.4.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.3.0...v2.4.0) (2024-09-05)
 
 
