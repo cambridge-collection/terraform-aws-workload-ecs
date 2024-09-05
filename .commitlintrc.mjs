@@ -3,4 +3,5 @@ export default {
   rules: {
     'subject-case': [0, 'always', []],
   },
+  ignores: [(commit) => commit === '^chore\(release\):(.*)'],
 }
