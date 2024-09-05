@@ -25,9 +25,9 @@ variable "allow_private_access" {
   default     = false
 }
 
-variable "use_efs_persistence" {
+variable "efs_create_file_system" {
   type        = bool
-  description = "Whether to use EFS to persist data"
+  description = "Whether to create an EFS File System to persist data"
   default     = false
 }
 
@@ -342,7 +342,31 @@ variable "acm_certificate_validation_timeout" {
   default     = "10m"
 }
 
-variable "efs_root_directory_path" {
+variable "efs_file_system_id" {
+  type        = string
+  description = "ID of an existing EFS File System"
+  default     = null
+}
+
+variable "efs_security_group_id" {
+  type        = string
+  description = "ID of an existing EFS Security Group to allow access to ASG"
+  default     = null
+}
+
+variable "efs_use_existing_filesystem" {
+  type        = bool
+  description = "Whether to use an existing EFS file system"
+  default     = false
+}
+
+variable "efs_access_point_id" {
+  type        = string
+  description = "ID of an existing EFS Access Point"
+  default     = null
+}
+
+variable "efs_access_point_root_directory_path" {
   type        = string
   description = "Root directory for EFS access point"
   default     = "/"
@@ -354,25 +378,25 @@ variable "efs_use_iam_task_role" {
   default     = true
 }
 
-variable "efs_root_directory_permissions" {
+variable "efs_access_point_root_directory_permissions" {
   type        = number
   description = "POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits"
   default     = 777
 }
 
-variable "efs_posix_user_gid" {
+variable "efs_access_point_posix_user_gid" {
   type        = number
   description = "POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux"
   default     = 0
 }
 
-variable "efs_posix_user_uid" {
+variable "efs_access_point_posix_user_uid" {
   type        = number
   description = "POSIX user ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux"
   default     = 0
 }
 
-variable "efs_posix_user_secondary_gids" {
+variable "efs_access_point_posix_user_secondary_gids" {
   type        = list(number)
   description = "Secondary POSIX group IDs used for all file system operations using the EFS access point"
   default     = []

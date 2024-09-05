@@ -1,5 +1,5 @@
 locals {
-  use_datasync = var.use_efs_persistence && var.datasync_s3_objects_to_efs
+  use_datasync = local.ecs_task_definition_mount_efs && var.datasync_s3_objects_to_efs
 }
 
 data "aws_s3_bucket" "datasync" {
@@ -9,7 +9,7 @@ data "aws_s3_bucket" "datasync" {
 }
 
 resource "aws_datasync_location_s3" "source" {
-  count = local.use_datasync ? 1 : 0
+  count = var.datasync_s3_objects_to_efs ? 1 : 0
 
   s3_bucket_arn = data.aws_s3_bucket.datasync.0.arn
   subdirectory  = var.datasync_s3_subdirectory
@@ -17,6 +17,8 @@ resource "aws_datasync_location_s3" "source" {
   s3_config {
     bucket_access_role_arn = aws_iam_role.datasync.0.arn
   }
+
+  depends_on = [aws_efs_mount_target.this]
 }
 
 resource "aws_datasync_location_efs" "target" {

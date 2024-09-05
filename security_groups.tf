@@ -56,7 +56,7 @@ resource "aws_security_group_rule" "private_access_egress" {
 }
 
 resource "aws_security_group" "efs" {
-  count = var.use_efs_persistence ? 1 : 0
+  count = var.efs_create_file_system ? 1 : 0
 
   name        = "${var.name_prefix}-efs"
   description = "Allows access to EFS mount targets for ${var.name_prefix}"
@@ -68,7 +68,7 @@ resource "aws_security_group" "efs" {
 }
 
 resource "aws_security_group_rule" "efs_ingress_nfs_from_asg" {
-  count = var.use_efs_persistence ? 1 : 0
+  count = var.efs_create_file_system ? 1 : 0
 
   type                     = "ingress"
   protocol                 = "tcp"
@@ -80,7 +80,7 @@ resource "aws_security_group_rule" "efs_ingress_nfs_from_asg" {
 }
 
 resource "aws_security_group_rule" "efs_ingress_nfs_from_vpc" {
-  count = var.use_efs_persistence && var.datasync_s3_objects_to_efs ? 1 : 0
+  count = var.efs_create_file_system && var.datasync_s3_objects_to_efs ? 1 : 0
 
   type              = "ingress"
   protocol          = "tcp"
@@ -93,7 +93,7 @@ resource "aws_security_group_rule" "efs_ingress_nfs_from_vpc" {
 }
 
 resource "aws_security_group_rule" "efs_egress_nfs_to_vpc" {
-  count = var.use_efs_persistence && var.datasync_s3_objects_to_efs ? 1 : 0
+  count = var.efs_create_file_system && var.datasync_s3_objects_to_efs ? 1 : 0
 
   type              = "egress"
   protocol          = "tcp"
@@ -106,7 +106,7 @@ resource "aws_security_group_rule" "efs_egress_nfs_to_vpc" {
 }
 
 resource "aws_security_group_rule" "asg_egress_nfs_to_efs" {
-  count = var.use_efs_persistence ? 1 : 0
+  count = var.efs_create_file_system ? 1 : 0
 
   type                     = "egress"
   protocol                 = "tcp"
@@ -115,4 +115,23 @@ resource "aws_security_group_rule" "asg_egress_nfs_to_efs" {
   source_security_group_id = aws_security_group.efs.0.id
   from_port                = var.efs_nfs_mount_port
   to_port                  = var.efs_nfs_mount_port
+}
+
+resource "aws_security_group_rule" "asg_egress_nfs_to_existing_efs" {
+  count = var.efs_use_existing_filesystem ? 1 : 0
+
+  type                     = "egress"
+  protocol                 = "tcp"
+  description              = "ASG Egress on port ${var.efs_nfs_mount_port} for ${var.name_prefix}"
+  security_group_id        = var.asg_security_group_id
+  source_security_group_id = var.efs_security_group_id
+  from_port                = var.efs_nfs_mount_port
+  to_port                  = var.efs_nfs_mount_port
+
+  lifecycle {
+    precondition {
+      condition     = var.efs_security_group_id != null
+      error_message = "To use an existing filesystem the input efs_security_group_id must be provided."
+    }
+  }
 }

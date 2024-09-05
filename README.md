@@ -107,7 +107,6 @@ Note that if `datasync_s3_objects_to_efs` is set to `true`, the input `s3_task_e
 
 The input `datasync_s3_subdirectory` can be set to sync a specific path in S3. If omitted this will default to the `name_prefix` path: it is assumed that the `s3_task_execution_bucket` will be shared by several services and the `name_prefix` will by default be used to distinguish them.
 
-
 ## ECS Task VPC Networking
 
 When `ecs_network_mode` is set to "awsvpc", AWS assigns the task an private IP address inside the VPC. This allows the task to be assigned its own network configuration. This is configured as a dynamic `network_configuration` block on the `aws_ecs_service.this` resource. Subnets must be specified with the `vpc_subnet_ids` input variable. This input is _not_ required when `ecs_network_mode` is set to "bridge" (the default value). When using the `awsvpc` network mode additional security groups for the task can be specified with the `vpc_security_groups_extra` optional input.
@@ -154,6 +153,7 @@ No modules.
 | [aws_ecr_repository.new](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_ecs_service.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
 | [aws_ecs_task_definition.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
+| [aws_efs_access_point.other](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_access_point) | resource |
 | [aws_efs_access_point.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_access_point) | resource |
 | [aws_efs_file_system.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_file_system) | resource |
 | [aws_efs_mount_target.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_mount_target) | resource |
@@ -177,6 +177,7 @@ No modules.
 | [aws_security_group.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.alb_egress_to_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.asg_egress_nfs_to_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.asg_egress_nfs_to_existing_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.asg_ingress_from_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.asg_ingress_private_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.efs_egress_nfs_to_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -188,6 +189,7 @@ No modules.
 | [aws_cloudfront_cache_policy.managed_caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_cloudfront_origin_request_policy.managed_all_viewer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_origin_request_policy) | data source |
 | [aws_ecr_repository.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecr_repository) | data source |
+| [aws_efs_file_system.other](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/efs_file_system) | data source |
 | [aws_iam_policy_document.datasync_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.datasync_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ecs_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -257,12 +259,17 @@ No modules.
 | <a name="input_ecs_task_def_cpu"></a> [ecs\_task\_def\_cpu](#input\_ecs\_task\_def\_cpu) | Number of cpu units used by the task | `number` | `null` | no |
 | <a name="input_ecs_task_def_memory"></a> [ecs\_task\_def\_memory](#input\_ecs\_task\_def\_memory) | Amount (in MiB) of memory used by the task. Note if this is unset, all container definitions must set memory and/or memoryReservation | `number` | `1024` | no |
 | <a name="input_ecs_task_def_volumes"></a> [ecs\_task\_def\_volumes](#input\_ecs\_task\_def\_volumes) | List of volume names to attach to the ECS Task Definition | `list(string)` | `[]` | no |
+| <a name="input_efs_access_point_id"></a> [efs\_access\_point\_id](#input\_efs\_access\_point\_id) | ID of an existing EFS Access Point | `string` | `null` | no |
+| <a name="input_efs_access_point_posix_user_gid"></a> [efs\_access\_point\_posix\_user\_gid](#input\_efs\_access\_point\_posix\_user\_gid) | POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
+| <a name="input_efs_access_point_posix_user_secondary_gids"></a> [efs\_access\_point\_posix\_user\_secondary\_gids](#input\_efs\_access\_point\_posix\_user\_secondary\_gids) | Secondary POSIX group IDs used for all file system operations using the EFS access point | `list(number)` | `[]` | no |
+| <a name="input_efs_access_point_posix_user_uid"></a> [efs\_access\_point\_posix\_user\_uid](#input\_efs\_access\_point\_posix\_user\_uid) | POSIX user ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
+| <a name="input_efs_access_point_root_directory_path"></a> [efs\_access\_point\_root\_directory\_path](#input\_efs\_access\_point\_root\_directory\_path) | Root directory for EFS access point | `string` | `"/"` | no |
+| <a name="input_efs_access_point_root_directory_permissions"></a> [efs\_access\_point\_root\_directory\_permissions](#input\_efs\_access\_point\_root\_directory\_permissions) | POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits | `number` | `777` | no |
+| <a name="input_efs_create_file_system"></a> [efs\_create\_file\_system](#input\_efs\_create\_file\_system) | Whether to create an EFS File System to persist data | `bool` | `false` | no |
+| <a name="input_efs_file_system_id"></a> [efs\_file\_system\_id](#input\_efs\_file\_system\_id) | ID of an existing EFS File System | `string` | `null` | no |
 | <a name="input_efs_nfs_mount_port"></a> [efs\_nfs\_mount\_port](#input\_efs\_nfs\_mount\_port) | NFS protocol port for EFS mounts | `number` | `2049` | no |
-| <a name="input_efs_posix_user_gid"></a> [efs\_posix\_user\_gid](#input\_efs\_posix\_user\_gid) | POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
-| <a name="input_efs_posix_user_secondary_gids"></a> [efs\_posix\_user\_secondary\_gids](#input\_efs\_posix\_user\_secondary\_gids) | Secondary POSIX group IDs used for all file system operations using the EFS access point | `list(number)` | `[]` | no |
-| <a name="input_efs_posix_user_uid"></a> [efs\_posix\_user\_uid](#input\_efs\_posix\_user\_uid) | POSIX user ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
-| <a name="input_efs_root_directory_path"></a> [efs\_root\_directory\_path](#input\_efs\_root\_directory\_path) | Root directory for EFS access point | `string` | `"/"` | no |
-| <a name="input_efs_root_directory_permissions"></a> [efs\_root\_directory\_permissions](#input\_efs\_root\_directory\_permissions) | POSIX permissions to apply to the EFS root directory, in the format of an octal number representing the mode bits | `number` | `777` | no |
+| <a name="input_efs_security_group_id"></a> [efs\_security\_group\_id](#input\_efs\_security\_group\_id) | ID of an existing EFS Security Group to allow access to ASG | `string` | `null` | no |
+| <a name="input_efs_use_existing_filesystem"></a> [efs\_use\_existing\_filesystem](#input\_efs\_use\_existing\_filesystem) | Whether to use an existing EFS file system | `bool` | `false` | no |
 | <a name="input_efs_use_iam_task_role"></a> [efs\_use\_iam\_task\_role](#input\_efs\_use\_iam\_task\_role) | Whether to use Amazon ECS task IAM role when mounting EFS | `bool` | `true` | no |
 | <a name="input_ingress_security_group_id"></a> [ingress\_security\_group\_id](#input\_ingress\_security\_group\_id) | ID of a security group to grant acess to container instances | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to add to resource names | `string` | n/a | yes |
@@ -275,7 +282,6 @@ No modules.
 | <a name="input_ssm_task_execution_parameter_arns"></a> [ssm\_task\_execution\_parameter\_arns](#input\_ssm\_task\_execution\_parameter\_arns) | Names of SSM parameters for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |
 | <a name="input_update_ingress_security_group"></a> [update\_ingress\_security\_group](#input\_update\_ingress\_security\_group) | Whether to update external security group by creating an egress rule to this service | `bool` | `false` | no |
-| <a name="input_use_efs_persistence"></a> [use\_efs\_persistence](#input\_use\_efs\_persistence) | Whether to use EFS to persist data | `bool` | `false` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC for the deployment | `string` | n/a | yes |
 | <a name="input_vpc_security_groups_extra"></a> [vpc\_security\_groups\_extra](#input\_vpc\_security\_groups\_extra) | Additional VPC Security Groups to add to the service | `list(string)` | `[]` | no |
 | <a name="input_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#input\_vpc\_subnet\_ids) | VPC Subnet IDs to use with EFS Mount Points | `list(string)` | `[]` | no |
