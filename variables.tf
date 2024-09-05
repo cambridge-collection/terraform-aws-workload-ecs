@@ -393,7 +393,13 @@ variable "datasync_s3_objects_to_efs" {
 variable "datasync_s3_subdirectory" {
   type        = string
   description = "Allows a custom S3 subdirectory for DataSync source to be specified"
-  default     = ""
+  default     = "/"
+}
+
+variable "datasync_s3_source_bucket_name" {
+  type        = string
+  description = "Name of an S3 bucket to use as DataSync source"
+  default     = null
 }
 
 variable "datasync_bytes_per_second" {
@@ -424,4 +430,10 @@ variable "ssm_task_execution_parameter_arns" {
   type        = list(string)
   description = "Names of SSM parameters for adding to the task execution IAM role permissions"
   default     = []
+}
+
+variable "datasync_s3_to_efs_pattern" {
+  type        = string
+  description = "Pattern to filter DataSync transfer task from S3 to EFS"
+  default     = null
 }
