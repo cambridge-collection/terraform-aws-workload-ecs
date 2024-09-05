@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.5.1...v3.0.0) (2024-09-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **efs:** Input variable use_efs_persistence replaced with
+efs_create_filesystem
+
+### Features
+
+* **efs:** Add aws_efs_access_point.other ([88d4441](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/88d4441dc51973221f266c7fd7dbab91aa0df619))
+* **efs:** Allow alternate EFS file system to be passed in ([1a8d930](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/1a8d930150fb73c3c191d4ce3b83aa1717af8cdc))
+* **security:** Add security group rule for existing EFS ([ca39975](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/ca399753ceb732a8bf4c905a68b47a5c40452f04))
+
+
+### Bug Fixes
+
+* **datasync:** Amend condition on datasync resources and add depends_on block ([9f9c828](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/9f9c82843b4e96396e5555a1555c56d70b931693))
+* **efs:** Fix invalid count argument error ([22ee979](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/22ee979609e48f612dc059cc91ebee6e12c5f00d))
+* **efs:** Fix invalid index error with EFS mount ([f1e5f60](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/f1e5f6092162acb8903978b0c1378e6f39b2cd75))
+* **iam:** Update condition on EFS statement in ECS task policy ([79cf697](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/79cf69701f37b9e0a49ea7611a5b89ceae34ae62))
+
 ## [2.5.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.5.0...v2.5.1) (2024-09-05)
 
 
