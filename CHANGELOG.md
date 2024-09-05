@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.5.0...v2.5.1) (2024-09-05)
+
+
+### Bug Fixes
+
+* **datasync:** Add dynamic includes block to aws_datasync_task.s3_to_efs ([3f84a8b](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/3f84a8b35a3b5c8395b18659dea11713ffe4407b))
+* **datasync:** Allow alternate bucket source for datasync ([f0eb5db](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/f0eb5dbb63c66714ea25c2a0f91ce3967a2e98d3))
+* **datasync:** Remove datasync_s3_bucket_arn local variable ([07d109b](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/07d109b383d9477034f16502c46be1e558502433))
+* **datasync:** Update data.aws_iam_policy_document.datasync_permissions ([20a3094](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/20a30948dad0a67e2313a5bd3b372329eae2f3e2))
+* **datasync:** Use for_each loop in datasync resources based on data.aws_subnet.ecs ([c22ec99](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c22ec99a178c0531a74f5515b1c2440bc03e59a0))
+
 ## [2.5.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.4.0...v2.5.0) (2024-09-05)
 
 
