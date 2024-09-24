@@ -211,3 +211,10 @@ resource "aws_iam_role_policy_attachment" "datasync" {
   role       = aws_iam_role.datasync.0.name
   policy_arn = aws_iam_policy.datasync.0.arn
 }
+
+resource "aws_iam_role_policy_attachment" "task_additional_policy_attachment" {
+  for_each = var.iam_task_additional_policies
+
+  role       = aws_iam_role.task_role.name
+  policy_arn = each.value
+}

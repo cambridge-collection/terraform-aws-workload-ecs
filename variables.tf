@@ -461,3 +461,9 @@ variable "datasync_s3_to_efs_pattern" {
   description = "Pattern to filter DataSync transfer task from S3 to EFS"
   default     = null
 }
+
+variable "iam_task_additional_policies" {
+  type        = map(string)
+  description = "Map of IAM Policies to add to the ECS task permissions. Values should be Policy ARNs; Keys are descriptive strings"
+  default     = {}
+}
