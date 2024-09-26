@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.0.0...v3.1.0) (2024-09-26)
+
+
+### Features
+
+* **iam:** Allow additional IAM policies to be attached to ECS tasks ([7757d29](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/7757d29e42ad7842cebbecc72f74beec50ea6ca2))
+
 ## [3.0.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v2.5.1...v3.0.0) (2024-09-05)
 
 
