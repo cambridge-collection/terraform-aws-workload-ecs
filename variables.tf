@@ -336,6 +336,33 @@ variable "update_ingress_security_group" {
   default     = false
 }
 
+variable "acm_create_certificate" {
+  type        = bool
+  description = "Whether to create a certificate in Amazon Certificate Manager"
+  default     = true
+}
+
+variable "acm_certificate_private_key" {
+  type        = string
+  description = "Existing certificate's PEM-formatted private key"
+  default     = null
+  sensitive   = true
+}
+
+variable "acm_certificate_certificate_body" {
+  type        = string
+  description = "Existing certificate's PEM-formatted public key"
+  default     = null
+  sensitive   = true
+}
+
+variable "acm_certificate_certificate_chain" {
+  type        = string
+  description = "Existing certificate's PEM-formatted chain"
+  default     = null
+  sensitive   = true
+}
+
 variable "acm_certificate_validation_timeout" {
   type        = string
   description = "Length of time to wait for the public ACM certificate to validate"

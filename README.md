@@ -208,7 +208,11 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | AWS Account ID used to interpolate ECS Service IAM role ARN | `string` | n/a | yes |
+| <a name="input_acm_certificate_certificate_body"></a> [acm\_certificate\_certificate\_body](#input\_acm\_certificate\_certificate\_body) | Existing certificate's PEM-formatted public key | `string` | `null` | no |
+| <a name="input_acm_certificate_certificate_chain"></a> [acm\_certificate\_certificate\_chain](#input\_acm\_certificate\_certificate\_chain) | Existing certificate's PEM-formatted chain | `string` | `null` | no |
+| <a name="input_acm_certificate_private_key"></a> [acm\_certificate\_private\_key](#input\_acm\_certificate\_private\_key) | Existing certificate's PEM-formatted private key | `string` | `null` | no |
 | <a name="input_acm_certificate_validation_timeout"></a> [acm\_certificate\_validation\_timeout](#input\_acm\_certificate\_validation\_timeout) | Length of time to wait for the public ACM certificate to validate | `string` | `"10m"` | no |
+| <a name="input_acm_create_certificate"></a> [acm\_create\_certificate](#input\_acm\_create\_certificate) | Whether to create a certificate in Amazon Certificate Manager | `bool` | `true` | no |
 | <a name="input_alb_arn"></a> [alb\_arn](#input\_alb\_arn) | ARN of the ALB used by the listener | `string` | n/a | yes |
 | <a name="input_alb_dns_name"></a> [alb\_dns\_name](#input\_alb\_dns\_name) | DNS name for the ALB used by the Cloudfront distribution | `string` | n/a | yes |
 | <a name="input_alb_listener_arn"></a> [alb\_listener\_arn](#input\_alb\_listener\_arn) | The Application Load Balancer Listener ARN to add the forward rule and certificate to | `string` | n/a | yes |
