@@ -3,6 +3,8 @@ locals {
 }
 
 resource "aws_acm_certificate" "this" {
+  count = var.acm_create_certificate ? 1 : 0
+
   domain_name       = local.domain_name
   validation_method = "DNS"
   subject_alternative_names = [
@@ -20,7 +22,9 @@ resource "aws_acm_certificate" "this" {
 }
 
 resource "aws_acm_certificate_validation" "this" {
-  certificate_arn         = aws_acm_certificate.this.arn
+  count = var.acm_create_certificate ? 1 : 0
+
+  certificate_arn         = aws_acm_certificate.this.0.arn
   validation_record_fqdns = [for record in aws_route53_record.acm_validation_cname : record.fqdn]
 
   timeouts {
@@ -29,6 +33,8 @@ resource "aws_acm_certificate_validation" "this" {
 }
 
 resource "aws_acm_certificate" "us-east-1" {
+  count = var.acm_create_certificate ? 1 : 0
+
   provider          = aws.us-east-1
   domain_name       = local.domain_name
   validation_method = "DNS"

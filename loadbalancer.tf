@@ -1,8 +1,6 @@
 resource "aws_lb_listener_certificate" "this" {
   listener_arn    = var.alb_listener_arn
-  certificate_arn = aws_acm_certificate.this.arn
-
-  depends_on = [aws_acm_certificate_validation.this]
+  certificate_arn = var.acm_create_certificate ? aws_acm_certificate_validation.this.0.certificate_arn : var.acm_certificate_arn
 }
 
 resource "aws_lb_listener_rule" "this" {
@@ -16,7 +14,7 @@ resource "aws_lb_listener_rule" "this" {
 
   condition {
     host_header {
-      values = [aws_acm_certificate.this.domain_name]
+      values = [local.domain_name]
     }
   }
 }

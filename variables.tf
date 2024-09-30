@@ -336,6 +336,24 @@ variable "update_ingress_security_group" {
   default     = false
 }
 
+variable "acm_create_certificate" {
+  type        = bool
+  description = "Whether to create a certificate in Amazon Certificate Manager"
+  default     = true
+}
+
+variable "acm_certificate_arn" {
+  type        = string
+  description = "ARN of an existing certificate in Amazon Certificate Manager"
+  default     = null
+}
+
+variable "acm_certificate_arn_us-east-1" {
+  type        = string
+  description = "ARN of an existing certificate in us-east-1 AWS Region of Amazon Certificate Manager. For use by CloudFront Distribution"
+  default     = null
+}
+
 variable "acm_certificate_validation_timeout" {
   type        = string
   description = "Length of time to wait for the public ACM certificate to validate"
