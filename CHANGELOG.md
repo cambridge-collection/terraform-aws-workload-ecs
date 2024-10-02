@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.1.0...v3.2.0) (2024-10-02)
+
+
+### Features
+
+* **acm:** Allow use of existing certificate ([29320a9](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/29320a965c43e56c054c40ae23ac81e6cd0af9de))
+
 ## [3.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.0.0...v3.1.0) (2024-09-26)
 
 
