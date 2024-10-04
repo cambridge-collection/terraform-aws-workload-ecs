@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.2.0...v3.2.1) (2024-10-04)
+
+
+### Bug Fixes
+
+* Allow additional domain names ([56bd7c1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/56bd7c1d1a6dc7ac5fd6590ba49c4023406d8a9d))
+
 ## [3.2.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.1.0...v3.2.0) (2024-10-02)
 
 
