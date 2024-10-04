@@ -14,7 +14,7 @@ resource "aws_lb_listener_rule" "this" {
 
   condition {
     host_header {
-      values = [local.domain_name]
+      values = concat([local.domain_name], var.alternative_domain_names)
     }
   }
 }

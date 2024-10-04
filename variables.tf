@@ -64,6 +64,12 @@ variable "alb_dns_name" {
   description = "DNS name for the ALB used by the Cloudfront distribution"
 }
 
+variable "alternative_domain_names" {
+  type        = list(string)
+  description = "List of additional domain names to add to ALB listener rule and CloudFront distribution"
+  default     = []
+}
+
 variable "cloudfront_waf_acl_arn" {
   type        = string
   description = "ARN of the WAF Web ACL for use by CloudFront"
