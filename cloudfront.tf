@@ -17,9 +17,7 @@ resource "aws_cloudfront_distribution" "this" {
   web_acl_id      = var.cloudfront_waf_acl_arn
   http_version    = "http2"
   is_ipv6_enabled = true
-  aliases = [
-    local.domain_name
-  ]
+  aliases         = concat([local.domain_name], var.alternative_domain_names)
 
   origin {
     custom_origin_config {
