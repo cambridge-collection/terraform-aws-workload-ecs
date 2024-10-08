@@ -44,6 +44,14 @@ resource "aws_cloudfront_distribution" "this" {
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = data.aws_cloudfront_cache_policy.managed_caching_disabled.id
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.managed_all_viewer.id
+
+    dynamic "function_association" {
+      for_each = var.cloudfront_viewer_request_function_arn != null ? [1] : []
+      content {
+        event_type   = "viewer-request"
+        function_arn = var.cloudfront_viewer_request_function_arn
+      }
+    }
   }
 
   viewer_certificate {

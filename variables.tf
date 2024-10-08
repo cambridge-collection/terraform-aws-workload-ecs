@@ -87,6 +87,12 @@ variable "cloudfront_cached_methods" {
   default     = ["HEAD", "GET"]
 }
 
+variable "cloudfront_viewer_request_function_arn" {
+  type        = string
+  description = "ARN of a CloudFront Function to add to CloudFront Distribution"
+  default     = null
+}
+
 variable "ecr_repository_force_delete" {
   type        = bool
   description = "Whether to delete non-empty ECR repositories"
