@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.2.1...v3.3.0) (2024-10-08)
+
+
+### Features
+
+* **cloudfront:** Add ability to use a CloudFront Function ([3bdd2c7](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/3bdd2c713c841af8146263f390a6246d3efc48d7))
+
 ## [3.2.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.2.0...v3.2.1) (2024-10-04)
 
 
