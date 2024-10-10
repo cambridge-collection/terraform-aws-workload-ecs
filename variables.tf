@@ -96,7 +96,7 @@ variable "cloudfront_viewer_request_function_arn" {
 variable "cloudfront_origin_read_timeout" {
   type        = number
   description = "Read timeout for CloudFront origin"
-  default     = 30
+  default     = 60
 }
 
 variable "ecr_repository_force_delete" {
