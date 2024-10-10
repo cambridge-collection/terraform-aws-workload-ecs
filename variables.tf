@@ -93,6 +93,12 @@ variable "cloudfront_viewer_request_function_arn" {
   default     = null
 }
 
+variable "cloudfront_origin_read_timeout" {
+  type        = number
+  description = "Read timeout for CloudFront origin"
+  default     = 60
+}
+
 variable "ecr_repository_force_delete" {
   type        = bool
   description = "Whether to delete non-empty ECR repositories"
