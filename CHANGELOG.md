@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.3.0...v3.3.1) (2024-10-10)
+
+
+### Bug Fixes
+
+* **tf:** Remove provider version limits in terraform.tf ([fdb038e](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/fdb038ec8c74018428f249c9b2774f8779cf689e))
+
 ## [3.3.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.2.1...v3.3.0) (2024-10-08)
 
 
