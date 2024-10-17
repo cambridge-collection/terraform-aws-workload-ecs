@@ -105,6 +105,18 @@ variable "cloudfront_origin_read_timeout" {
   default     = 60
 }
 
+variable "cloudfront_access_logging" {
+  type        = bool
+  description = "Whether to log CloudFront requests"
+  default     = false
+}
+
+variable "cloudfront_access_logging_bucket" {
+  type        = string
+  description = "S3 bucket name for CloudFront access logs"
+  default     = null
+}
+
 variable "ecr_repository_force_delete" {
   type        = bool
   description = "Whether to delete non-empty ECR repositories"
