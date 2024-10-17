@@ -228,6 +228,8 @@ No modules.
 | <a name="input_alternative_domain_names"></a> [alternative\_domain\_names](#input\_alternative\_domain\_names) | List of additional domain names to add to ALB listener rule and CloudFront distribution | `list(string)` | `[]` | no |
 | <a name="input_asg_name"></a> [asg\_name](#input\_asg\_name) | Name of Autoscaling Group for registering with ALB Target Group | `string` | n/a | yes |
 | <a name="input_asg_security_group_id"></a> [asg\_security\_group\_id](#input\_asg\_security\_group\_id) | ID of the ASG Security Group for creating ingress from from ALB | `string` | n/a | yes |
+| <a name="input_cloudfront_access_logging"></a> [cloudfront\_access\_logging](#input\_cloudfront\_access\_logging) | Whether to log CloudFront requests | `bool` | `false` | no |
+| <a name="input_cloudfront_access_logging_bucket"></a> [cloudfront\_access\_logging\_bucket](#input\_cloudfront\_access\_logging\_bucket) | S3 bucket name for CloudFront access logs | `string` | `null` | no |
 | <a name="input_cloudfront_allowed_methods"></a> [cloudfront\_allowed\_methods](#input\_cloudfront\_allowed\_methods) | List of methods allowed by the CloudFront Distribution | `list(string)` | <pre>[<br>  "HEAD",<br>  "GET",<br>  "OPTIONS"<br>]</pre> | no |
 | <a name="input_cloudfront_cached_methods"></a> [cloudfront\_cached\_methods](#input\_cloudfront\_cached\_methods) | List of methods cached by the CloudFront Distribution | `list(string)` | <pre>[<br>  "HEAD",<br>  "GET"<br>]</pre> | no |
 | <a name="input_cloudfront_origin_read_timeout"></a> [cloudfront\_origin\_read\_timeout](#input\_cloudfront\_origin\_read\_timeout) | Read timeout for CloudFront origin | `number` | `60` | no |
