@@ -30,9 +30,10 @@ resource "aws_cloudfront_distribution" "this" {
         "TLSv1.2"
       ]
     }
-    domain_name = var.alb_dns_name
-    origin_id   = local.domain_name
-    origin_path = ""
+    connection_attempts = var.cloudfront_origin_connection_attempts
+    domain_name         = var.alb_dns_name
+    origin_id           = local.domain_name
+    origin_path         = ""
   }
 
   default_cache_behavior {
