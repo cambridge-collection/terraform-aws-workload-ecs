@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.3.2...v3.4.0) (2024-10-31)
+
+
+### Features
+
+* Adding a variable to support response events for cloudfront functions ([deb5527](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/deb552799f7c72ef181060eb4f93da562f1c4ddc))
+
 ## [3.3.2](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.3.1...v3.3.2) (2024-10-10)
 
 
