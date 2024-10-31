@@ -89,7 +89,13 @@ variable "cloudfront_cached_methods" {
 
 variable "cloudfront_viewer_request_function_arn" {
   type        = string
-  description = "ARN of a CloudFront Function to add to CloudFront Distribution"
+  description = "ARN of a CloudFront Function to add to CloudFront Distribution in Request"
+  default     = null
+}
+
+variable "cloudfront_viewer_response_function_arn" {
+  type        = string
+  description = "ARN of a CloudFront Function to add to CloudFront Distribution in Response"
   default     = null
 }
 
