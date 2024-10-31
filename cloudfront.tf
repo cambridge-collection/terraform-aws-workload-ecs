@@ -52,6 +52,14 @@ resource "aws_cloudfront_distribution" "this" {
         function_arn = var.cloudfront_viewer_request_function_arn
       }
     }
+
+    dynamic "function_association" {
+      for_each = var.cloudfront_viewer_response_function_arn != null ? [1] : []
+      content {
+        event_type   = "viewer-response"
+        function_arn = var.cloudfront_viewer_response_function_arn
+      }
+    }
   }
 
   viewer_certificate {
