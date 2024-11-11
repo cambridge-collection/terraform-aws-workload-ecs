@@ -315,11 +315,14 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_alb_target_group_arn"></a> [alb\_target\_group\_arn](#output\_alb\_target\_group\_arn) | ARN of the Load Balancer Target Group |
+| <a name="output_alb_target_group_arn_suffix"></a> [alb\_target\_group\_arn\_suffix](#output\_alb\_target\_group\_arn\_suffix) | ARN suffix of the Target Group for use with CloudWatch Metrics |
+| <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | ID of the CloudFront Distribution |
 | <a name="output_cloudmap_service_discovery_namespace_name"></a> [cloudmap\_service\_discovery\_namespace\_name](#output\_cloudmap\_service\_discovery\_namespace\_name) | Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API |
 | <a name="output_cloudmap_service_discovery_service_name"></a> [cloudmap\_service\_discovery\_service\_name](#output\_cloudmap\_service\_discovery\_service\_name) | Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API |
 | <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | Name of the DNS record created in Route 53 aliasing the CloudFront Distribution |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | Map of ECR Repsitory name keys and Repository URLs |
 | <a name="output_ecs_service_id"></a> [ecs\_service\_id](#output\_ecs\_service\_id) | ID of the ECS Service |
+| <a name="output_ecs_service_name"></a> [ecs\_service\_name](#output\_ecs\_service\_name) | Name of the ECS Service |
 | <a name="output_link"></a> [link](#output\_link) | Link to connect to the service |
 | <a name="output_name_prefix"></a> [name\_prefix](#output\_name\_prefix) | This is a convenience for recycling into the task definition template |
 | <a name="output_private_access_host"></a> [private\_access\_host](#output\_private\_access\_host) | Route 53 record name for the A record created by Cloud Map Service Discovery |

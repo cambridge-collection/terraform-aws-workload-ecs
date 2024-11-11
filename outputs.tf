@@ -47,3 +47,18 @@ output "ecs_service_id" {
   value       = aws_ecs_service.this.id
   description = "ID of the ECS Service"
 }
+
+output "ecs_service_name" {
+  value       = aws_ecs_service.this.name
+  description = "Name of the ECS Service"
+}
+
+output "alb_target_group_arn_suffix" {
+  value       = aws_lb_target_group.this.arn_suffix
+  description = "ARN suffix of the Target Group for use with CloudWatch Metrics"
+}
+
+output "cloudfront_distribution_id" {
+  value       = aws_cloudfront_distribution.this.id
+  description = "ID of the CloudFront Distribution"
+}
