@@ -231,7 +231,8 @@ No modules.
 | <a name="input_cloudfront_allowed_methods"></a> [cloudfront\_allowed\_methods](#input\_cloudfront\_allowed\_methods) | List of methods allowed by the CloudFront Distribution | `list(string)` | <pre>[<br>  "HEAD",<br>  "GET",<br>  "OPTIONS"<br>]</pre> | no |
 | <a name="input_cloudfront_cached_methods"></a> [cloudfront\_cached\_methods](#input\_cloudfront\_cached\_methods) | List of methods cached by the CloudFront Distribution | `list(string)` | <pre>[<br>  "HEAD",<br>  "GET"<br>]</pre> | no |
 | <a name="input_cloudfront_origin_read_timeout"></a> [cloudfront\_origin\_read\_timeout](#input\_cloudfront\_origin\_read\_timeout) | Read timeout for CloudFront origin | `number` | `60` | no |
-| <a name="input_cloudfront_viewer_request_function_arn"></a> [cloudfront\_viewer\_request\_function\_arn](#input\_cloudfront\_viewer\_request\_function\_arn) | ARN of a CloudFront Function to add to CloudFront Distribution | `string` | `null` | no |
+| <a name="input_cloudfront_viewer_request_function_arn"></a> [cloudfront\_viewer\_request\_function\_arn](#input\_cloudfront\_viewer\_request\_function\_arn) | ARN of a CloudFront Function to add to CloudFront Distribution in Request | `string` | `null` | no |
+| <a name="input_cloudfront_viewer_response_function_arn"></a> [cloudfront\_viewer\_response\_function\_arn](#input\_cloudfront\_viewer\_response\_function\_arn) | ARN of a CloudFront Function to add to CloudFront Distribution in Response | `string` | `null` | no |
 | <a name="input_cloudfront_waf_acl_arn"></a> [cloudfront\_waf\_acl\_arn](#input\_cloudfront\_waf\_acl\_arn) | ARN of the WAF Web ACL for use by CloudFront | `string` | n/a | yes |
 | <a name="input_cloudmap_associate_vpc_ids"></a> [cloudmap\_associate\_vpc\_ids](#input\_cloudmap\_associate\_vpc\_ids) | List of VPC IDs to associate with Cloud Map Service Discovery | `list(string)` | `[]` | no |
 | <a name="input_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#input\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch Log Group for adding to IAM task execution role policy | `string` | n/a | yes |
@@ -295,7 +296,10 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_alb_target_group_arn_suffix"></a> [alb\_target\_group\_arn\_suffix](#output\_alb\_target\_group\_arn\_suffix) | ARN suffix of the Target Group for use with CloudWatch Metrics |
+| <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | ID of the CloudFront Distribution |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | Map of ECR Repsitory name keys and Repository URLs |
+| <a name="output_ecs_service_name"></a> [ecs\_service\_name](#output\_ecs\_service\_name) | Name of the ECS Service |
 | <a name="output_link"></a> [link](#output\_link) | Link to connect to the service |
 | <a name="output_name_prefix"></a> [name\_prefix](#output\_name\_prefix) | This is a convenience for recycling into the task definition template |
 | <a name="output_private_access_host"></a> [private\_access\_host](#output\_private\_access\_host) | Route 53 record name for the A record created by Cloud Map Service Discovery |
