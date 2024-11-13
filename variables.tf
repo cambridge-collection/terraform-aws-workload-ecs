@@ -509,3 +509,9 @@ variable "iam_task_additional_policies" {
   description = "Map of IAM Policies to add to the ECS task permissions. Values should be Policy ARNs; Keys are descriptive strings"
   default     = {}
 }
+
+variable "iam_task_execution_additional_policies" {
+  type        = map(string)
+  description = "Map of IAM Policies to add to the ECS task execution permissions. Values should be Policy ARNs; Keys are descriptive strings"
+  default     = {}
+}

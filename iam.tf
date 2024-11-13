@@ -89,6 +89,13 @@ resource "aws_iam_role_policy_attachment" "task_execution_policy_attachment" {
   policy_arn = aws_iam_policy.task_execution_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "task_execution_additional_policy_attachment" {
+  for_each = var.iam_task_execution_additional_policies
+
+  role       = aws_iam_role.task_execution_role.name
+  policy_arn = each.value
+}
+
 resource "aws_iam_role" "task_role" {
   path                 = "/"
   description          = "Assumed by containers in ${local.iam_role_prefix}"
