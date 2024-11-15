@@ -62,3 +62,8 @@ output "cloudfront_distribution_id" {
   value       = aws_cloudfront_distribution.this.id
   description = "ID of the CloudFront Distribution"
 }
+
+output "cloudwatch_log_group_arn" {
+  value       = var.cloudwatch_log_group_arn
+  description = "ARN of the CloudWatch Log Group used by ECS"
+}

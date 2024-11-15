@@ -321,6 +321,7 @@ No modules.
 | <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | ID of the CloudFront Distribution |
 | <a name="output_cloudmap_service_discovery_namespace_name"></a> [cloudmap\_service\_discovery\_namespace\_name](#output\_cloudmap\_service\_discovery\_namespace\_name) | Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API |
 | <a name="output_cloudmap_service_discovery_service_name"></a> [cloudmap\_service\_discovery\_service\_name](#output\_cloudmap\_service\_discovery\_service\_name) | Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API |
+| <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch Log Group used by ECS |
 | <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | Name of the DNS record created in Route 53 aliasing the CloudFront Distribution |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | Map of ECR Repsitory name keys and Repository URLs |
 | <a name="output_ecs_service_id"></a> [ecs\_service\_id](#output\_ecs\_service\_id) | ID of the ECS Service |
