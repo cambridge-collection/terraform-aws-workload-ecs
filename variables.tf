@@ -504,6 +504,12 @@ variable "ssm_task_execution_parameter_arns" {
   default     = []
 }
 
+variable "secrets_manager_task_execution_secret_arns" {
+  type        = list(string)
+  description = "List of Secrets Manager secrets to add to task execution permissions"
+  default     = []
+}
+
 variable "datasync_s3_to_efs_pattern" {
   type        = string
   description = "Pattern to filter DataSync transfer task from S3 to EFS"
