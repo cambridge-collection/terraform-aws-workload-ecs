@@ -193,9 +193,9 @@ variable "ecs_task_def_memory" {
 }
 
 variable "ecs_task_def_volumes" {
-  type        = list(string)
-  description = "List of volume names to attach to the ECS Task Definition"
-  default     = []
+  type        = map(string)
+  description = "Map of volume names and host paths to attach to the ECS Task Definition"
+  default     = {}
 }
 
 variable "ecs_network_mode" {
