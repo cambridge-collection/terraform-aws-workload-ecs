@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "this" {
   ]
 
   dynamic "volume" {
-    for_each = toset(var.ecs_task_def_volumes)
+    for_each = toset(var.ecs_task_def_volumes_efs)
     content {
       name = join("-", [var.name_prefix, volume.key])
 
@@ -39,6 +39,14 @@ resource "aws_ecs_task_definition" "this" {
           }
         }
       }
+    }
+  }
+
+  dynamic "volume" {
+    for_each = var.ecs_task_def_volumes_host
+    content {
+      name      = join("-", [var.name_prefix, volume.key])
+      host_path = volume.value
     }
   }
 
