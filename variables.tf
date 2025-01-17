@@ -402,6 +402,18 @@ variable "efs_use_existing_filesystem" {
   default     = false
 }
 
+variable "efs_file_system_throughput_mode" {
+  type        = string
+  description = "Throughput mode for the file system. Valid values: bursting, provisioned, or elastic"
+  default     = "bursting"
+}
+
+variable "efs_file_system_provisioned_throughput" {
+  type        = number
+  description = "The throughput, measured in MiB/s, that you want to provision for the file system"
+  default     = null
+}
+
 variable "efs_access_point_id" {
   type        = string
   description = "ID of an existing EFS Access Point"

@@ -20,7 +20,8 @@ resource "aws_ecs_task_definition" "this" {
   dynamic "volume" {
     for_each = toset(var.ecs_task_def_volumes)
     content {
-      name = join("-", [var.name_prefix, volume.key])
+      name                = join("-", [var.name_prefix, volume.key])
+      configure_at_launch = false
 
       dynamic "efs_volume_configuration" {
         for_each = local.ecs_task_definition_mount_efs ? [1] : []
