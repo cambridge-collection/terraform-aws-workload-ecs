@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.4.0...v3.5.0) (2025-01-17)
+
+
+### Features
+
+* **ecs:** Add configure_at_launch argument to volume block of aws_ecs_task_definition.this ([502e557](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/502e5578d181aa52a3b3929c9f928bbb11bee952))
+* **efs:** Add ability to set EFS throughput mode ([557cdf9](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/557cdf961c7ae8b402c90258503ec82530e78387))
+
 ## [3.4.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.3.2...v3.4.0) (2024-10-31)
 
 
