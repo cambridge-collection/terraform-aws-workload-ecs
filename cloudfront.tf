@@ -30,9 +30,10 @@ resource "aws_cloudfront_distribution" "this" {
         "TLSv1.2"
       ]
     }
-    domain_name = var.alb_dns_name
-    origin_id   = local.domain_name
-    origin_path = ""
+    connection_attempts = var.cloudfront_origin_connection_attempts
+    domain_name         = var.alb_dns_name
+    origin_id           = local.domain_name
+    origin_path         = ""
   }
 
   default_cache_behavior {
@@ -72,6 +73,15 @@ resource "aws_cloudfront_distribution" "this" {
   restrictions {
     geo_restriction {
       restriction_type = "none"
+    }
+  }
+
+  dynamic "logging_config" {
+    for_each = var.cloudfront_access_logging ? [1] : []
+    content {
+      include_cookies = false
+      bucket          = var.cloudfront_access_logging_bucket
+      prefix          = var.name_prefix
     }
   }
 }
