@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.5.0...v3.6.0) (2025-01-22)
+
+
+### Features
+
+* **cloudfront:** Enable CloudFront access logging ([2e63ef9](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/2e63ef9700dc6997a01d53904aa034a8979b79bf))
+
 ## [3.5.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.4.0...v3.5.0) (2025-01-17)
 
 
