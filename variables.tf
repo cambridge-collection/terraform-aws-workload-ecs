@@ -192,6 +192,12 @@ variable "ecs_service_capacity_provider_name" {
   default     = null
 }
 
+variable "ecs_service_capacity_provider_tasks" {
+  type        = number
+  description = "Number of tasks to run on the ECS Capacity Provider"
+  default     = 1
+}
+
 variable "ecs_task_def_container_definitions" {
   type        = string
   description = "Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html"
