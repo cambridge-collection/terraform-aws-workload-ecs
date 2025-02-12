@@ -81,10 +81,18 @@ resource "aws_ecs_service" "this" {
   }
 
   dynamic "network_configuration" {
-    for_each = var.ecs_network_mode == "awsvpc" ? [1] : []
+    for_each = var.ecs_network_mode == "awsvpc" && !var.allow_private_access ? [1] : []
     content {
       subnets         = data.aws_subnet.ecs.*.id
       security_groups = concat([var.asg_security_group_id], var.vpc_security_groups_extra)
+    }
+  }
+
+  dynamic "network_configuration" {
+    for_each = var.ecs_network_mode == "awsvpc" && var.allow_private_access ? [1] : []
+    content {
+      subnets         = data.aws_subnet.ecs.*.id
+      security_groups = concat([var.asg_security_group_id, var.ingress_security_group_id], var.vpc_security_groups_extra)
     }
   }
 

@@ -22,25 +22,6 @@ resource "aws_security_group_rule" "asg_ingress_from_alb" {
   to_port                  = var.alb_target_group_port
 }
 
-resource "aws_security_group_rule" "asg_ingress_private_access" {
-  count = var.allow_private_access ? 1 : 0
-
-  type                     = "ingress"
-  protocol                 = "tcp"
-  description              = "ASG Ingress on port ${var.alb_target_group_port} from ${var.ingress_security_group_id}"
-  security_group_id        = var.asg_security_group_id
-  source_security_group_id = var.ingress_security_group_id
-  from_port                = var.alb_target_group_port
-  to_port                  = var.alb_target_group_port
-
-  lifecycle {
-    precondition {
-      condition     = var.ingress_security_group_id != null
-      error_message = "Input ingress_security_group_id must not be null if allow_private_access is set to true"
-    }
-  }
-}
-
 # NOTE this may be needed where the security group owned by an external client
 # (var.ingress_security_group_id) has restricted outbound rules
 resource "aws_security_group_rule" "private_access_egress" {
