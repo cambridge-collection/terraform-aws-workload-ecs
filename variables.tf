@@ -378,9 +378,9 @@ variable "ingress_security_group_id" {
   default     = null
 }
 
-variable "update_ingress_security_group" {
+variable "update_asg_security_group_to_access_service" {
   type        = bool
-  description = "Whether to update external security group by creating an egress rule to this service"
+  description = "Whether to update the ASG security group by creating an egress rule for this service"
   default     = false
 }
 

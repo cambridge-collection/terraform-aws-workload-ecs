@@ -25,13 +25,13 @@ resource "aws_security_group_rule" "asg_ingress_from_alb" {
 # NOTE this may be needed where the security group owned by an external client
 # (var.ingress_security_group_id) has restricted outbound rules
 resource "aws_security_group_rule" "private_access_egress" {
-  count = var.allow_private_access && var.update_ingress_security_group ? 1 : 0
+  count = var.allow_private_access && var.update_asg_security_group_to_access_service ? 1 : 0
 
   type                     = "egress"
   protocol                 = "tcp"
-  description              = "Egress on port ${var.alb_target_group_port} on ${var.ingress_security_group_id}"
-  security_group_id        = var.ingress_security_group_id
-  source_security_group_id = var.asg_security_group_id
+  description              = "Egress on port ${var.alb_target_group_port} to ${var.ingress_security_group_id}"
+  security_group_id        = var.asg_security_group_id
+  source_security_group_id = var.ingress_security_group_id
   from_port                = var.alb_target_group_port
   to_port                  = var.alb_target_group_port
 }
