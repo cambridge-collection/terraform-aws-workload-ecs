@@ -198,6 +198,12 @@ variable "ecs_service_capacity_provider_tasks" {
   default     = 1
 }
 
+variable "ecs_service_use_app_autoscaling" {
+  type        = bool
+  description = "Whether to add a scaling policy to the ECS service"
+  default     = false
+}
+
 variable "ecs_task_def_container_definitions" {
   type        = string
   description = "Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html"
