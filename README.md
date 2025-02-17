@@ -213,6 +213,7 @@ No modules.
 | <a name="input_alb_arn"></a> [alb\_arn](#input\_alb\_arn) | ARN of the ALB used by the listener | `string` | n/a | yes |
 | <a name="input_alb_dns_name"></a> [alb\_dns\_name](#input\_alb\_dns\_name) | DNS name for the ALB used by the Cloudfront distribution | `string` | n/a | yes |
 | <a name="input_alb_listener_arn"></a> [alb\_listener\_arn](#input\_alb\_listener\_arn) | The Application Load Balancer Listener ARN to add the forward rule and certificate to | `string` | n/a | yes |
+| <a name="input_alb_listener_rule_create"></a> [alb\_listener\_rule\_create](#input\_alb\_listener\_rule\_create) | Whether to create a Load Balancer Listener Rule | `bool` | `true` | no |
 | <a name="input_alb_listener_rule_priority"></a> [alb\_listener\_rule\_priority](#input\_alb\_listener\_rule\_priority) | The priority for the rule between 1 and 50000.<br>Leaving it unset will automatically set the rule with next available priority<br>after currently existing highest rule. A listener can't have multiple rules<br>with the same priority. | `string` | `null` | no |
 | <a name="input_alb_security_group_id"></a> [alb\_security\_group\_id](#input\_alb\_security\_group\_id) | ID of the ALB Security Group for creating ingress to the ALB | `string` | n/a | yes |
 | <a name="input_alb_target_group_deregistration_delay"></a> [alb\_target\_group\_deregistration\_delay](#input\_alb\_target\_group\_deregistration\_delay) | Amount time for ELB to wait before changing the state of a deregistering target from draining to unused | `number` | `300` | no |
@@ -304,6 +305,8 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_alb_target_group_arn"></a> [alb\_target\_group\_arn](#output\_alb\_target\_group\_arn) | ARN of the Load Balancer Target Group |
+| <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | Name of the DNS record created in Route 53 aliasing the CloudFront Distribution |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | Map of ECR Repsitory name keys and Repository URLs |
 | <a name="output_link"></a> [link](#output\_link) | Link to connect to the service |
 | <a name="output_name_prefix"></a> [name\_prefix](#output\_name\_prefix) | This is a convenience for recycling into the task definition template |

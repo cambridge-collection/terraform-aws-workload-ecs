@@ -262,6 +262,12 @@ variable "alb_listener_rule_priority" {
   default     = null
 }
 
+variable "alb_listener_rule_create" {
+  type        = bool
+  description = "Whether to create a Load Balancer Listener Rule"
+  default     = true
+}
+
 variable "s3_task_execution_bucket" {
   type        = string
   description = "Name of the bucket for storage of static data for services"

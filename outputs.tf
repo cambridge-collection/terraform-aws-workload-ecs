@@ -29,6 +29,11 @@ output "link" {
   description = "Link to connect to the service"
 }
 
+output "domain_name" {
+  value       = aws_route53_record.cloudfront_alias.name
+  description = "Name of the DNS record created in Route 53 aliasing the CloudFront Distribution"
+}
+
 output "private_access_host" {
   value       = try(data.external.route53_a_record.0.result.name, "UNDEFINED")
   description = "Route 53 record name for the A record created by Cloud Map Service Discovery"
@@ -37,4 +42,9 @@ output "private_access_host" {
 output "private_access_port" {
   value       = var.allow_private_access ? tostring(var.alb_target_group_port) : ""
   description = "Port number for accessing service via private access host name"
+}
+
+output "alb_target_group_arn" {
+  value       = aws_lb_target_group.this.arn
+  description = "ARN of the Load Balancer Target Group"
 }
