@@ -48,3 +48,13 @@ output "alb_target_group_arn" {
   value       = aws_lb_target_group.this.arn
   description = "ARN of the Load Balancer Target Group"
 }
+
+output "cloudmap_service_discovery_namespace_name" {
+  value       = var.name_prefix
+  description = "Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API"
+}
+
+output "cloudmap_service_discovery_service_name" {
+  value       = var.ecs_service_container_name
+  description = "Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API"
+}
