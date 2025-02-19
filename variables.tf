@@ -188,14 +188,20 @@ variable "ecs_service_scheduling_strategy" {
 
 variable "ecs_service_capacity_provider_name" {
   type        = string
-  description = "Name of an ECS Capacity Provider"
+  description = "Name of a ECS Capacity Provider to use with the ECS Service, other than the default"
   default     = null
 }
 
-variable "ecs_service_capacity_provider_tasks" {
+variable "ecs_service_capacity_provider_strategy_base" {
   type        = number
-  description = "Number of tasks to run on the ECS Capacity Provider"
+  description = "Minimum number of tasks to run on the specified ECS Capacity Provider"
   default     = 1
+}
+
+variable "ecs_service_capacity_provider_strategy_weight" {
+  type        = number
+  description = "Percentage of tasks to run on the specified ECS Capacity Provider"
+  default     = 100
 }
 
 variable "ecs_service_use_app_autoscaling" {

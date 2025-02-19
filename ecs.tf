@@ -100,8 +100,8 @@ resource "aws_ecs_service" "this" {
     for_each = var.ecs_service_capacity_provider_name != null ? [1] : []
     content {
       capacity_provider = var.ecs_service_capacity_provider_name
-      base              = var.ecs_service_capacity_provider_tasks
-      weight            = 100
+      base              = var.ecs_service_capacity_provider_strategy_base
+      weight            = var.ecs_service_capacity_provider_strategy_weight
     }
   }
 }
