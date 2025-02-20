@@ -58,3 +58,8 @@ output "cloudmap_service_discovery_service_name" {
   value       = var.ecs_service_container_name
   description = "Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API"
 }
+
+output "ecs_service_id" {
+  value       = aws_ecs_service.this.id
+  description = "ID of the ECS Service"
+}
