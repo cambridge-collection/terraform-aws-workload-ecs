@@ -3,9 +3,16 @@ resource "aws_appautoscaling_target" "this" {
 
   max_capacity       = var.ecs_service_max_capacity
   min_capacity       = var.ecs_service_desired_count
-  resource_id        = local.ecs_service_resource_id
+  resource_id        = format("service/%s/%s-service", var.ecs_cluster_name, var.name_prefix)
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
+
+  lifecycle {
+    precondition {
+      condition     = var.ecs_cluster_name != null
+      error_message = "Input ecs_cluster_name must be supplied to turn on ECS service auto scaling"
+    }
+  }
 }
 
 resource "aws_appautoscaling_policy" "this" {

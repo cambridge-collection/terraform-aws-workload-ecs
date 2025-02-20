@@ -134,6 +134,12 @@ variable "ecs_cluster_arn" {
   description = "ARN of the ECS cluster to which this workload should be deployed"
 }
 
+variable "ecs_cluster_name" {
+  type        = string
+  description = "Name of the ECS cluster to use with Service auto scaling"
+  default     = null
+}
+
 variable "ecs_service_desired_count" {
   type        = number
   description = "Sets the Desired Count for the ECS Service"
