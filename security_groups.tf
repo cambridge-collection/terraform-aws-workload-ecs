@@ -3,6 +3,8 @@ data "aws_vpc" "this" {
 }
 
 resource "aws_security_group_rule" "alb_egress_to_asg" {
+  count = var.allow_public_access ? 1 : 0
+
   type                     = "egress"
   protocol                 = "tcp"
   description              = "ALB Egress on port ${var.alb_target_group_port} for ${var.name_prefix}"
@@ -13,6 +15,8 @@ resource "aws_security_group_rule" "alb_egress_to_asg" {
 }
 
 resource "aws_security_group_rule" "asg_ingress_from_alb" {
+  count = var.allow_public_access ? 1 : 0
+
   type                     = "ingress"
   protocol                 = "tcp"
   description              = "ASG Ingress on port ${var.alb_target_group_port} for ${var.name_prefix}"

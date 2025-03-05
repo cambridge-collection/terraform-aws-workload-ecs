@@ -1,14 +1,20 @@
 data "aws_cloudfront_cache_policy" "managed_caching_disabled" {
+  count = var.allow_public_access ? 1 : 0
+
   provider = aws.us-east-1
   name     = "Managed-CachingDisabled"
 }
 
 data "aws_cloudfront_origin_request_policy" "managed_all_viewer" {
+  count = var.allow_public_access ? 1 : 0
+
   provider = aws.us-east-1
   name     = "Managed-AllViewer"
 }
 
 resource "aws_cloudfront_distribution" "this" {
+  count = var.allow_public_access ? 1 : 0
+
   provider = aws.us-east-1
 
   comment         = "${local.domain_name} CloudFront Distribution"
@@ -43,8 +49,8 @@ resource "aws_cloudfront_distribution" "this" {
     smooth_streaming         = false
     target_origin_id         = local.domain_name
     viewer_protocol_policy   = "redirect-to-https"
-    cache_policy_id          = data.aws_cloudfront_cache_policy.managed_caching_disabled.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.managed_all_viewer.id
+    cache_policy_id          = data.aws_cloudfront_cache_policy.managed_caching_disabled.0.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.managed_all_viewer.0.id
 
     dynamic "function_association" {
       for_each = var.cloudfront_viewer_request_function_arn != null ? [1] : []

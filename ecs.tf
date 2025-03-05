@@ -65,10 +65,13 @@ resource "aws_ecs_service" "this" {
   scheduling_strategy                = var.ecs_service_scheduling_strategy
   propagate_tags                     = "SERVICE"
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.this.arn
-    container_name   = var.ecs_service_container_name
-    container_port   = var.ecs_service_container_port
+  dynamic "load_balancer" {
+    for_each = var.allow_public_access ? [1] : []
+    content {
+      target_group_arn = aws_lb_target_group.this.0.arn
+      container_name   = var.ecs_service_container_name
+      container_port   = var.ecs_service_container_port
+    }
   }
 
   dynamic "service_registries" {

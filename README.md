@@ -225,6 +225,7 @@ No modules.
 | <a name="input_alb_target_group_protocol"></a> [alb\_target\_group\_protocol](#input\_alb\_target\_group\_protocol) | Protocol to use for the target group | `string` | `"HTTP"` | no |
 | <a name="input_alb_target_group_slow_start"></a> [alb\_target\_group\_slow\_start](#input\_alb\_target\_group\_slow\_start) | Amount time for targets to warm up before the load balancer sends them a full share of requests | `number` | `0` | no |
 | <a name="input_allow_private_access"></a> [allow\_private\_access](#input\_allow\_private\_access) | Whether to allow private access to the service | `bool` | `false` | no |
+| <a name="input_allow_public_access"></a> [allow\_public\_access](#input\_allow\_public\_access) | Whether to allow public access to the service through the load balancer | `bool` | `true` | no |
 | <a name="input_alternative_domain_names"></a> [alternative\_domain\_names](#input\_alternative\_domain\_names) | List of additional domain names to add to ALB listener rule and CloudFront distribution | `list(string)` | `[]` | no |
 | <a name="input_asg_name"></a> [asg\_name](#input\_asg\_name) | Name of Autoscaling Group for registering with ALB Target Group | `string` | n/a | yes |
 | <a name="input_asg_security_group_id"></a> [asg\_security\_group\_id](#input\_asg\_security\_group\_id) | ID of the ASG Security Group for creating ingress from from ALB | `string` | n/a | yes |

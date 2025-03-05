@@ -25,6 +25,12 @@ variable "allow_private_access" {
   default     = false
 }
 
+variable "allow_public_access" {
+  type        = bool
+  description = "Whether to allow public access to the service through the load balancer"
+  default     = true
+}
+
 variable "efs_create_file_system" {
   type        = bool
   description = "Whether to create an EFS File System to persist data"

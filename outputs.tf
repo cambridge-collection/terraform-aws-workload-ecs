@@ -9,12 +9,12 @@ output "ecr_repository_urls" {
 }
 
 output "link" {
-  value       = "https://${aws_route53_record.cloudfront_alias.name}"
+  value       = var.allow_private_access ? "" : "https://${aws_route53_record.cloudfront_alias.0.name}"
   description = "Link to connect to the service"
 }
 
 output "domain_name" {
-  value       = aws_route53_record.cloudfront_alias.name
+  value       = var.allow_private_access ? "" : aws_route53_record.cloudfront_alias.0.name
   description = "Name of the DNS record created in Route 53 aliasing the CloudFront Distribution"
 }
 
@@ -29,7 +29,7 @@ output "private_access_port" {
 }
 
 output "alb_target_group_arn" {
-  value       = aws_lb_target_group.this.arn
+  value       = var.allow_private_access ? "" : aws_lb_target_group.this.0.arn
   description = "ARN of the Load Balancer Target Group"
 }
 
