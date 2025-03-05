@@ -1,19 +1,3 @@
-# NOTE there seems to be no way of listing Route53 records natively in the aws provider
-data "external" "route53_a_record" {
-  count = var.allow_private_access ? 1 : 0
-  program = ["bash", "-c", <<-SHELL
-  input=$(cat)
-  aws route53 list-resource-record-sets --cli-input-json $input --query 'ResourceRecordSets[?Type==`A`].{name: Name, value: ResourceRecords[0].Value} | [0]'
-  SHELL
-  ]
-
-  query = {
-    HostedZoneId = aws_service_discovery_private_dns_namespace.this.0.hosted_zone
-  }
-
-  depends_on = [aws_service_discovery_private_dns_namespace.this.0, aws_service_discovery_service.this.0]
-}
-
 output "name_prefix" {
   value       = var.name_prefix
   description = "This is a convenience for recycling into the task definition template"
@@ -35,7 +19,7 @@ output "domain_name" {
 }
 
 output "private_access_host" {
-  value       = try(data.external.route53_a_record.0.result.name, "UNDEFINED")
+  value       = join(".", [var.ecs_service_container_name, var.name_prefix])
   description = "Route 53 record name for the A record created by Cloud Map Service Discovery"
 }
 
