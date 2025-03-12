@@ -216,10 +216,22 @@ variable "ecs_service_capacity_provider_strategy_weight" {
   default     = 100
 }
 
-variable "ecs_service_use_app_autoscaling" {
+variable "ecs_service_use_autoscaling" {
   type        = bool
   description = "Whether to add a scaling policy to the ECS service"
   default     = false
+}
+
+variable "ecs_service_autoscaling_predefined_metric_type" {
+  type        = string
+  description = "Predefined metric to use with ECS service app autoscaling policy"
+  default     = "ECSServiceAverageCPUUtilization"
+}
+
+variable "ecs_service_autoscaling_target_value" {
+  type        = number
+  description = "Percentage value for the ECS service app autoscaling predefined metric"
+  default     = 70
 }
 
 variable "ecs_task_def_container_definitions" {
