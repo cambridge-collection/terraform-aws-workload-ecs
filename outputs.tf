@@ -9,27 +9,27 @@ output "ecr_repository_urls" {
 }
 
 output "link" {
-  value       = var.allow_private_access ? "" : "https://${aws_route53_record.cloudfront_alias.0.name}"
+  value       = var.allow_public_access ? "https://${aws_route53_record.cloudfront_alias.0.name}" : ""
   description = "Link to connect to the service"
 }
 
 output "domain_name" {
-  value       = var.allow_private_access ? "" : aws_route53_record.cloudfront_alias.0.name
+  value       = var.allow_public_access ? aws_route53_record.cloudfront_alias.0.name : ""
   description = "Name of the DNS record created in Route 53 aliasing the CloudFront Distribution"
 }
 
 output "private_access_host" {
-  value       = join(".", [var.ecs_service_container_name, var.name_prefix])
+  value       = var.allow_private_access ? join(".", [var.ecs_service_container_name, var.name_prefix]) : ""
   description = "Route 53 record name for the A record created by Cloud Map Service Discovery"
 }
 
 output "private_access_port" {
-  value       = var.allow_private_access ? tostring(var.alb_target_group_port) : ""
+  value       = var.allow_private_access ? tostring(var.ecs_service_container_port) : ""
   description = "Port number for accessing service via private access host name"
 }
 
 output "alb_target_group_arn" {
-  value       = var.allow_private_access ? "" : aws_lb_target_group.this.0.arn
+  value       = var.allow_public_access ? aws_lb_target_group.this.0.arn : "" 
   description = "ARN of the Load Balancer Target Group"
 }
 
