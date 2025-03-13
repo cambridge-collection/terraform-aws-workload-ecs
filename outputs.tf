@@ -29,7 +29,7 @@ output "private_access_port" {
 }
 
 output "alb_target_group_arn" {
-  value       = var.allow_public_access ? aws_lb_target_group.this.0.arn : "" 
+  value       = var.allow_public_access ? aws_lb_target_group.this.0.arn : ""
   description = "ARN of the Load Balancer Target Group"
 }
 
