@@ -252,10 +252,16 @@ variable "ecs_task_def_memory" {
   default     = 1024
 }
 
-variable "ecs_task_def_volumes" {
+variable "ecs_task_def_volumes_efs" {
   type        = list(string)
-  description = "List of volume names to attach to the ECS Task Definition"
+  description = "List of volume names to attach to the ECS Task Definition to connect to EFS"
   default     = []
+}
+
+variable "ecs_task_def_volumes_host" {
+  type        = map(string)
+  description = "Map of volume name keys and host path values to attach to the ECS Task Definition"
+  default     = {}
 }
 
 variable "ecs_network_mode" {
@@ -573,6 +579,12 @@ variable "datasync_transfer_mode" {
 variable "ssm_task_execution_parameter_arns" {
   type        = list(string)
   description = "Names of SSM parameters for adding to the task execution IAM role permissions"
+  default     = []
+}
+
+variable "secrets_manager_task_execution_secret_arns" {
+  type        = list(string)
+  description = "List of Secrets Manager secrets to add to task execution permissions"
   default     = []
 }
 

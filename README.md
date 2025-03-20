@@ -119,6 +119,7 @@ InvalidParameterException: Network Configuration is not valid for the given netw
 
 The inputs `vpc_subnet_ids` and `vpc_security_groups_extra` are ignored if the `ecs_network_mode` value is not "awsvpc".
 
+
 ## Requirements
 
 No requirements.
@@ -273,7 +274,8 @@ No modules.
 | <a name="input_ecs_task_def_container_definitions"></a> [ecs\_task\_def\_container\_definitions](#input\_ecs\_task\_def\_container\_definitions) | Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html | `string` | n/a | yes |
 | <a name="input_ecs_task_def_cpu"></a> [ecs\_task\_def\_cpu](#input\_ecs\_task\_def\_cpu) | Number of cpu units used by the task | `number` | `null` | no |
 | <a name="input_ecs_task_def_memory"></a> [ecs\_task\_def\_memory](#input\_ecs\_task\_def\_memory) | Amount (in MiB) of memory used by the task. Note if this is unset, all container definitions must set memory and/or memoryReservation | `number` | `1024` | no |
-| <a name="input_ecs_task_def_volumes"></a> [ecs\_task\_def\_volumes](#input\_ecs\_task\_def\_volumes) | List of volume names to attach to the ECS Task Definition | `list(string)` | `[]` | no |
+| <a name="input_ecs_task_def_volumes_efs"></a> [ecs\_task\_def\_volumes\_efs](#input\_ecs\_task\_def\_volumes\_efs) | List of volume names to attach to the ECS Task Definition to connect to EFS | `list(string)` | `[]` | no |
+| <a name="input_ecs_task_def_volumes_host"></a> [ecs\_task\_def\_volumes\_host](#input\_ecs\_task\_def\_volumes\_host) | Map of volume name keys and host path values to attach to the ECS Task Definition | `map(string)` | `{}` | no |
 | <a name="input_efs_access_point_id"></a> [efs\_access\_point\_id](#input\_efs\_access\_point\_id) | ID of an existing EFS Access Point | `string` | `null` | no |
 | <a name="input_efs_access_point_posix_user_gid"></a> [efs\_access\_point\_posix\_user\_gid](#input\_efs\_access\_point\_posix\_user\_gid) | POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
 | <a name="input_efs_access_point_posix_user_secondary_gids"></a> [efs\_access\_point\_posix\_user\_secondary\_gids](#input\_efs\_access\_point\_posix\_user\_secondary\_gids) | Secondary POSIX group IDs used for all file system operations using the EFS access point | `list(number)` | `[]` | no |
@@ -297,6 +299,7 @@ No modules.
 | <a name="input_s3_task_execution_additional_buckets"></a> [s3\_task\_execution\_additional\_buckets](#input\_s3\_task\_execution\_additional\_buckets) | Names of additional buckets for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
 | <a name="input_s3_task_execution_bucket"></a> [s3\_task\_execution\_bucket](#input\_s3\_task\_execution\_bucket) | Name of the bucket for storage of static data for services | `string` | `null` | no |
 | <a name="input_s3_task_execution_bucket_objects"></a> [s3\_task\_execution\_bucket\_objects](#input\_s3\_task\_execution\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task execution bucket | `map(string)` | `{}` | no |
+| <a name="input_secrets_manager_task_execution_secret_arns"></a> [secrets\_manager\_task\_execution\_secret\_arns](#input\_secrets\_manager\_task\_execution\_secret\_arns) | List of Secrets Manager secrets to add to task execution permissions | `list(string)` | `[]` | no |
 | <a name="input_ssm_task_execution_parameter_arns"></a> [ssm\_task\_execution\_parameter\_arns](#input\_ssm\_task\_execution\_parameter\_arns) | Names of SSM parameters for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |
 | <a name="input_update_asg_security_group_to_access_service"></a> [update\_asg\_security\_group\_to\_access\_service](#input\_update\_asg\_security\_group\_to\_access\_service) | Whether to update the ASG security group by creating an egress rule for this service | `bool` | `false` | no |

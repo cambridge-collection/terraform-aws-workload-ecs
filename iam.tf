@@ -87,6 +87,16 @@ data "aws_iam_policy_document" "task_execution_role_permissions" {
       resources = var.ssm_task_execution_parameter_arns
     }
   }
+
+  dynamic "statement" {
+    for_each = length(var.secrets_manager_task_execution_secret_arns) > 0 ? [1] : []
+    content {
+      actions = [
+        "secretsmanager:GetSecretValue"
+      ]
+      resources = var.secrets_manager_task_execution_secret_arns
+    }
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "task_execution_policy_attachment" {
