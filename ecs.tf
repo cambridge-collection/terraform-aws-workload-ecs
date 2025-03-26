@@ -115,4 +115,11 @@ resource "aws_ecs_service" "this" {
       weight            = var.ecs_service_capacity_provider_strategy_weight
     }
   }
+
+  lifecycle {
+    precondition {
+      condition     = (var.ecs_network_mode == "awsvpc" && length(var.vpc_subnet_ids) > 0) || var.ecs_network_mode != "awsvpc"
+      error_message = "The vpc_subnet_ids input must be provided when ecs_network_mode is set to awsvpc."
+    }
+  }
 }
