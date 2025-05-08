@@ -119,7 +119,6 @@ InvalidParameterException: Network Configuration is not valid for the given netw
 
 The inputs `vpc_subnet_ids` and `vpc_security_groups_extra` are ignored if the `ecs_network_mode` value is not "awsvpc".
 
-
 ## Requirements
 
 No requirements.
@@ -293,6 +292,7 @@ No modules.
 | <a name="input_iam_task_additional_policies"></a> [iam\_task\_additional\_policies](#input\_iam\_task\_additional\_policies) | Map of IAM Policies to add to the ECS task permissions. Values should be Policy ARNs; Keys are descriptive strings | `map(string)` | `{}` | no |
 | <a name="input_ingress_security_group_id"></a> [ingress\_security\_group\_id](#input\_ingress\_security\_group\_id) | ID of a security group to grant acess to container instances | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to add to resource names | `string` | n/a | yes |
+| <a name="input_route53_create_cloudfront_alias_record"></a> [route53\_create\_cloudfront\_alias\_record](#input\_route53\_create\_cloudfront\_alias\_record) | Whether to create an alias record in the Route 53 hosted zone for the CloudFront distribution | `bool` | `true` | no |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | ID of the Route 53 Hosted Zone for records | `string` | n/a | yes |
 | <a name="input_s3_task_bucket_objects"></a> [s3\_task\_bucket\_objects](#input\_s3\_task\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task bucket | `map(string)` | `{}` | no |
 | <a name="input_s3_task_buckets"></a> [s3\_task\_buckets](#input\_s3\_task\_buckets) | Names of the S3 Buckets for use by ECS tasks on the host (i.e. running containers) | `list(string)` | `[]` | no |

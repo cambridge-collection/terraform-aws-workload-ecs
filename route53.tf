@@ -3,7 +3,7 @@ data "aws_route53_zone" "domain" {
 }
 
 resource "aws_route53_record" "cloudfront_alias" {
-  count = var.allow_public_access ? 1 : 0
+  count = var.route53_create_cloudfront_alias_record && var.allow_public_access ? 1 : 0
 
   name = local.domain_name
 

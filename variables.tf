@@ -405,6 +405,12 @@ variable "route53_zone_id" {
   description = "ID of the Route 53 Hosted Zone for records"
 }
 
+variable "route53_create_cloudfront_alias_record" {
+  type        = bool
+  description = "Whether to create an alias record in the Route 53 hosted zone for the CloudFront distribution"
+  default     = true
+}
+
 variable "asg_name" {
   type        = string
   description = "Name of Autoscaling Group for registering with ALB Target Group"
