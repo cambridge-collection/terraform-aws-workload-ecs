@@ -9,12 +9,12 @@ output "ecr_repository_urls" {
 }
 
 output "link" {
-  value       = var.route53_create_cloudfront_alias_record && var.allow_public_access ? "https://${aws_route53_record.cloudfront_alias.0.name}" : ""
+  value       = var.allow_public_access ? "https://${local.domain_name}" : ""
   description = "Link to connect to the service"
 }
 
 output "domain_name" {
-  value       = var.route53_create_cloudfront_alias_record && var.allow_public_access ? aws_route53_record.cloudfront_alias.0.name : ""
+  value       = var.allow_public_access ? local.domain_name : ""
   description = "Name of the DNS record created in Route 53 aliasing the CloudFront Distribution"
 }
 
