@@ -1,19 +1,19 @@
 data "aws_cloudfront_cache_policy" "managed_caching_disabled" {
-  count = var.allow_public_access ? 1 : 0
+  count = var.cloudfront_distribution_create && var.allow_public_access ? 1 : 0
 
   provider = aws.us-east-1
   name     = "Managed-CachingDisabled"
 }
 
 data "aws_cloudfront_origin_request_policy" "managed_all_viewer" {
-  count = var.allow_public_access ? 1 : 0
+  count = var.cloudfront_distribution_create && var.allow_public_access ? 1 : 0
 
   provider = aws.us-east-1
   name     = "Managed-AllViewer"
 }
 
 resource "aws_cloudfront_distribution" "this" {
-  count = var.allow_public_access ? 1 : 0
+  count = var.cloudfront_distribution_create && var.allow_public_access ? 1 : 0
 
   provider = aws.us-east-1
 
