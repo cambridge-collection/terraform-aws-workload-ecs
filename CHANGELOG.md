@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.6.0...v4.0.0) (2025-06-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ecs:** Rename ecs_service_capacity_provider_tasks input
+variable to ecs_service_capacity_provider_strategy_base
+* **vpc:** Input variable has been replaced
+
+### Features
+
+* **cloudmap:** Add outputs for Cloud Map service discovery ([018168a](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/018168a2d09f49fb0700df7daacad5e063b72b56))
+* **cloudmap:** Remove data.external.route53_a_record and update private_access_host output ([105e222](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/105e222cea4589bdc23b999f4f08d2c2f7a98ec1))
+* **ecs:** Add appautoscaling.tf adding a scaling policy to the ECS service ([7e0bdcf](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/7e0bdcfc31a7998a2627918223acaab79fd308e1))
+* **ecs:** Add precondition to aws_ecs_service.this for awsvpc network mode ([f794968](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/f7949681cb21afadb0f09ab26a1d129ed2286c3f))
+* **ecs:** Add second dynamic volume block on ECS task definition ([b8c1b57](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/b8c1b579097dd814e841552479646e970b9cfe50))
+* **ecs:** Allow number of tasks to be configured in service ([37e2801](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/37e2801b65d296af558edd5853fe9b22f49fe2ec))
+* **ecs:** Remove ecs_service_resource_id local variable ([be1001d](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/be1001dbf7287422d361615bbe847f03cde04938))
+* **ecs:** Set values in aws_appautoscaling_policy.this using variables ([2fd1d88](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/2fd1d8843fc475627fd28934888ae3e5d6d00031))
+* **ecs:** Update ECS service scaling ([c04d793](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c04d793919ada370b747f8178212c8d0881285c8))
+* **iam:** Add task execution permissions for secrets manager ([f2eaea7](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/f2eaea7a2328e35dc4f4166abb975c5145427ebc))
+* **lb:** Add condition to aws_lb_listener_rule.this resource ([1a7663e](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/1a7663e5b168c96d1e43f75ed479279bda2cf4d4))
+* Make CloudFront distribution conditional ([2a3de76](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/2a3de76c434828b89280121be0f0f364eedc10bf))
+* **outputs:** Add ecs_service_id output ([a1216ca](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/a1216caeddc57cac8443cc34b90f26a1e6dc9b44))
+* **route53:** Add switch to turn off CloudFront alias record ([5539184](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/553918422dbfdbbd23276283e1e8a724c8c81e44))
+* **vpc:** Remove aws_security_group_rule.asg_ingress_private_access resource ([2995c6f](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/2995c6f5db7fefaaeef0b14a7fc435baca752940))
+* **vpc:** Update aws_security_group_rule.private_access_egress ([5b63a69](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/5b63a690403ddbe1618d711e2987c5c11098aa65))
+
+
+### Bug Fixes
+
+* **ecs:** Add compact to security_groups argument for aws_ecs_service.this ([e5b2891](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/e5b2891aa0933a5b605b2ded8199ab07a672de0e))
+* **outputs:** Fix outputs to use correct conditions ([c50a0cc](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/c50a0cc3ccb5f248cb0cdeec31317d86d106bc4a))
+* **outputs:** Use local.domain_name in domain_name and link outputs ([4388498](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/438849895c002158ceb66d89bf68982da4d9ab8a))
+
 ## [3.6.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.5.0...v3.6.0) (2025-01-22)
 
 
