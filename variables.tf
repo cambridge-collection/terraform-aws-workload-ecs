@@ -25,6 +25,12 @@ variable "allow_private_access" {
   default     = false
 }
 
+variable "allow_public_access" {
+  type        = bool
+  description = "Whether to allow public access to the service through the load balancer"
+  default     = true
+}
+
 variable "efs_create_file_system" {
   type        = bool
   description = "Whether to create an EFS File System to persist data"
@@ -134,6 +140,12 @@ variable "ecs_cluster_arn" {
   description = "ARN of the ECS cluster to which this workload should be deployed"
 }
 
+variable "ecs_cluster_name" {
+  type        = string
+  description = "Name of the ECS cluster to use with Service auto scaling"
+  default     = null
+}
+
 variable "ecs_service_desired_count" {
   type        = number
   description = "Sets the Desired Count for the ECS Service"
@@ -188,8 +200,38 @@ variable "ecs_service_scheduling_strategy" {
 
 variable "ecs_service_capacity_provider_name" {
   type        = string
-  description = "Name of an ECS Capacity Provider"
+  description = "Name of a ECS Capacity Provider to use with the ECS Service, other than the default"
   default     = null
+}
+
+variable "ecs_service_capacity_provider_strategy_base" {
+  type        = number
+  description = "Minimum number of tasks to run on the specified ECS Capacity Provider"
+  default     = 1
+}
+
+variable "ecs_service_capacity_provider_strategy_weight" {
+  type        = number
+  description = "Percentage of tasks to run on the specified ECS Capacity Provider"
+  default     = 100
+}
+
+variable "ecs_service_use_autoscaling" {
+  type        = bool
+  description = "Whether to add a scaling policy to the ECS service"
+  default     = false
+}
+
+variable "ecs_service_autoscaling_predefined_metric_type" {
+  type        = string
+  description = "Predefined metric to use with ECS service app autoscaling policy"
+  default     = "ECSServiceAverageCPUUtilization"
+}
+
+variable "ecs_service_autoscaling_target_value" {
+  type        = number
+  description = "Percentage value for the ECS service app autoscaling predefined metric"
+  default     = 70
 }
 
 variable "ecs_task_def_container_definitions" {
@@ -210,10 +252,16 @@ variable "ecs_task_def_memory" {
   default     = 1024
 }
 
-variable "ecs_task_def_volumes" {
+variable "ecs_task_def_volumes_efs" {
   type        = list(string)
-  description = "List of volume names to attach to the ECS Task Definition"
+  description = "List of volume names to attach to the ECS Task Definition to connect to EFS"
   default     = []
+}
+
+variable "ecs_task_def_volumes_host" {
+  type        = map(string)
+  description = "Map of volume name keys and host path values to attach to the ECS Task Definition"
+  default     = {}
 }
 
 variable "ecs_network_mode" {
@@ -248,6 +296,12 @@ variable "alb_listener_rule_priority" {
   with the same priority.
   DESCRIPTION
   default     = null
+}
+
+variable "alb_listener_rule_create" {
+  type        = bool
+  description = "Whether to create a Load Balancer Listener Rule"
+  default     = true
 }
 
 variable "s3_task_execution_bucket" {
@@ -351,6 +405,12 @@ variable "route53_zone_id" {
   description = "ID of the Route 53 Hosted Zone for records"
 }
 
+variable "route53_create_cloudfront_alias_record" {
+  type        = bool
+  description = "Whether to create an alias record in the Route 53 hosted zone for the CloudFront distribution"
+  default     = true
+}
+
 variable "asg_name" {
   type        = string
   description = "Name of Autoscaling Group for registering with ALB Target Group"
@@ -372,9 +432,9 @@ variable "ingress_security_group_id" {
   default     = null
 }
 
-variable "update_ingress_security_group" {
+variable "update_asg_security_group_to_access_service" {
   type        = bool
-  description = "Whether to update external security group by creating an egress rule to this service"
+  description = "Whether to update the ASG security group by creating an egress rule for this service"
   default     = false
 }
 
@@ -525,6 +585,12 @@ variable "datasync_transfer_mode" {
 variable "ssm_task_execution_parameter_arns" {
   type        = list(string)
   description = "Names of SSM parameters for adding to the task execution IAM role permissions"
+  default     = []
+}
+
+variable "secrets_manager_task_execution_secret_arns" {
+  type        = list(string)
+  description = "List of Secrets Manager secrets to add to task execution permissions"
   default     = []
 }
 

@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "this" {
   ]
 
   dynamic "volume" {
-    for_each = toset(var.ecs_task_def_volumes)
+    for_each = toset(var.ecs_task_def_volumes_efs)
     content {
       name                = join("-", [var.name_prefix, volume.key])
       configure_at_launch = false
@@ -40,6 +40,14 @@ resource "aws_ecs_task_definition" "this" {
           }
         }
       }
+    }
+  }
+
+  dynamic "volume" {
+    for_each = var.ecs_task_def_volumes_host
+    content {
+      name      = join("-", [var.name_prefix, volume.key])
+      host_path = volume.value
     }
   }
 
@@ -65,10 +73,13 @@ resource "aws_ecs_service" "this" {
   scheduling_strategy                = var.ecs_service_scheduling_strategy
   propagate_tags                     = "SERVICE"
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.this.arn
-    container_name   = var.ecs_service_container_name
-    container_port   = var.ecs_service_container_port
+  dynamic "load_balancer" {
+    for_each = var.allow_public_access ? [1] : []
+    content {
+      target_group_arn = aws_lb_target_group.this.0.arn
+      container_name   = var.ecs_service_container_name
+      container_port   = var.ecs_service_container_port
+    }
   }
 
   dynamic "service_registries" {
@@ -81,10 +92,18 @@ resource "aws_ecs_service" "this" {
   }
 
   dynamic "network_configuration" {
-    for_each = var.ecs_network_mode == "awsvpc" ? [1] : []
+    for_each = var.ecs_network_mode == "awsvpc" && !var.allow_private_access ? [1] : []
     content {
       subnets         = data.aws_subnet.ecs.*.id
       security_groups = concat([var.asg_security_group_id], var.vpc_security_groups_extra)
+    }
+  }
+
+  dynamic "network_configuration" {
+    for_each = var.ecs_network_mode == "awsvpc" && var.allow_private_access ? [1] : []
+    content {
+      subnets         = data.aws_subnet.ecs.*.id
+      security_groups = concat(compact([var.asg_security_group_id, var.ingress_security_group_id]), var.vpc_security_groups_extra)
     }
   }
 
@@ -92,8 +111,15 @@ resource "aws_ecs_service" "this" {
     for_each = var.ecs_service_capacity_provider_name != null ? [1] : []
     content {
       capacity_provider = var.ecs_service_capacity_provider_name
-      base              = 1
-      weight            = 100
+      base              = var.ecs_service_capacity_provider_strategy_base
+      weight            = var.ecs_service_capacity_provider_strategy_weight
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition     = (var.ecs_network_mode == "awsvpc" && length(var.vpc_subnet_ids) > 0) || var.ecs_network_mode != "awsvpc"
+      error_message = "The vpc_subnet_ids input must be provided when ecs_network_mode is set to awsvpc."
     }
   }
 }

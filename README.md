@@ -129,7 +129,6 @@ No requirements.
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 | <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | n/a |
-| <a name="provider_external"></a> [external](#provider\_external) | n/a |
 
 ## Modules
 
@@ -142,6 +141,8 @@ No modules.
 | [aws_acm_certificate.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate.us-east-1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
+| [aws_appautoscaling_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) | resource |
+| [aws_appautoscaling_target.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
 | [aws_autoscaling_attachment.automatic_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_attachment) | resource |
 | [aws_cloudfront_distribution.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_datasync_location_efs.target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/datasync_location_efs) | resource |
@@ -177,7 +178,6 @@ No modules.
 | [aws_security_group_rule.asg_egress_nfs_to_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.asg_egress_nfs_to_existing_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.asg_ingress_from_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.asg_ingress_private_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.efs_egress_nfs_to_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.efs_ingress_nfs_from_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.efs_ingress_nfs_from_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -198,7 +198,6 @@ No modules.
 | [aws_s3_bucket.datasync](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
 | [aws_subnet.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
-| [external_external.route53_a_record](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
 ## Inputs
 
@@ -212,6 +211,7 @@ No modules.
 | <a name="input_alb_arn"></a> [alb\_arn](#input\_alb\_arn) | ARN of the ALB used by the listener | `string` | n/a | yes |
 | <a name="input_alb_dns_name"></a> [alb\_dns\_name](#input\_alb\_dns\_name) | DNS name for the ALB used by the Cloudfront distribution | `string` | n/a | yes |
 | <a name="input_alb_listener_arn"></a> [alb\_listener\_arn](#input\_alb\_listener\_arn) | The Application Load Balancer Listener ARN to add the forward rule and certificate to | `string` | n/a | yes |
+| <a name="input_alb_listener_rule_create"></a> [alb\_listener\_rule\_create](#input\_alb\_listener\_rule\_create) | Whether to create a Load Balancer Listener Rule | `bool` | `true` | no |
 | <a name="input_alb_listener_rule_priority"></a> [alb\_listener\_rule\_priority](#input\_alb\_listener\_rule\_priority) | The priority for the rule between 1 and 50000.<br>Leaving it unset will automatically set the rule with next available priority<br>after currently existing highest rule. A listener can't have multiple rules<br>with the same priority. | `string` | `null` | no |
 | <a name="input_alb_security_group_id"></a> [alb\_security\_group\_id](#input\_alb\_security\_group\_id) | ID of the ALB Security Group for creating ingress to the ALB | `string` | n/a | yes |
 | <a name="input_alb_target_group_deregistration_delay"></a> [alb\_target\_group\_deregistration\_delay](#input\_alb\_target\_group\_deregistration\_delay) | Amount time for ELB to wait before changing the state of a deregistering target from draining to unused | `number` | `300` | no |
@@ -225,6 +225,7 @@ No modules.
 | <a name="input_alb_target_group_protocol"></a> [alb\_target\_group\_protocol](#input\_alb\_target\_group\_protocol) | Protocol to use for the target group | `string` | `"HTTP"` | no |
 | <a name="input_alb_target_group_slow_start"></a> [alb\_target\_group\_slow\_start](#input\_alb\_target\_group\_slow\_start) | Amount time for targets to warm up before the load balancer sends them a full share of requests | `number` | `0` | no |
 | <a name="input_allow_private_access"></a> [allow\_private\_access](#input\_allow\_private\_access) | Whether to allow private access to the service | `bool` | `false` | no |
+| <a name="input_allow_public_access"></a> [allow\_public\_access](#input\_allow\_public\_access) | Whether to allow public access to the service through the load balancer | `bool` | `true` | no |
 | <a name="input_alternative_domain_names"></a> [alternative\_domain\_names](#input\_alternative\_domain\_names) | List of additional domain names to add to ALB listener rule and CloudFront distribution | `list(string)` | `[]` | no |
 | <a name="input_asg_name"></a> [asg\_name](#input\_asg\_name) | Name of Autoscaling Group for registering with ALB Target Group | `string` | n/a | yes |
 | <a name="input_asg_security_group_id"></a> [asg\_security\_group\_id](#input\_asg\_security\_group\_id) | ID of the ASG Security Group for creating ingress from from ALB | `string` | n/a | yes |
@@ -252,8 +253,13 @@ No modules.
 | <a name="input_ecr_repository_force_delete"></a> [ecr\_repository\_force\_delete](#input\_ecr\_repository\_force\_delete) | Whether to delete non-empty ECR repositories | `bool` | `false` | no |
 | <a name="input_ecr_repository_names"></a> [ecr\_repository\_names](#input\_ecr\_repository\_names) | List of names of ECR repositories required by this workload | `list(string)` | `[]` | no |
 | <a name="input_ecs_cluster_arn"></a> [ecs\_cluster\_arn](#input\_ecs\_cluster\_arn) | ARN of the ECS cluster to which this workload should be deployed | `string` | n/a | yes |
+| <a name="input_ecs_cluster_name"></a> [ecs\_cluster\_name](#input\_ecs\_cluster\_name) | Name of the ECS cluster to use with Service auto scaling | `string` | `null` | no |
 | <a name="input_ecs_network_mode"></a> [ecs\_network\_mode](#input\_ecs\_network\_mode) | Networking mode specified in the ECS Task Definition. One of host, bridge, awsvpc | `string` | `"bridge"` | no |
-| <a name="input_ecs_service_capacity_provider_name"></a> [ecs\_service\_capacity\_provider\_name](#input\_ecs\_service\_capacity\_provider\_name) | Name of an ECS Capacity Provider | `string` | `null` | no |
+| <a name="input_ecs_service_autoscaling_predefined_metric_type"></a> [ecs\_service\_autoscaling\_predefined\_metric\_type](#input\_ecs\_service\_autoscaling\_predefined\_metric\_type) | Predefined metric to use with ECS service app autoscaling policy | `string` | `"ECSServiceAverageCPUUtilization"` | no |
+| <a name="input_ecs_service_autoscaling_target_value"></a> [ecs\_service\_autoscaling\_target\_value](#input\_ecs\_service\_autoscaling\_target\_value) | Percentage value for the ECS service app autoscaling predefined metric | `number` | `70` | no |
+| <a name="input_ecs_service_capacity_provider_name"></a> [ecs\_service\_capacity\_provider\_name](#input\_ecs\_service\_capacity\_provider\_name) | Name of a ECS Capacity Provider to use with the ECS Service, other than the default | `string` | `null` | no |
+| <a name="input_ecs_service_capacity_provider_strategy_base"></a> [ecs\_service\_capacity\_provider\_strategy\_base](#input\_ecs\_service\_capacity\_provider\_strategy\_base) | Minimum number of tasks to run on the specified ECS Capacity Provider | `number` | `1` | no |
+| <a name="input_ecs_service_capacity_provider_strategy_weight"></a> [ecs\_service\_capacity\_provider\_strategy\_weight](#input\_ecs\_service\_capacity\_provider\_strategy\_weight) | Percentage of tasks to run on the specified ECS Capacity Provider | `number` | `100` | no |
 | <a name="input_ecs_service_container_name"></a> [ecs\_service\_container\_name](#input\_ecs\_service\_container\_name) | Name of container to associated with the load balancer configuration in the ECS service | `string` | n/a | yes |
 | <a name="input_ecs_service_container_port"></a> [ecs\_service\_container\_port](#input\_ecs\_service\_container\_port) | Container port number associated load balancer configuration in the ECS service. This must match a container port in the container definition port mappings | `number` | n/a | yes |
 | <a name="input_ecs_service_deployment_maximum_percent"></a> [ecs\_service\_deployment\_maximum\_percent](#input\_ecs\_service\_deployment\_maximum\_percent) | Maximum percentage of tasks to allowed to run during a deployment (percentage of desired count) | `number` | `200` | no |
@@ -263,10 +269,12 @@ No modules.
 | <a name="input_ecs_service_max_capacity"></a> [ecs\_service\_max\_capacity](#input\_ecs\_service\_max\_capacity) | Sets the Maximum Capacity for the ECS Service | `number` | `2` | no |
 | <a name="input_ecs_service_min_capacity"></a> [ecs\_service\_min\_capacity](#input\_ecs\_service\_min\_capacity) | Sets the Minimum Capacity for the ECS Service | `number` | `1` | no |
 | <a name="input_ecs_service_scheduling_strategy"></a> [ecs\_service\_scheduling\_strategy](#input\_ecs\_service\_scheduling\_strategy) | ECS Service scheduling strategy, either REPLICA or DAEMON | `string` | `"REPLICA"` | no |
+| <a name="input_ecs_service_use_autoscaling"></a> [ecs\_service\_use\_autoscaling](#input\_ecs\_service\_use\_autoscaling) | Whether to add a scaling policy to the ECS service | `bool` | `false` | no |
 | <a name="input_ecs_task_def_container_definitions"></a> [ecs\_task\_def\_container\_definitions](#input\_ecs\_task\_def\_container\_definitions) | Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html | `string` | n/a | yes |
 | <a name="input_ecs_task_def_cpu"></a> [ecs\_task\_def\_cpu](#input\_ecs\_task\_def\_cpu) | Number of cpu units used by the task | `number` | `null` | no |
 | <a name="input_ecs_task_def_memory"></a> [ecs\_task\_def\_memory](#input\_ecs\_task\_def\_memory) | Amount (in MiB) of memory used by the task. Note if this is unset, all container definitions must set memory and/or memoryReservation | `number` | `1024` | no |
-| <a name="input_ecs_task_def_volumes"></a> [ecs\_task\_def\_volumes](#input\_ecs\_task\_def\_volumes) | List of volume names to attach to the ECS Task Definition | `list(string)` | `[]` | no |
+| <a name="input_ecs_task_def_volumes_efs"></a> [ecs\_task\_def\_volumes\_efs](#input\_ecs\_task\_def\_volumes\_efs) | List of volume names to attach to the ECS Task Definition to connect to EFS | `list(string)` | `[]` | no |
+| <a name="input_ecs_task_def_volumes_host"></a> [ecs\_task\_def\_volumes\_host](#input\_ecs\_task\_def\_volumes\_host) | Map of volume name keys and host path values to attach to the ECS Task Definition | `map(string)` | `{}` | no |
 | <a name="input_efs_access_point_id"></a> [efs\_access\_point\_id](#input\_efs\_access\_point\_id) | ID of an existing EFS Access Point | `string` | `null` | no |
 | <a name="input_efs_access_point_posix_user_gid"></a> [efs\_access\_point\_posix\_user\_gid](#input\_efs\_access\_point\_posix\_user\_gid) | POSIX group ID used for all file system operations using the EFS access point. Default maps to root user on Amazon Linux | `number` | `0` | no |
 | <a name="input_efs_access_point_posix_user_secondary_gids"></a> [efs\_access\_point\_posix\_user\_secondary\_gids](#input\_efs\_access\_point\_posix\_user\_secondary\_gids) | Secondary POSIX group IDs used for all file system operations using the EFS access point | `list(number)` | `[]` | no |
@@ -284,15 +292,17 @@ No modules.
 | <a name="input_iam_task_additional_policies"></a> [iam\_task\_additional\_policies](#input\_iam\_task\_additional\_policies) | Map of IAM Policies to add to the ECS task permissions. Values should be Policy ARNs; Keys are descriptive strings | `map(string)` | `{}` | no |
 | <a name="input_ingress_security_group_id"></a> [ingress\_security\_group\_id](#input\_ingress\_security\_group\_id) | ID of a security group to grant acess to container instances | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to add to resource names | `string` | n/a | yes |
+| <a name="input_route53_create_cloudfront_alias_record"></a> [route53\_create\_cloudfront\_alias\_record](#input\_route53\_create\_cloudfront\_alias\_record) | Whether to create an alias record in the Route 53 hosted zone for the CloudFront distribution | `bool` | `true` | no |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | ID of the Route 53 Hosted Zone for records | `string` | n/a | yes |
 | <a name="input_s3_task_bucket_objects"></a> [s3\_task\_bucket\_objects](#input\_s3\_task\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task bucket | `map(string)` | `{}` | no |
 | <a name="input_s3_task_buckets"></a> [s3\_task\_buckets](#input\_s3\_task\_buckets) | Names of the S3 Buckets for use by ECS tasks on the host (i.e. running containers) | `list(string)` | `[]` | no |
 | <a name="input_s3_task_execution_additional_buckets"></a> [s3\_task\_execution\_additional\_buckets](#input\_s3\_task\_execution\_additional\_buckets) | Names of additional buckets for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
 | <a name="input_s3_task_execution_bucket"></a> [s3\_task\_execution\_bucket](#input\_s3\_task\_execution\_bucket) | Name of the bucket for storage of static data for services | `string` | `null` | no |
 | <a name="input_s3_task_execution_bucket_objects"></a> [s3\_task\_execution\_bucket\_objects](#input\_s3\_task\_execution\_bucket\_objects) | Map of S3 bucket keys (file names) and file contents for upload to the task execution bucket | `map(string)` | `{}` | no |
+| <a name="input_secrets_manager_task_execution_secret_arns"></a> [secrets\_manager\_task\_execution\_secret\_arns](#input\_secrets\_manager\_task\_execution\_secret\_arns) | List of Secrets Manager secrets to add to task execution permissions | `list(string)` | `[]` | no |
 | <a name="input_ssm_task_execution_parameter_arns"></a> [ssm\_task\_execution\_parameter\_arns](#input\_ssm\_task\_execution\_parameter\_arns) | Names of SSM parameters for adding to the task execution IAM role permissions | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |
-| <a name="input_update_ingress_security_group"></a> [update\_ingress\_security\_group](#input\_update\_ingress\_security\_group) | Whether to update external security group by creating an egress rule to this service | `bool` | `false` | no |
+| <a name="input_update_asg_security_group_to_access_service"></a> [update\_asg\_security\_group\_to\_access\_service](#input\_update\_asg\_security\_group\_to\_access\_service) | Whether to update the ASG security group by creating an egress rule for this service | `bool` | `false` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC for the deployment | `string` | n/a | yes |
 | <a name="input_vpc_security_groups_extra"></a> [vpc\_security\_groups\_extra](#input\_vpc\_security\_groups\_extra) | Additional VPC Security Groups to add to the service | `list(string)` | `[]` | no |
 | <a name="input_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#input\_vpc\_subnet\_ids) | VPC Subnet IDs to use with EFS Mount Points | `list(string)` | `[]` | no |
@@ -301,7 +311,12 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_alb_target_group_arn"></a> [alb\_target\_group\_arn](#output\_alb\_target\_group\_arn) | ARN of the Load Balancer Target Group |
+| <a name="output_cloudmap_service_discovery_namespace_name"></a> [cloudmap\_service\_discovery\_namespace\_name](#output\_cloudmap\_service\_discovery\_namespace\_name) | Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API |
+| <a name="output_cloudmap_service_discovery_service_name"></a> [cloudmap\_service\_discovery\_service\_name](#output\_cloudmap\_service\_discovery\_service\_name) | Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API |
+| <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | Name of the DNS record created in Route 53 aliasing the CloudFront Distribution |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | Map of ECR Repsitory name keys and Repository URLs |
+| <a name="output_ecs_service_id"></a> [ecs\_service\_id](#output\_ecs\_service\_id) | ID of the ECS Service |
 | <a name="output_link"></a> [link](#output\_link) | Link to connect to the service |
 | <a name="output_name_prefix"></a> [name\_prefix](#output\_name\_prefix) | This is a convenience for recycling into the task definition template |
 | <a name="output_private_access_host"></a> [private\_access\_host](#output\_private\_access\_host) | Route 53 record name for the A record created by Cloud Map Service Discovery |

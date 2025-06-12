@@ -33,7 +33,9 @@ resource "aws_iam_role" "task_execution_role" {
   name                 = trimprefix(substr("${local.iam_role_prefix}-execution-role", -64, -1), "-")
   assume_role_policy   = data.aws_iam_policy_document.ecs_assume_role.json
   max_session_duration = 3600
-  tags                 = {}
+  tags = {
+    Name = trimprefix(substr("${local.iam_role_prefix}-execution-role", -64, -1), "-")
+  }
 }
 
 resource "aws_iam_policy" "task_execution_policy" {
@@ -41,6 +43,9 @@ resource "aws_iam_policy" "task_execution_policy" {
   path        = "/"
   description = "Policy for ${local.iam_role_prefix}-execution-role"
   policy      = data.aws_iam_policy_document.task_execution_role_permissions.json
+  tags = {
+    Name = "${local.iam_role_prefix}-execution-policy"
+  }
 }
 
 data "aws_iam_policy_document" "task_execution_role_permissions" {
@@ -82,6 +87,16 @@ data "aws_iam_policy_document" "task_execution_role_permissions" {
       resources = var.ssm_task_execution_parameter_arns
     }
   }
+
+  dynamic "statement" {
+    for_each = length(var.secrets_manager_task_execution_secret_arns) > 0 ? [1] : []
+    content {
+      actions = [
+        "secretsmanager:GetSecretValue"
+      ]
+      resources = var.secrets_manager_task_execution_secret_arns
+    }
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "task_execution_policy_attachment" {
@@ -95,7 +110,9 @@ resource "aws_iam_role" "task_role" {
   name                 = trimprefix(substr("${local.iam_role_prefix}-task-role", -64, -1), "-")
   assume_role_policy   = data.aws_iam_policy_document.ecs_assume_role.json
   max_session_duration = 3600
-  tags                 = {}
+  tags = {
+    Name = trimprefix(substr("${local.iam_role_prefix}-task-role", -64, -1), "-")
+  }
 }
 
 resource "aws_iam_policy" "task_policy" {
@@ -104,6 +121,9 @@ resource "aws_iam_policy" "task_policy" {
   path        = "/"
   description = "Policy for ${local.iam_role_prefix}-task-role"
   policy      = data.aws_iam_policy_document.task_role_permissions.json
+  tags = {
+    Name = "${local.iam_role_prefix}-task-policy"
+  }
 }
 
 data "aws_iam_policy_document" "task_role_permissions" {
@@ -189,10 +209,13 @@ data "aws_iam_policy_document" "datasync_permissions" {
 resource "aws_iam_policy" "datasync" {
   count = var.datasync_s3_objects_to_efs ? 1 : 0
 
-  name        = "${local.iam_role_prefix}-datasync"
+  name        = trimprefix(substr("${local.iam_role_prefix}-datasync", -64, -1), "-")
   path        = "/"
   description = "Policy for ${local.iam_role_prefix}-datasync"
   policy      = data.aws_iam_policy_document.datasync_permissions.0.json
+  tags = {
+    Name = trimprefix(substr("${local.iam_role_prefix}-datasync", -64, -1), "-")
+  }
 }
 
 resource "aws_iam_role" "datasync" {
@@ -203,6 +226,9 @@ resource "aws_iam_role" "datasync" {
   name                 = trimprefix(substr("${local.iam_role_prefix}-datasync", -64, -1), "-")
   assume_role_policy   = data.aws_iam_policy_document.datasync_assume_role.json
   max_session_duration = 3600
+  tags = {
+    Name = trimprefix(substr("${local.iam_role_prefix}-datasync", -64, -1), "-")
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "datasync" {
