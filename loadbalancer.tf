@@ -1,5 +1,5 @@
 resource "aws_lb_listener_certificate" "this" {
-  count = var.allow_public_access ? 1 : 0
+  count = var.alb_listener_certificate_create && var.allow_public_access ? 1 : 0
 
   listener_arn    = var.alb_listener_arn
   certificate_arn = var.acm_create_certificate ? aws_acm_certificate_validation.this.0.certificate_arn : var.acm_certificate_arn
@@ -19,6 +19,15 @@ resource "aws_lb_listener_rule" "this" {
   condition {
     host_header {
       values = concat([local.domain_name], var.alternative_domain_names)
+    }
+  }
+
+  dynamic "condition" {
+    for_each = length(var.alb_listener_rule_path_patterns) > 0 ? [1] : []
+    content {
+      path_pattern {
+        values = var.alb_listener_rule_path_patterns
+      }
     }
   }
 

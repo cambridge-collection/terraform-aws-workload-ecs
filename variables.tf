@@ -76,6 +76,12 @@ variable "alternative_domain_names" {
   default     = []
 }
 
+variable "cloudfront_distribution_create" {
+  type        = bool
+  description = "Whether to create a CloudFront distribution in front of the service"
+  default     = true
+}
+
 variable "cloudfront_waf_acl_arn" {
   type        = string
   description = "ARN of the WAF Web ACL for use by CloudFront"
@@ -287,6 +293,12 @@ variable "alb_listener_arn" {
   description = "The Application Load Balancer Listener ARN to add the forward rule and certificate to"
 }
 
+variable "alb_listener_certificate_create" {
+  type        = string
+  description = "Whether to create a load balancer listener certificate"
+  default     = true
+}
+
 variable "alb_listener_rule_priority" {
   type        = string
   description = <<-DESCRIPTION
@@ -302,6 +314,12 @@ variable "alb_listener_rule_create" {
   type        = bool
   description = "Whether to create a Load Balancer Listener Rule"
   default     = true
+}
+
+variable "alb_listener_rule_path_patterns" {
+  type        = list(string)
+  description = "Optional list of path patterns to add to the load balancer listener rule"
+  default     = []
 }
 
 variable "s3_task_execution_bucket" {
