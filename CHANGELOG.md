@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.0.0...v4.1.0) (2025-06-13)
+
+
+### Features
+
+* **cloudfront:** Update condition on CloudFront Distribution ([4e28d5c](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/4e28d5c0255a769926d1d44a0e78bb7de8f67e1c))
+
 ## [4.0.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v3.6.0...v4.0.0) (2025-06-12)
 
 
