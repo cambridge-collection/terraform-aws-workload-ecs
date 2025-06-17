@@ -12,6 +12,16 @@ data "aws_cloudfront_origin_request_policy" "managed_all_viewer" {
   name     = "Managed-AllViewer"
 }
 
+resource "aws_cloudfront_origin_access_control" "error_pages_origin_access_control" {
+  count = var.cloudfront_distribution_create && length(var.cloudfront_custom_error_pages_list) > 0 ? 1 : 0
+
+  name                              = "error_pages_origin_access_control"
+  description                       = "Terraform Managed - CloudFront OAC for error pages S3"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "this" {
   count = var.cloudfront_distribution_create && var.allow_public_access ? 1 : 0
 
@@ -40,6 +50,29 @@ resource "aws_cloudfront_distribution" "this" {
     domain_name         = var.alb_dns_name
     origin_id           = local.domain_name
     origin_path         = ""
+  }
+
+  dynamic "origin" {
+    for_each = length(var.cloudfront_custom_error_pages_list) > 0 ? [1] : []
+    content {
+      domain_name              = "${aws_s3_bucket.cloudfront_bucket[0].id}.s3.${data.aws_region.this.name}.amazonaws.com"
+      origin_id                = "s3-error-pages"
+      origin_access_control_id = aws_cloudfront_origin_access_control.error_pages_origin_access_control[0].id
+      origin_path              = ""
+    }
+  }
+
+  dynamic "ordered_cache_behavior" {
+    for_each = length(var.cloudfront_custom_error_pages_list) > 0 ? [1] : []
+    content {
+      path_pattern           = "/errors/*"
+      target_origin_id       = "s3-error-pages"
+      allowed_methods        = ["GET", "HEAD"]
+      cached_methods         = ["GET", "HEAD"]
+      viewer_protocol_policy = "redirect-to-https"
+      cache_policy_id        = data.aws_cloudfront_cache_policy.managed_caching_disabled.0.id
+      compress               = true
+    }
   }
 
   default_cache_behavior {
@@ -88,6 +121,16 @@ resource "aws_cloudfront_distribution" "this" {
       include_cookies = false
       bucket          = var.cloudfront_access_logging_bucket
       prefix          = var.name_prefix
+    }
+  }
+
+  dynamic "custom_error_response" {
+    for_each = { for page in var.cloudfront_custom_error_pages_list : page.error_code => page }
+    content {
+      error_code            = custom_error_response.value.error_code
+      response_page_path    = custom_error_response.value.path
+      response_code         = custom_error_response.value.response_code
+      error_caching_min_ttl = custom_error_response.value.ttl
     }
   }
 }

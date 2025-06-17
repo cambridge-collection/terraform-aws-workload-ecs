@@ -244,3 +244,38 @@ resource "aws_iam_role_policy_attachment" "task_additional_policy_attachment" {
   role       = aws_iam_role.task_role.name
   policy_arn = each.value
 }
+
+data "aws_iam_policy_document" "cloudfront_bucket_error_pages" {
+  count = var.cloudfront_distribution_create && length(var.cloudfront_custom_error_pages_list) > 0 ? 1 : 0
+
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    actions = ["s3:GetObject"]
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.cloudfront_bucket[0].id}/errors/*"
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values = [
+        "arn:aws:cloudfront::${var.account_id}:distribution/${aws_cloudfront_distribution.this[0].id}"
+      ]
+    }
+  }
+
+  depends_on = [aws_cloudfront_distribution.this, aws_s3_bucket.cloudfront_bucket[0]]
+}
+
+resource "aws_s3_bucket_policy" "cloudfront_error_pages" {
+  count = var.cloudfront_distribution_create && length(var.cloudfront_custom_error_pages_list) > 0 ? 1 : 0
+
+  bucket = aws_s3_bucket.cloudfront_bucket[0].id
+  policy = data.aws_iam_policy_document.cloudfront_bucket_error_pages[0].json
+}

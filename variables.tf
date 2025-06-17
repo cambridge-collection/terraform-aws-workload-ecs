@@ -135,6 +135,18 @@ variable "cloudfront_access_logging_bucket" {
   default     = null
 }
 
+variable "cloudfront_custom_error_pages_list" {
+  description = "List of custom error pages for CloudFront.  Note: all paths MUST start with /errors/"
+  type = list(object({
+    error_code    = number
+    content       = string
+    path          = string
+    response_code = number
+    ttl           = number
+  }))
+  default = []
+}
+
 variable "ecr_repository_force_delete" {
   type        = bool
   description = "Whether to delete non-empty ECR repositories"
