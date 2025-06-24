@@ -42,6 +42,16 @@ resource "aws_cloudfront_distribution" "this" {
     origin_path         = ""
   }
 
+  dynamic "origin" {
+    for_each = { for additional_origin in var.cloudfront_additional_origins : additional_origin.id => additional_origin }
+    content {
+      domain_name              = origin.value.domain_name
+      origin_id                = origin.value.id
+      origin_access_control_id = origin.value.access_control_id
+      origin_path              = origin.value.path
+    }
+  }
+
   default_cache_behavior {
     allowed_methods          = var.cloudfront_allowed_methods
     cached_methods           = var.cloudfront_cached_methods
@@ -66,6 +76,29 @@ resource "aws_cloudfront_distribution" "this" {
         event_type   = "viewer-response"
         function_arn = var.cloudfront_viewer_response_function_arn
       }
+    }
+  }
+
+  dynamic "ordered_cache_behavior" {
+    for_each = { for ocb in var.cloudfront_ordered_cache_behaviors : ocb.target_origin_id => ocb }
+    content {
+      path_pattern           = ordered_cache_behavior.value.path_pattern
+      target_origin_id       = ordered_cache_behavior.value.target_origin_id
+      allowed_methods        = ordered_cache_behavior.value.allowed_methods
+      cached_methods         = ordered_cache_behavior.value.cached_methods
+      viewer_protocol_policy = ordered_cache_behavior.value.viewer_protocol_policy
+      cache_policy_id        = coalesce(ordered_cache_behavior.value.cache_policy_id, data.aws_cloudfront_cache_policy.managed_caching_disabled.0.id)
+      compress               = ordered_cache_behavior.value.compress
+    }
+  }
+
+  dynamic "custom_error_response" {
+    for_each = { for response in var.cloudfront_custom_error_responses : response.error_code => response }
+    content {
+      error_code            = custom_error_response.value.error_code
+      response_page_path    = custom_error_response.value.response_page_path
+      response_code         = custom_error_response.value.response_code
+      error_caching_min_ttl = custom_error_response.value.error_caching_min_ttl
     }
   }
 
