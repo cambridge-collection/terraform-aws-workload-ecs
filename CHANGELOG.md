@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.1.0...v4.2.0) (2025-06-26)
+
+
+### Features
+
+* **outputs:** Add cloudwatch_log_group_arn output ([1f47b04](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/1f47b04f13946df12d9ce113dae1b3cfe506feb5))
+* **outputs:** Add module outputs ([7c72df8](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/7c72df8143fe3f8ce80bdadc90f9d9c0ababc887))
+
 ## [4.1.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.0.0...v4.1.0) (2025-06-13)
 
 
