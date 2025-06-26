@@ -12,7 +12,7 @@ Note that this module has been designed so that several ECS service can be built
 
 This module uses an input `allow_private_access` to control whether additional resources for private access will be built. This defaults to false.
 
-When set to true, this module will create an additional Security Group for private access. This is intended to be used by consumers that exist inside the VPC where the ECS Service has been built. This exposed in the output `security_group_private_access_id`. Alongside the security group, a rule will be added to the security group indicated in the input `asg_security_group_id`, allowing access from the private access security group on the port indicated in the input `alb_target_group_port`. An egress rule on the private access security group allows outbound access to the `asg_security_group_id` on the same port.
+When set to true, this module will create an additional Security Group for private access. This is intended to be used by consumers that exist inside the VPC where the ECS Service has been built. This is exposed in the output `security_group_private_access_id`. Alongside the security group, a rule will be added to the security group indicated in the input `asg_security_group_id`, allowing access from the private access security group on the port indicated in the input `alb_target_group_port`. An egress rule on the private access security group allows outbound access to the `asg_security_group_id` on the same port.
 
 When `allow_private_access` is set to true this module will also build two AWS Cloud Map resources: a private DNS namespace, and a Service Discovery service. The private DNS namespace will automatically build a managed Route 53 Hosted Zone, and the Service Discovery service will add Route 53 records to the managed hosted zone. This will allow consumers to resolve the private IP(s) of the ECS Service instances.
 
@@ -20,9 +20,9 @@ When the `ecs_network_mode` input is set to "bridge" (the default value) the Rou
 
 ## AWS Providers
 
-This module makes use of two providers: one, the default is used to build most resources in the AWS Region of your choice. The other must be configured in the `us-east-1` region, and have an alias `us-east-1`. This  provider is used to build CloudFront resources, along with a AWS Certificate Manager certificate. To configure SSL certificates with CloudFront, the certificate must exist in the `us-east-1` region.
+This module makes use of two providers: one, the default is used to build most resources in the AWS Region of your choice. The other must be configured in the `us-east-1` region, and have an alias `us-east-1`. This  provider is used to build CloudFront resources, along with an AWS Certificate Manager certificate. To configure SSL certificates with CloudFront, the certificate must exist in the `us-east-1` region.
 
-Add this provider to your root module to make use of this module. For example:
+Add a `us-east-1` provider to your root module to make use of this module. For example:
 
 ```hcl
 provider "aws" {
@@ -39,7 +39,7 @@ This can then be passed to the module, for example:
 
 ```hcl
 module "my_service" {
-  source = "github.com/cambridge-collection/terraform-aws-workload-ecs.git?ref=1.0.0"
+  source = "github.com/cambridge-collection/terraform-aws-workload-ecs.git?ref=v3.5.0"
 
   providers = {
     aws.us-east-1 = aws.us-east-1
@@ -67,19 +67,21 @@ An output `ecr_repository_urls` shows the URIs indicated by the input `ecr_repos
 
 Setting the input `ecs_service_capacity_provider_name` allows scaling of the ECS service to be managed by an ECS capacity provider. When this input is unset, the `launch_type` property of the ECS service defaults to "EC2".
 
-An ECS capacity provider can be created in Terraform using a `aws_ecs_capacity_provider` resource, and associated with an ECS cluster using a `aws_ecs_cluster_capacity_providers` resource. The `aws_ecs_capacity_provider` must be connected to an Auto Scaling Group, allowing it to manage capacity in the ASG. When associated with the ECS service using the `ecs_service_capacity_provider_name` input, the capacity provider responds to deployments in the ECS service. When a service is deployed the capacity provider will provision new EC2 instances to meet the estimated requirements of the deployment. To allow this, the Auto Scaling Group must have a maximum capacity size slightly greater than the desired capacity, allowing the desired capacity to increase to accept the new deployment. If the deployment is successful, connections will be drained from the old tasks and unused EC2 instances terminated as the desired capacity is reduced. The deployment lifecycle will be completely managed by a combination of the capacity provider, autoscaling group and ECS service.
+An ECS capacity provider can be created in Terraform using a `aws_ecs_capacity_provider` resource, and associated with an ECS cluster using an `aws_ecs_cluster_capacity_providers` resource. The `aws_ecs_capacity_provider` must be connected to an Auto Scaling Group, allowing it to manage capacity in the ASG. When associated with the ECS service using the `ecs_service_capacity_provider_name` input, the capacity provider responds to deployments in the ECS service. When a service is deployed the capacity provider will provision new EC2 instances to meet the estimated requirements of the deployment. To allow this, the Auto Scaling Group must have a maximum capacity size greater than the desired capacity, allowing the desired capacity to increase to accept the new deployment. If the deployment is successful, connections will be drained from the old tasks and unused EC2 instances terminated as the desired capacity is reduced. The deployment lifecycle will be completely managed by a combination of the capacity provider, autoscaling group and ECS service.
 
 See the article https://aws.amazon.com/blogs/containers/deep-dive-on-amazon-ecs-cluster-auto-scaling/ for further details of ECS Cluster Auto Scaling using capacity providers
 
 ## EFS Persistence
 
-The module can optionally create an EFS file system, mount targets and access point, as well as a dedicated Security Group for the EFS mount targets. The input `use_efs_persistence` should be set to `true` if this is desired. An EFS mount target is created for each subnet in the input `vpc_subnet_ids`, allowing EFS to be accessed from inside the subnets specified. Note that the list input `vpc_subnet_ids` must have a non-zero length if `use_efs_persistence` is true, as ECS services deployed in a VPC require the mount targets to exist in each subnet used: the mount targets allow the DNS address of the EFS file system to be resolved.
+The module can optionally mount an EFS file system to the ECS task. The module can either mount an existing file system, or create one. To create a file system the input `efs_create_file_system` should be set to true. To use an existing file system the input `efs_use_existing_filesystem` should be set to true.
 
-A reference to the EFS file system is created in the ECS Task Definition. If `use_efs_persistence` is set to `true`, a reference is created between the volume and the EFS file system for each item in the input `ecs_task_def_volumes`, effectively mounting the ECS volume on the EFS file system. 
+If `efs_create_file_system` is set to true, the module will create the file system itself and an EFS mount target for each subnet in the input `vpc_subnet_ids`, allowing EFS to be accessed from inside the subnets specified. A dedicated security group for the EFS mount targets will also be created with security group rules allowing access on the port defined in the input `efs_nfs_mount_port` (defaulting to 2049).
 
-The EFS Access Point is used to modify the permissions on the EFS file system. In testing, this was necessary to enable ECS to mount the file system correctly. The access point defaults to setting the mount to be owned by the root user on the host, with permissions allowing read, write and executable access. Changing the default settings may lead to ECS being unable to modify the permissions on the root directory, or otherwise Docker on the host being able to create files in the file system where the container user is non-root.
+If `efs_use_existing_filesystem` is set to true the input `efs_file_system_id` must also be supplied. 
 
-Note that services deployed in a VPC that need access to EFS may need a VPC Endpoint for the service `elasticfilesystem` if they don't have a route to the public interface for EFS.
+An EFS Access Point is used to modify the permissions on the EFS file system. In testing, this was necessary to enable ECS to mount the file system correctly. The access point defaults to setting the mount to be owned by the root user on the host, with permissions allowing read, write and executable access. Changing the default settings may lead to ECS being unable to modify the permissions on the root directory, or otherwise Docker on the host being able to create files in the file system where the container user is non-root.
+
+Note that services deployed in a VPC without direct internet egress that need access to EFS may need a VPC Endpoint for the service `elasticfilesystem`.
 
 ## S3 File Storage
 
@@ -315,11 +317,15 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_alb_target_group_arn"></a> [alb\_target\_group\_arn](#output\_alb\_target\_group\_arn) | ARN of the Load Balancer Target Group |
+| <a name="output_alb_target_group_arn_suffix"></a> [alb\_target\_group\_arn\_suffix](#output\_alb\_target\_group\_arn\_suffix) | ARN suffix of the Target Group for use with CloudWatch Metrics |
+| <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | ID of the CloudFront Distribution |
 | <a name="output_cloudmap_service_discovery_namespace_name"></a> [cloudmap\_service\_discovery\_namespace\_name](#output\_cloudmap\_service\_discovery\_namespace\_name) | Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API |
 | <a name="output_cloudmap_service_discovery_service_name"></a> [cloudmap\_service\_discovery\_service\_name](#output\_cloudmap\_service\_discovery\_service\_name) | Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API |
+| <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch Log Group used by ECS |
 | <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | Name of the DNS record created in Route 53 aliasing the CloudFront Distribution |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | Map of ECR Repsitory name keys and Repository URLs |
 | <a name="output_ecs_service_id"></a> [ecs\_service\_id](#output\_ecs\_service\_id) | ID of the ECS Service |
+| <a name="output_ecs_service_name"></a> [ecs\_service\_name](#output\_ecs\_service\_name) | Name of the ECS Service |
 | <a name="output_link"></a> [link](#output\_link) | Link to connect to the service |
 | <a name="output_name_prefix"></a> [name\_prefix](#output\_name\_prefix) | This is a convenience for recycling into the task definition template |
 | <a name="output_private_access_host"></a> [private\_access\_host](#output\_private\_access\_host) | Route 53 record name for the A record created by Cloud Map Service Discovery |
