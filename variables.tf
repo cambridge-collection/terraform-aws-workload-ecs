@@ -135,6 +135,42 @@ variable "cloudfront_access_logging_bucket" {
   default     = null
 }
 
+variable "cloudfront_custom_error_responses" {
+  type = list(object({
+    error_code            = number
+    response_page_path    = string
+    response_code         = number
+    error_caching_min_ttl = number
+  }))
+  description = "Optional list of custom error pages for the CloudFront Distribution"
+  default     = []
+}
+
+variable "cloudfront_ordered_cache_behaviors" {
+  type = list(object({
+    path_pattern           = string
+    target_origin_id       = string
+    allowed_methods        = optional(list(string), ["GET", "HEAD"])
+    cached_methods         = optional(list(string), ["GET", "HEAD"])
+    viewer_protocol_policy = optional(string, "redirect-to-https")
+    cache_policy_id        = optional(string)
+    compress               = optional(bool, true)
+  }))
+  description = "Optional list of ordered cache behaviours to add to the CloudFront Distribution. Target origin ID must match the id of an origin"
+  default     = []
+}
+
+variable "cloudfront_additional_origins" {
+  type = list(object({
+    domain_name       = string
+    id                = string
+    access_control_id = string
+    path              = string
+  }))
+  description = "Optional list of additional origins to add to the CloudFront Distribution"
+  default     = []
+}
+
 variable "ecr_repository_force_delete" {
   type        = bool
   description = "Whether to delete non-empty ECR repositories"
