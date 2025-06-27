@@ -187,11 +187,6 @@ variable "ecs_service_container_name" {
   description = "Name of container to associated with the load balancer configuration in the ECS service"
 }
 
-variable "ecs_service_container_port" {
-  type        = number
-  description = "Container port number associated load balancer configuration in the ECS service. This must match a container port in the container definition port mappings"
-}
-
 variable "ecs_service_iam_role" {
   type        = string
   description = "ARN of an IAM role to call load balancer for non-awsvpc network modes. AWSServiceRoleForECS is suitable, but AWS will generate an error if the value is used and the role already exists in the account"
@@ -359,14 +354,15 @@ variable "cloudwatch_log_group_arn" {
   description = "ARN of the CloudWatch Log Group for adding to IAM task execution role policy"
 }
 
-variable "alb_target_group_port" {
-  type        = number
-  description = "Port number to use for the target group"
+variable "alb_target_group_ports" {
+  type        = list(number)
+  description = "List of port numbers to use for the target group"
+  default     = []
 }
 
 variable "alb_target_group_protocol" {
   type        = string
-  description = "Protocol to use for the target group"
+  description = "Protocol to use for the target group. Only HTTP and HTTPS are allowed for an Application Load Balancer"
   default     = "HTTP"
 }
 
