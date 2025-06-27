@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.2.1...v4.3.0) (2025-06-27)
+
+
+### Features
+
+* **cloudfront:** Add optional origin, ordered_cache_behaviour and error pages ([276c578](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/276c57820a0539f899f2ebd431fdf1a3f016a794))
+
 ## [4.2.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.2.0...v4.2.1) (2025-06-27)
 
 
