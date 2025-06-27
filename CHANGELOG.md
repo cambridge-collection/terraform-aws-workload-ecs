@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.2.0...v4.2.1) (2025-06-27)
+
+
+### Bug Fixes
+
+* **outputs:** Outputs updated to include conditional logic ([eec70c7](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/eec70c7ff0198f2aeeba198304cef0b29348e1f9))
+
 ## [4.2.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.1.0...v4.2.0) (2025-06-26)
 
 
