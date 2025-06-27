@@ -23,18 +23,18 @@ output "private_access_host" {
   description = "Route 53 record name for the A record created by Cloud Map Service Discovery"
 }
 
-output "private_access_port" {
-  value       = var.allow_private_access ? tostring(var.ecs_service_container_port) : ""
-  description = "Port number for accessing service via private access host name"
+output "private_access_ports" {
+  value       = var.allow_private_access ? [for port in var.alb_target_group_ports : tostring(port)] : []
+  description = "Port numbers for accessing service via private access host name"
 }
 
-output "alb_target_group_arn" {
-  value       = var.allow_public_access ? aws_lb_target_group.this.0.arn : ""
+output "alb_target_group_arns" {
+  value       = var.allow_public_access ? aws_lb_target_group.this.*.arn : []
   description = "ARN of the Load Balancer Target Group"
 }
 
-output "alb_target_group_arn_suffix" {
-  value       = var.allow_public_access ? aws_lb_target_group.this.0.arn_suffix : ""
+output "alb_target_group_arn_suffixes" {
+  value       = var.allow_public_access ? aws_lb_target_group.this.*.arn_suffix : []
   description = "ARN suffix of the Target Group for use with CloudWatch Metrics"
 }
 
@@ -59,7 +59,7 @@ output "ecs_service_name" {
 }
 
 output "cloudfront_distribution_id" {
-  value       = var.cloudfront_distribution_create && var.allow_public_access ? aws_cloudfront_distribution.this.0.id : ""
+  value       = var.cloudfront_distribution_create ? aws_cloudfront_distribution.this.0.id : ""
   description = "ID of the CloudFront Distribution"
 }
 

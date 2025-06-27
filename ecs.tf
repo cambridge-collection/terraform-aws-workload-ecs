@@ -74,11 +74,11 @@ resource "aws_ecs_service" "this" {
   propagate_tags                     = "SERVICE"
 
   dynamic "load_balancer" {
-    for_each = var.allow_public_access ? [1] : []
+    for_each = var.allow_public_access ? aws_lb_target_group.this : []
     content {
-      target_group_arn = aws_lb_target_group.this.0.arn
       container_name   = var.ecs_service_container_name
-      container_port   = var.ecs_service_container_port
+      target_group_arn = load_balancer.value.arn
+      container_port   = load_balancer.value.port
     }
   }
 
