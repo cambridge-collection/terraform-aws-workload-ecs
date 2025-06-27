@@ -33,6 +33,11 @@ output "alb_target_group_arn" {
   description = "ARN of the Load Balancer Target Group"
 }
 
+output "alb_target_group_arn_suffix" {
+  value       = var.allow_public_access ? aws_lb_target_group.this.0.arn_suffix : ""
+  description = "ARN suffix of the Target Group for use with CloudWatch Metrics"
+}
+
 output "cloudmap_service_discovery_namespace_name" {
   value       = var.name_prefix
   description = "Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API"
@@ -53,13 +58,8 @@ output "ecs_service_name" {
   description = "Name of the ECS Service"
 }
 
-output "alb_target_group_arn_suffix" {
-  value       = aws_lb_target_group.this.arn_suffix
-  description = "ARN suffix of the Target Group for use with CloudWatch Metrics"
-}
-
 output "cloudfront_distribution_id" {
-  value       = aws_cloudfront_distribution.this.id
+  value       = var.cloudfront_distribution_create ? aws_cloudfront_distribution.this.0.id : ""
   description = "ID of the CloudFront Distribution"
 }
 
