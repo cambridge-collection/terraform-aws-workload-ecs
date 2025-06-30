@@ -19,12 +19,12 @@ output "domain_name" {
 }
 
 output "private_access_hosts" {
-  value       = var.allow_private_access ? [ for target in var.alb_target_group_settings : join(".", [target.name, var.name_prefix]) ] : []
+  value       = var.allow_private_access ? [for target in var.alb_target_group_settings : join(".", [target.name, var.name_prefix])] : []
   description = "Route 53 record name for the A record created by Cloud Map Service Discovery"
 }
 
 output "private_access_ports" {
-  value       = var.allow_private_access ? [ for target in var.alb_target_group_settings : tostring(target.port)] : []
+  value       = var.allow_private_access ? [for target in var.alb_target_group_settings : tostring(target.port)] : []
   description = "Port numbers for accessing service via private access host name"
 }
 
@@ -44,7 +44,7 @@ output "cloudmap_service_discovery_namespace_name" {
 }
 
 output "cloudmap_service_discovery_service_names" {
-  value       = [ for target in var.alb_target_group_settings : target.name ]
+  value       = [for target in var.alb_target_group_settings : target.name]
   description = "Names of the Cloud Map Service Discovery Service for use by DiscoverInstances API"
 }
 
