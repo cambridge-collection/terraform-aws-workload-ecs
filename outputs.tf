@@ -18,13 +18,13 @@ output "domain_name" {
   description = "Name of the DNS record created in Route 53 aliasing the CloudFront Distribution"
 }
 
-output "private_access_host" {
-  value       = var.allow_private_access ? join(".", [var.ecs_service_container_name, var.name_prefix]) : ""
+output "private_access_hosts" {
+  value       = var.allow_private_access ? [ for target in var.alb_target_group_settings : join(".", [target.name, var.name_prefix]) ] : []
   description = "Route 53 record name for the A record created by Cloud Map Service Discovery"
 }
 
 output "private_access_ports" {
-  value       = var.allow_private_access ? [for port in var.alb_target_group_ports : tostring(port)] : []
+  value       = var.allow_private_access ? [ for target in var.alb_target_group_settings : tostring(target.port)] : []
   description = "Port numbers for accessing service via private access host name"
 }
 
@@ -43,9 +43,9 @@ output "cloudmap_service_discovery_namespace_name" {
   description = "Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API"
 }
 
-output "cloudmap_service_discovery_service_name" {
-  value       = var.ecs_service_container_name
-  description = "Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API"
+output "cloudmap_service_discovery_service_names" {
+  value       = [ for target in var.alb_target_group_settings : target.name ]
+  description = "Names of the Cloud Map Service Discovery Service for use by DiscoverInstances API"
 }
 
 output "ecs_service_id" {
