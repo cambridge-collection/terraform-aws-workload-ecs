@@ -59,7 +59,7 @@ output "ecs_service_name" {
 }
 
 output "cloudfront_distribution_id" {
-  value       = var.cloudfront_distribution_create ? aws_cloudfront_distribution.this.0.id : ""
+  value       = var.cloudfront_distribution_create && var.allow_public_access ? aws_cloudfront_distribution.this.0.id : ""
   description = "ID of the CloudFront Distribution"
 }
 
