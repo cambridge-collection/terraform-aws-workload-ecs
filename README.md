@@ -176,16 +176,16 @@ No modules.
 | [aws_s3_object.task](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_s3_object.task_execution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_security_group.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_security_group_rule.alb_egress_to_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.asg_egress_nfs_to_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.asg_egress_nfs_to_existing_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.asg_ingress_from_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.efs_egress_nfs_to_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.efs_ingress_nfs_from_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.efs_ingress_nfs_from_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.private_access_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_service_discovery_private_dns_namespace.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_private_dns_namespace) | resource |
 | [aws_service_discovery_service.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_service) | resource |
+| [aws_vpc_security_group_egress_rule.alb_egress_to_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_egress_rule) | resource |
+| [aws_vpc_security_group_egress_rule.asg_egress_nfs_to_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_egress_rule) | resource |
+| [aws_vpc_security_group_egress_rule.asg_egress_nfs_to_existing_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_egress_rule) | resource |
+| [aws_vpc_security_group_egress_rule.efs_egress_nfs_to_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_egress_rule) | resource |
+| [aws_vpc_security_group_egress_rule.private_access_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_egress_rule) | resource |
+| [aws_vpc_security_group_ingress_rule.asg_ingress_from_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_ingress_rule) | resource |
+| [aws_vpc_security_group_ingress_rule.efs_ingress_nfs_from_asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_ingress_rule) | resource |
+| [aws_vpc_security_group_ingress_rule.efs_ingress_nfs_from_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_ingress_rule) | resource |
 | [aws_cloudfront_cache_policy.managed_caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_cloudfront_origin_request_policy.managed_all_viewer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_origin_request_policy) | data source |
 | [aws_ecr_repository.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecr_repository) | data source |
@@ -221,12 +221,10 @@ No modules.
 | <a name="input_alb_target_group_deregistration_delay"></a> [alb\_target\_group\_deregistration\_delay](#input\_alb\_target\_group\_deregistration\_delay) | Amount time for ELB to wait before changing the state of a deregistering target from draining to unused | `number` | `300` | no |
 | <a name="input_alb_target_group_health_check_healthy_threshold"></a> [alb\_target\_group\_health\_check\_healthy\_threshold](#input\_alb\_target\_group\_health\_check\_healthy\_threshold) | The number of checks before a target is registered as Healthy | `number` | `2` | no |
 | <a name="input_alb_target_group_health_check_interval"></a> [alb\_target\_group\_health\_check\_interval](#input\_alb\_target\_group\_health\_check\_interval) | Time in seconds between health checks | `number` | `60` | no |
-| <a name="input_alb_target_group_health_check_path"></a> [alb\_target\_group\_health\_check\_path](#input\_alb\_target\_group\_health\_check\_path) | Path for health checks on the service | `string` | `"/"` | no |
-| <a name="input_alb_target_group_health_check_status_code"></a> [alb\_target\_group\_health\_check\_status\_code](#input\_alb\_target\_group\_health\_check\_status\_code) | HTTP Status Code to use in target group health check | `string` | `"200"` | no |
 | <a name="input_alb_target_group_health_check_timeout"></a> [alb\_target\_group\_health\_check\_timeout](#input\_alb\_target\_group\_health\_check\_timeout) | Time in seconds after which no response from a target means a failed health check | `number` | `10` | no |
 | <a name="input_alb_target_group_health_check_unhealthy_threshold"></a> [alb\_target\_group\_health\_check\_unhealthy\_threshold](#input\_alb\_target\_group\_health\_check\_unhealthy\_threshold) | The number of checks before a target is registered as Unhealthy | `number` | `5` | no |
-| <a name="input_alb_target_group_ports"></a> [alb\_target\_group\_ports](#input\_alb\_target\_group\_ports) | List of port numbers to use for the target group | `list(number)` | `[]` | no |
 | <a name="input_alb_target_group_protocol"></a> [alb\_target\_group\_protocol](#input\_alb\_target\_group\_protocol) | Protocol to use for the target group. Only HTTP and HTTPS are allowed for an Application Load Balancer | `string` | `"HTTP"` | no |
+| <a name="input_alb_target_group_settings"></a> [alb\_target\_group\_settings](#input\_alb\_target\_group\_settings) | List of port numbers and container names to use for the target group | <pre>list(object({<br>    port                         = number<br>    name                         = string<br>    listener_rule_priority       = optional(number)<br>    listener_rule_path_patterns  = optional(list(string), [])<br>    health_check_path            = optional(string, "/")<br>    health_check_expected_status = optional(string, "200")<br>  }))</pre> | `[]` | no |
 | <a name="input_alb_target_group_slow_start"></a> [alb\_target\_group\_slow\_start](#input\_alb\_target\_group\_slow\_start) | Amount time for targets to warm up before the load balancer sends them a full share of requests | `number` | `0` | no |
 | <a name="input_allow_private_access"></a> [allow\_private\_access](#input\_allow\_private\_access) | Whether to allow private access to the service | `bool` | `false` | no |
 | <a name="input_allow_public_access"></a> [allow\_public\_access](#input\_allow\_public\_access) | Whether to allow public access to the service through the load balancer | `bool` | `true` | no |
@@ -265,7 +263,6 @@ No modules.
 | <a name="input_ecs_service_capacity_provider_name"></a> [ecs\_service\_capacity\_provider\_name](#input\_ecs\_service\_capacity\_provider\_name) | Name of a ECS Capacity Provider to use with the ECS Service, other than the default | `string` | `null` | no |
 | <a name="input_ecs_service_capacity_provider_strategy_base"></a> [ecs\_service\_capacity\_provider\_strategy\_base](#input\_ecs\_service\_capacity\_provider\_strategy\_base) | Minimum number of tasks to run on the specified ECS Capacity Provider | `number` | `1` | no |
 | <a name="input_ecs_service_capacity_provider_strategy_weight"></a> [ecs\_service\_capacity\_provider\_strategy\_weight](#input\_ecs\_service\_capacity\_provider\_strategy\_weight) | Percentage of tasks to run on the specified ECS Capacity Provider | `number` | `100` | no |
-| <a name="input_ecs_service_container_name"></a> [ecs\_service\_container\_name](#input\_ecs\_service\_container\_name) | Name of container to associated with the load balancer configuration in the ECS service | `string` | n/a | yes |
 | <a name="input_ecs_service_deployment_maximum_percent"></a> [ecs\_service\_deployment\_maximum\_percent](#input\_ecs\_service\_deployment\_maximum\_percent) | Maximum percentage of tasks to allowed to run during a deployment (percentage of desired count) | `number` | `200` | no |
 | <a name="input_ecs_service_deployment_minimum_healthy_percent"></a> [ecs\_service\_deployment\_minimum\_healthy\_percent](#input\_ecs\_service\_deployment\_minimum\_healthy\_percent) | Minimum percentage of tasks to keep running during a deployment (percentage of desired count) | `number` | `100` | no |
 | <a name="input_ecs_service_desired_count"></a> [ecs\_service\_desired\_count](#input\_ecs\_service\_desired\_count) | Sets the Desired Count for the ECS Service | `number` | `1` | no |
@@ -315,11 +312,11 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_alb_target_group_arn"></a> [alb\_target\_group\_arn](#output\_alb\_target\_group\_arn) | ARN of the Load Balancer Target Group |
-| <a name="output_alb_target_group_arn_suffix"></a> [alb\_target\_group\_arn\_suffix](#output\_alb\_target\_group\_arn\_suffix) | ARN suffix of the Target Group for use with CloudWatch Metrics |
+| <a name="output_alb_target_group_arn_suffixes"></a> [alb\_target\_group\_arn\_suffixes](#output\_alb\_target\_group\_arn\_suffixes) | ARN suffix of the Target Group for use with CloudWatch Metrics |
+| <a name="output_alb_target_group_arns"></a> [alb\_target\_group\_arns](#output\_alb\_target\_group\_arns) | ARN of the Load Balancer Target Group |
 | <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | ID of the CloudFront Distribution |
 | <a name="output_cloudmap_service_discovery_namespace_name"></a> [cloudmap\_service\_discovery\_namespace\_name](#output\_cloudmap\_service\_discovery\_namespace\_name) | Name of the Cloud Map Service Discovery Namespace for use by DiscoverInstances API |
-| <a name="output_cloudmap_service_discovery_service_name"></a> [cloudmap\_service\_discovery\_service\_name](#output\_cloudmap\_service\_discovery\_service\_name) | Name of the Cloud Map Service Discovery Service for use by DiscoverInstances API |
+| <a name="output_cloudmap_service_discovery_service_names"></a> [cloudmap\_service\_discovery\_service\_names](#output\_cloudmap\_service\_discovery\_service\_names) | Names of the Cloud Map Service Discovery Service for use by DiscoverInstances API |
 | <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch Log Group used by ECS |
 | <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | Name of the DNS record created in Route 53 aliasing the CloudFront Distribution |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | Map of ECR Repsitory name keys and Repository URLs |
@@ -327,5 +324,5 @@ No modules.
 | <a name="output_ecs_service_name"></a> [ecs\_service\_name](#output\_ecs\_service\_name) | Name of the ECS Service |
 | <a name="output_link"></a> [link](#output\_link) | Link to connect to the service |
 | <a name="output_name_prefix"></a> [name\_prefix](#output\_name\_prefix) | This is a convenience for recycling into the task definition template |
-| <a name="output_private_access_host"></a> [private\_access\_host](#output\_private\_access\_host) | Route 53 record name for the A record created by Cloud Map Service Discovery |
-| <a name="output_private_access_port"></a> [private\_access\_port](#output\_private\_access\_port) | Port number for accessing service via private access host name |
+| <a name="output_private_access_hosts"></a> [private\_access\_hosts](#output\_private\_access\_hosts) | Route 53 record name for the A record created by Cloud Map Service Discovery |
+| <a name="output_private_access_ports"></a> [private\_access\_ports](#output\_private\_access\_ports) | Port numbers for accessing service via private access host name |
