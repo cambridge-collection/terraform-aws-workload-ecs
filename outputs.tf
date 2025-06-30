@@ -29,12 +29,12 @@ output "private_access_ports" {
 }
 
 output "alb_target_group_arns" {
-  value       = var.allow_public_access ? aws_lb_target_group.this.*.arn : []
+  value       = var.allow_public_access ? { for target_group_name, target_group in aws_lb_target_group.this : target_group_name => target_group.arn } : {}
   description = "ARN of the Load Balancer Target Group"
 }
 
 output "alb_target_group_arn_suffixes" {
-  value       = var.allow_public_access ? aws_lb_target_group.this.*.arn_suffix : []
+  value       = var.allow_public_access ? { for target_group_name, target_group in aws_lb_target_group.this : target_group_name => target_group.arn_suffix } : {}
   description = "ARN suffix of the Target Group for use with CloudWatch Metrics"
 }
 
