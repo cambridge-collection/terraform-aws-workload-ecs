@@ -74,20 +74,20 @@ resource "aws_ecs_service" "this" {
   propagate_tags                     = "SERVICE"
 
   dynamic "load_balancer" {
-    for_each = var.allow_public_access ? { for target in var.alb_target_group_ports : target.name => target.port } : {}
+    for_each = var.allow_public_access ? { for target in var.alb_target_group_settings : target.name => target } : {}
     content {
       container_name   = load_balancer.key
       target_group_arn = aws_lb_target_group.this[load_balancer.key].arn
-      container_port   = load_balancer.value
+      container_port   = load_balancer.value.port
     }
   }
 
   dynamic "service_registries" {
-    for_each = var.allow_private_access ? [1] : []
+    for_each = var.allow_private_access ? { for target in var.alb_target_group_settings : target.name => target } : {}
     content {
       registry_arn   = aws_service_discovery_service.this.0.arn
-      container_name = var.ecs_service_container_name
-      container_port = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_container_port
+      container_name = each.key
+      container_port = var.ecs_network_mode == "awsvpc" ? null : each.value.port
     }
   }
 

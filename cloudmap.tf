@@ -6,9 +6,9 @@ resource "aws_service_discovery_private_dns_namespace" "this" {
 }
 
 resource "aws_service_discovery_service" "this" {
-  count = var.allow_private_access ? 1 : 0
+  count = var.allow_private_access ? length(var.alb_target_group_settings) : 0
 
-  name = var.ecs_service_container_name
+  name = var.alb_target_group_settings[count.index].name
 
   dns_config {
     namespace_id   = aws_service_discovery_private_dns_namespace.this.0.id

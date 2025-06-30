@@ -182,10 +182,10 @@ variable "ecs_service_deployment_minimum_healthy_percent" {
   default     = 100
 }
 
-variable "ecs_service_container_name" {
-  type        = string
-  description = "Name of container to associated with the load balancer configuration in the ECS service"
-}
+# variable "ecs_service_container_name" {
+#   type        = string
+#   description = "Name of container to associated with the load balancer configuration in the ECS service"
+# }
 
 variable "ecs_service_iam_role" {
   type        = string
@@ -354,10 +354,14 @@ variable "cloudwatch_log_group_arn" {
   description = "ARN of the CloudWatch Log Group for adding to IAM task execution role policy"
 }
 
-variable "alb_target_group_ports" {
-  type        = list(object({
-    port = number
-    name = string
+variable "alb_target_group_settings" {
+  type = list(object({
+    port                         = number
+    name                         = string
+    listener_rule_priority       = optional(number)
+    listener_rule_path_patterns  = optional(list(string), [])
+    health_check_path            = optional(string, "/")
+    health_check_expected_status = optional(string, "200")
   }))
   description = "List of port numbers and container names to use for the target group"
   default     = []
@@ -381,11 +385,11 @@ variable "alb_target_group_slow_start" {
   default     = 0
 }
 
-variable "alb_target_group_health_check_status_code" {
-  type        = string
-  description = "HTTP Status Code to use in target group health check"
-  default     = "200"
-}
+# variable "alb_target_group_health_check_status_code" {
+#   type        = string
+#   description = "HTTP Status Code to use in target group health check"
+#   default     = "200"
+# }
 
 variable "alb_target_group_health_check_interval" {
   type        = number
@@ -393,11 +397,11 @@ variable "alb_target_group_health_check_interval" {
   default     = 60
 }
 
-variable "alb_target_group_health_check_path" {
-  type        = string
-  description = "Path for health checks on the service"
-  default     = "/"
-}
+# variable "alb_target_group_health_check_path" {
+#   type        = string
+#   description = "Path for health checks on the service"
+#   default     = "/"
+# }
 
 variable "alb_target_group_health_check_timeout" {
   type        = number
