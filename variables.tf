@@ -355,8 +355,11 @@ variable "cloudwatch_log_group_arn" {
 }
 
 variable "alb_target_group_ports" {
-  type        = list(number)
-  description = "List of port numbers to use for the target group"
+  type        = list(object({
+    port = number
+    name = string
+  }))
+  description = "List of port numbers and container names to use for the target group"
   default     = []
 }
 

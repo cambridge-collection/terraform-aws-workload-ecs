@@ -6,14 +6,14 @@ resource "aws_vpc_security_group_egress_rule" "alb_egress_to_asg" {
   count = var.allow_public_access ? length(var.alb_target_group_ports) : 0
 
   ip_protocol                  = "tcp"
-  description                  = "ALB Egress on port ${var.alb_target_group_ports[count.index]} for ${var.name_prefix}"
+  description                  = "ALB Egress on port ${var.alb_target_group_ports[count.index].port} for ${var.alb_target_group_ports[count.index].name}"
   security_group_id            = var.alb_security_group_id
   referenced_security_group_id = var.asg_security_group_id
-  from_port                    = var.alb_target_group_ports[count.index]
-  to_port                      = var.alb_target_group_ports[count.index]
+  from_port                    = var.alb_target_group_ports[count.index].port
+  to_port                      = var.alb_target_group_ports[count.index].port
 
   tags = {
-    Name = format("alb-egress-to-asg-%s", var.alb_target_group_ports[count.index])
+    Name = format("alb-egress-to-asg-%s", var.alb_target_group_ports[count.index].port)
   }
 }
 
@@ -21,14 +21,14 @@ resource "aws_vpc_security_group_ingress_rule" "asg_ingress_from_alb" {
   count = var.allow_public_access ? length(var.alb_target_group_ports) : 0
 
   ip_protocol                  = "tcp"
-  description                  = "ASG Ingress on port ${var.alb_target_group_ports[count.index]} for ${var.name_prefix}"
+  description                  = "ASG Ingress on port ${var.alb_target_group_ports[count.index].port} for ${var.alb_target_group_ports[count.index].name}"
   security_group_id            = var.asg_security_group_id
   referenced_security_group_id = var.alb_security_group_id
-  from_port                    = var.alb_target_group_ports[count.index]
-  to_port                      = var.alb_target_group_ports[count.index]
+  from_port                    = var.alb_target_group_ports[count.index].port
+  to_port                      = var.alb_target_group_ports[count.index].port
 
   tags = {
-    Name = format("asg-ingress-from-alb-%s", var.alb_target_group_ports[count.index])
+    Name = format("asg-ingress-from-alb-%s", var.alb_target_group_ports[count.index].port)
   }
 }
 
@@ -38,14 +38,14 @@ resource "aws_vpc_security_group_egress_rule" "private_access_egress" {
   count = var.allow_private_access && var.update_asg_security_group_to_access_service ? length(var.alb_target_group_ports) : 0
 
   ip_protocol                  = "tcp"
-  description                  = "Egress on port ${var.alb_target_group_ports[count.index]} to ${var.ingress_security_group_id}"
+  description                  = "Egress on port ${var.alb_target_group_ports[count.index].port} to ${var.ingress_security_group_id}"
   security_group_id            = var.asg_security_group_id
   referenced_security_group_id = var.ingress_security_group_id
-  from_port                    = var.alb_target_group_ports[count.index]
-  to_port                      = var.alb_target_group_ports[count.index]
+  from_port                    = var.alb_target_group_ports[count.index].port
+  to_port                      = var.alb_target_group_ports[count.index].port
 
   tags = {
-    Name = format("asg-egress-private-access-%s", var.alb_target_group_ports[count.index])
+    Name = format("asg-egress-private-access-%s", var.alb_target_group_ports[count.index].port)
   }
 }
 
