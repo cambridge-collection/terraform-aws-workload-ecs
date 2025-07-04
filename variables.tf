@@ -279,7 +279,7 @@ variable "ecs_service_autoscaling_target_value" {
 variable "ecs_task_def_container_definitions" {
   type        = string
   description = "Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html"
-  sensitive   = true
+  # sensitive   = true
 }
 
 variable "ecs_task_def_cpu" {
