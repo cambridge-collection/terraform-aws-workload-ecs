@@ -306,6 +306,18 @@ variable "ecs_task_def_volumes_host" {
   default     = {}
 }
 
+variable "ecs_task_def_volumes" {
+  type = list(object({
+    name                = string
+    host_path           = optional(string)
+    efs_volume          = optional(bool, false)
+    docker_volume       = optional(bool, true)
+    docker_volume_scope = optional(string, "task")
+  }))
+  description = "List of volumes to add to the ECS task definition"
+  default     = []
+}
+
 variable "ecs_network_mode" {
   type        = string
   description = "Networking mode specified in the ECS Task Definition. One of host, bridge, awsvpc"

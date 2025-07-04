@@ -18,13 +18,15 @@ resource "aws_ecs_task_definition" "this" {
   ]
 
   dynamic "volume" {
-    for_each = toset(var.ecs_task_def_volumes_efs)
+    for_each = { for volume in var.ecs_task_def_volumes : volume.name => volume }
+
     content {
       name                = join("-", [var.name_prefix, volume.key])
       configure_at_launch = false
+      host_path           = volume.value.host_path
 
       dynamic "efs_volume_configuration" {
-        for_each = local.ecs_task_definition_mount_efs ? [1] : []
+        for_each = local.ecs_task_definition_mount_efs && volume.value.efs_volume ? [1] : []
 
         content {
           file_system_id     = try(aws_efs_file_system.this.0.id, var.efs_file_system_id)
@@ -40,14 +42,14 @@ resource "aws_ecs_task_definition" "this" {
           }
         }
       }
-    }
-  }
 
-  dynamic "volume" {
-    for_each = var.ecs_task_def_volumes_host
-    content {
-      name      = join("-", [var.name_prefix, volume.key])
-      host_path = volume.value
+      dynamic "docker_volume_configuration" {
+        for_each = volume.value.docker_volume && !volume.value.efs_volume ? [1] : []
+
+        content {
+          scope = volume.value.docker_volume_scope
+        }
+      }
     }
   }
 
