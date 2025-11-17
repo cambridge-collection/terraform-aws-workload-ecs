@@ -188,6 +188,12 @@ variable "ecs_cluster_name" {
   default     = null
 }
 
+variable "ecs_capacity_provider_managed_instances" {
+  type        = bool
+  description = "Whether to allow the ECS capacity provider to manage instances"
+  default     = false
+}
+
 variable "ecs_service_desired_count" {
   type        = number
   description = "Sets the Desired Count for the ECS Service"

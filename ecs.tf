@@ -13,9 +13,7 @@ resource "aws_ecs_task_definition" "this" {
   cpu                   = var.ecs_task_def_cpu
   memory                = var.ecs_task_def_memory
 
-  requires_compatibilities = [
-    "EC2"
-  ]
+  requires_compatibilities = var.ecs_capacity_provider_managed_instances ? ["MANAGED_INSTANCES"] : ["EC2"]
 
   dynamic "volume" {
     for_each = toset(var.ecs_task_def_volumes_efs)

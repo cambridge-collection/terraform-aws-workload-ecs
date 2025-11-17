@@ -260,6 +260,7 @@ No modules.
 | <a name="input_ecr_repositories_exist"></a> [ecr\_repositories\_exist](#input\_ecr\_repositories\_exist) | Whether the ECR repositories in ecr\_repository\_names already exist | `bool` | `false` | no |
 | <a name="input_ecr_repository_force_delete"></a> [ecr\_repository\_force\_delete](#input\_ecr\_repository\_force\_delete) | Whether to delete non-empty ECR repositories | `bool` | `false` | no |
 | <a name="input_ecr_repository_names"></a> [ecr\_repository\_names](#input\_ecr\_repository\_names) | List of names of ECR repositories required by this workload | `list(string)` | `[]` | no |
+| <a name="input_ecs_capacity_provider_managed_instances"></a> [ecs\_capacity\_provider\_managed\_instances](#input\_ecs\_capacity\_provider\_managed\_instances) | Whether to allow the ECS capacity provider to manage instances | `bool` | `false` | no |
 | <a name="input_ecs_cluster_arn"></a> [ecs\_cluster\_arn](#input\_ecs\_cluster\_arn) | ARN of the ECS cluster to which this workload should be deployed | `string` | n/a | yes |
 | <a name="input_ecs_cluster_name"></a> [ecs\_cluster\_name](#input\_ecs\_cluster\_name) | Name of the ECS cluster to use with Service auto scaling | `string` | `null` | no |
 | <a name="input_ecs_network_mode"></a> [ecs\_network\_mode](#input\_ecs\_network\_mode) | Networking mode specified in the ECS Task Definition. One of host, bridge, awsvpc | `string` | `"bridge"` | no |
