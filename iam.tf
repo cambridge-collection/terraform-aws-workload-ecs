@@ -150,6 +150,19 @@ data "aws_iam_policy_document" "task_role_permissions" {
       }
     }
   }
+
+  dynamic "statement" {
+    for_each = var.ecs_service_enable_execute_command ? [1] : []
+    content {
+      actions = [
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel"
+      ]
+      resources = ["*"]
+    }
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "task_policy_attachment" {
