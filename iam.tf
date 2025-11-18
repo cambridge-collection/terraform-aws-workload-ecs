@@ -152,7 +152,7 @@ data "aws_iam_policy_document" "task_role_permissions" {
   }
 
   dynamic "statement" {
-    for_each = var.ecs_service_enable_execute_command ? [1] : []
+    for_each = local.ecs_service_enable_execute_command ? [1] : []
     content {
       actions = [
         "ssmmessages:CreateControlChannel",

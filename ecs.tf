@@ -69,7 +69,7 @@ resource "aws_ecs_service" "this" {
   deployment_minimum_healthy_percent = var.ecs_service_deployment_minimum_healthy_percent
   iam_role                           = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_iam_role
   scheduling_strategy                = var.ecs_service_scheduling_strategy
-  enable_execute_command             = var.ecs_service_enable_execute_command
+  enable_execute_command             = local.ecs_service_enable_execute_command
   propagate_tags                     = "SERVICE"
 
   dynamic "load_balancer" {

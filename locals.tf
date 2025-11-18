@@ -9,4 +9,5 @@ locals {
   s3_task_role_bucket_arns_iam                 = concat(local.s3_task_role_bucket_arns, [for arn in local.s3_task_role_bucket_arns : format("%s/*", arn)])
   ecs_task_definition_mount_efs                = var.efs_create_file_system || var.efs_use_existing_filesystem ? true : false
   ecs_task_definition_use_authorization_config = var.efs_create_file_system || (var.efs_file_system_id != null && var.efs_access_point_id != null) ? true : false
+  ecs_service_enable_execute_command           = var.ecs_service_enable_execute_command || var.ecs_capacity_provider_managed_instances ? true : false
 }
