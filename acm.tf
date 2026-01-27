@@ -1,5 +1,5 @@
 locals {
-  domain_name = lower(trim(substr(var.domain_name, -64, -1), ".-"))
+  domain_name = var.domain_name != null ? lower(trim(substr(var.domain_name, -64, -1), ".-")) : ""
 }
 
 resource "aws_acm_certificate" "this" {

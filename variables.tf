@@ -17,6 +17,7 @@ variable "account_id" {
 variable "domain_name" {
   type        = string
   description = "Domain Name to be used for the ACM certificate and Route 53 record"
+  default     = null
 }
 
 variable "allow_private_access" {
@@ -87,6 +88,7 @@ variable "cloudfront_distribution_create" {
 variable "cloudfront_waf_acl_arn" {
   type        = string
   description = "ARN of the WAF Web ACL for use by CloudFront"
+  default     = null
 }
 
 variable "cloudfront_allowed_methods" {
