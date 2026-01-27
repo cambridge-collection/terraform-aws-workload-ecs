@@ -63,11 +63,13 @@ variable "cloudmap_associate_vpc_ids" {
 variable "alb_arn" {
   type        = string
   description = "ARN of the ALB used by the listener"
+  default     = null
 }
 
 variable "alb_dns_name" {
   type        = string
   description = "DNS name for the ALB used by the Cloudfront distribution"
+  default     = null
 }
 
 variable "alternative_domain_names" {
@@ -226,6 +228,7 @@ variable "ecs_service_container_name" {
 variable "ecs_service_container_port" {
   type        = number
   description = "Container port number associated load balancer configuration in the ECS service. This must match a container port in the container definition port mappings"
+  default     = null
 }
 
 variable "ecs_service_iam_role" {
@@ -327,6 +330,7 @@ variable "ecr_repositories_exist" {
 variable "alb_listener_arn" {
   type        = string
   description = "The Application Load Balancer Listener ARN to add the forward rule and certificate to"
+  default     = null
 }
 
 variable "alb_listener_certificate_create" {
@@ -398,6 +402,7 @@ variable "cloudwatch_log_group_arn" {
 variable "alb_target_group_port" {
   type        = number
   description = "Port number to use for the target group"
+  default     = null
 }
 
 variable "alb_target_group_protocol" {
@@ -478,6 +483,7 @@ variable "asg_security_group_id" {
 variable "alb_security_group_id" {
   type        = string
   description = "ID of the ALB Security Group for creating ingress to the ALB"
+  default     = null
 }
 
 variable "ingress_security_group_id" {
