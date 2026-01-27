@@ -464,6 +464,7 @@ variable "alb_target_group_health_check_healthy_threshold" {
 variable "route53_zone_id" {
   type        = string
   description = "ID of the Route 53 Hosted Zone for records"
+  default     = null
 }
 
 variable "route53_create_cloudfront_alias_record" {

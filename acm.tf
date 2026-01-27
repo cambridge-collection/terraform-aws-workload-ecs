@@ -1,5 +1,12 @@
+data "aws_route53_zone" "domain" {
+  count = var.route53_zone_id != null ? 1 : 0
+
+  zone_id = var.route53_zone_id
+}
+
 locals {
-  domain_name = var.domain_name != null ? lower(trim(substr(var.domain_name, -64, -1), ".-")) : ""
+  domain_name      = var.domain_name != null ? lower(trim(substr(var.domain_name, -64, -1), ".-")) : ""
+  hosted_zone_name = var.route53_zone_id != null ? data.aws_route53_zone.domain.0.name : ""
 }
 
 resource "aws_acm_certificate" "this" {
@@ -15,8 +22,8 @@ resource "aws_acm_certificate" "this" {
     create_before_destroy = true
 
     precondition {
-      condition     = endswith(local.domain_name, data.aws_route53_zone.domain.name)
-      error_message = "The domain name ${local.domain_name} does not end with Route 53 domain ${data.aws_route53_zone.domain.name}"
+      condition     = endswith(local.domain_name, local.hosted_zone_name)
+      error_message = "The domain name ${local.domain_name} does not end with Route 53 domain ${local.hosted_zone_name}"
     }
   }
 }
@@ -46,8 +53,8 @@ resource "aws_acm_certificate" "us-east-1" {
     create_before_destroy = true
 
     precondition {
-      condition     = endswith(local.domain_name, data.aws_route53_zone.domain.name)
-      error_message = "The domain name ${local.domain_name} does not end with Route 53 domain ${data.aws_route53_zone.domain.name}"
+      condition     = endswith(local.domain_name, local.hosted_zone_name)
+      error_message = "The domain name ${local.domain_name} does not end with Route 53 domain ${local.hosted_zone_name}"
     }
   }
 }
