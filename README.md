@@ -196,6 +196,7 @@ No modules.
 | [aws_iam_policy_document.task_execution_role_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.task_role_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [aws_route53_zone.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 | [aws_s3_bucket.datasync](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
 | [aws_subnet.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
@@ -280,6 +281,7 @@ No modules.
 | <a name="input_ecs_task_def_container_definitions"></a> [ecs\_task\_def\_container\_definitions](#input\_ecs\_task\_def\_container\_definitions) | Container Definition string for ECS Task Definition. See https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html | `string` | n/a | yes |
 | <a name="input_ecs_task_def_cpu"></a> [ecs\_task\_def\_cpu](#input\_ecs\_task\_def\_cpu) | Number of cpu units used by the task | `number` | `null` | no |
 | <a name="input_ecs_task_def_memory"></a> [ecs\_task\_def\_memory](#input\_ecs\_task\_def\_memory) | Amount (in MiB) of memory used by the task. Note if this is unset, all container definitions must set memory and/or memoryReservation | `number` | `1024` | no |
+| <a name="input_ecs_task_def_volume_names_prefixed"></a> [ecs\_task\_def\_volume\_names\_prefixed](#input\_ecs\_task\_def\_volume\_names\_prefixed) | Whether to use prefixed volume names in the ECS task definition | `bool` | `true` | no |
 | <a name="input_ecs_task_def_volumes_efs"></a> [ecs\_task\_def\_volumes\_efs](#input\_ecs\_task\_def\_volumes\_efs) | List of volume names to attach to the ECS Task Definition to connect to EFS | `list(string)` | `[]` | no |
 | <a name="input_ecs_task_def_volumes_host"></a> [ecs\_task\_def\_volumes\_host](#input\_ecs\_task\_def\_volumes\_host) | Map of volume name keys and host path values to attach to the ECS Task Definition | `map(string)` | `{}` | no |
 | <a name="input_efs_access_point_id"></a> [efs\_access\_point\_id](#input\_efs\_access\_point\_id) | ID of an existing EFS Access Point | `string` | `null` | no |

@@ -311,6 +311,12 @@ variable "ecs_task_def_volumes_host" {
   default     = {}
 }
 
+variable "ecs_task_def_volume_names_prefixed" {
+  type        = bool
+  description = "Whether to use prefixed volume names in the ECS task definition"
+  default     = true
+}
+
 variable "ecs_network_mode" {
   type        = string
   description = "Networking mode specified in the ECS Task Definition. One of host, bridge, awsvpc"
