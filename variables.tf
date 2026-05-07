@@ -67,7 +67,14 @@ variable "alb_arn" {
 
 variable "alb_dns_name" {
   type        = string
-  description = "DNS name for the ALB used by the Cloudfront distribution"
+  description = "DNS name for the ALB used by the Cloudfront distribution. Not required when cloudfront_vpc_origin_id is set."
+  default     = null
+}
+
+variable "cloudfront_vpc_origin_id" {
+  type        = string
+  description = "ID of the CloudFront VPC Origin for the ALB. Required when the ALB is internal (not internet-facing), as CloudFront cannot reach it via a custom origin. When set, vpc_origin_config is used instead of custom_origin_config with alb_dns_name."
+  default     = null
 }
 
 variable "alternative_domain_names" {
