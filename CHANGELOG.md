@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.3.1...v4.4.0) (2026-05-11)
+
+
+### Features
+
+* **cloudfront:** add opt-in VPC origin support ([834be6e](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/834be6e47e5a39d6e62c0485cf1f5faa7d51168c))
+
 ## [4.3.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.3.0...v4.3.1) (2025-06-30)
 
 
