@@ -26,18 +26,29 @@ resource "aws_cloudfront_distribution" "this" {
   aliases         = concat([local.domain_name], var.alternative_domain_names)
 
   origin {
-    custom_origin_config {
-      http_port                = 80
-      https_port               = 443
-      origin_keepalive_timeout = 5
-      origin_protocol_policy   = "https-only"
-      origin_read_timeout      = var.cloudfront_origin_read_timeout
-      origin_ssl_protocols = [
-        "TLSv1.2"
-      ]
+    dynamic "vpc_origin_config" {
+      for_each = var.cloudfront_vpc_origin_id != null ? [1] : []
+      content {
+        vpc_origin_id            = var.cloudfront_vpc_origin_id
+        origin_keepalive_timeout = 5
+        origin_read_timeout      = var.cloudfront_origin_read_timeout
+      }
     }
+
+    dynamic "custom_origin_config" {
+      for_each = var.cloudfront_vpc_origin_id == null ? [1] : []
+      content {
+        http_port                = 80
+        https_port               = 443
+        origin_keepalive_timeout = 5
+        origin_protocol_policy   = "https-only"
+        origin_read_timeout      = var.cloudfront_origin_read_timeout
+        origin_ssl_protocols     = ["TLSv1.2"]
+      }
+    }
+
     connection_attempts = var.cloudfront_origin_connection_attempts
-    domain_name         = var.alb_dns_name
+    domain_name         = var.cloudfront_vpc_origin_id != null ? local.domain_name : var.alb_dns_name
     origin_id           = local.domain_name
     origin_path         = ""
   }
