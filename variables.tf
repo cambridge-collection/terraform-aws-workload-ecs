@@ -247,6 +247,12 @@ variable "ecs_service_scheduling_strategy" {
   default     = "REPLICA"
 }
 
+variable "ecs_service_force_new_deployment" {
+  type        = bool
+  description = "Forces a new task deployment of the service"
+  default     = false
+}
+
 variable "ecs_service_capacity_provider_name" {
   type        = string
   description = "Name of a ECS Capacity Provider to use with the ECS Service, other than the default"
