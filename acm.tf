@@ -5,11 +5,9 @@ locals {
 resource "aws_acm_certificate" "this" {
   count = var.acm_create_certificate && var.allow_public_access ? 1 : 0
 
-  domain_name       = local.domain_name
-  validation_method = "DNS"
-  subject_alternative_names = [
-    local.domain_name
-  ]
+  domain_name               = local.domain_name
+  validation_method         = "DNS"
+  subject_alternative_names = concat([local.domain_name], var.alternative_domain_names)
 
   lifecycle {
     create_before_destroy = true
@@ -35,12 +33,10 @@ resource "aws_acm_certificate_validation" "this" {
 resource "aws_acm_certificate" "us-east-1" {
   count = var.acm_create_certificate && var.allow_public_access ? 1 : 0
 
-  provider          = aws.us-east-1
-  domain_name       = local.domain_name
-  validation_method = "DNS"
-  subject_alternative_names = [
-    local.domain_name
-  ]
+  provider                  = aws.us-east-1
+  domain_name               = local.domain_name
+  validation_method         = "DNS"
+  subject_alternative_names = concat([local.domain_name], var.alternative_domain_names)
 
   lifecycle {
     create_before_destroy = true
