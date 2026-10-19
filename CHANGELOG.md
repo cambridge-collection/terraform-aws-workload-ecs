@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.4.0...v4.4.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* Add alternative_domain_names to certificate SAN ([0c3d15f](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/0c3d15f79aca284a4dc8e8d567eeb1e8998705f3))
+
 ## [4.4.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.3.1...v4.4.0) (2026-05-11)
 
 
