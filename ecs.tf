@@ -71,7 +71,13 @@ resource "aws_ecs_service" "this" {
   deployment_minimum_healthy_percent = var.ecs_service_deployment_minimum_healthy_percent
   iam_role                           = var.ecs_network_mode == "awsvpc" ? null : var.ecs_service_iam_role
   scheduling_strategy                = var.ecs_service_scheduling_strategy
+  health_check_grace_period_seconds  = var.ecs_service_health_check_grace_period_seconds
   propagate_tags                     = "SERVICE"
+
+  deployment_circuit_breaker {
+    enable   = var.ecs_service_deployment_circuit_breaker_enable
+    rollback = var.ecs_service_deployment_circuit_breaker_rollback
+  }
 
   dynamic "load_balancer" {
     for_each = var.allow_public_access ? [1] : []
@@ -120,6 +126,10 @@ resource "aws_ecs_service" "this" {
     precondition {
       condition     = (var.ecs_network_mode == "awsvpc" && length(var.vpc_subnet_ids) > 0) || var.ecs_network_mode != "awsvpc"
       error_message = "The vpc_subnet_ids input must be provided when ecs_network_mode is set to awsvpc."
+    }
+    precondition {
+      condition     = var.ecs_service_health_check_grace_period_seconds == null || var.allow_public_access
+      error_message = "The ecs_service_health_check_grace_period_seconds input can only be set when allow_public_access is true, as ECS only applies it to services with a load balancer."
     }
   }
 }

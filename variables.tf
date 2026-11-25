@@ -225,6 +225,29 @@ variable "ecs_service_deployment_minimum_healthy_percent" {
   default     = 100
 }
 
+variable "ecs_service_deployment_circuit_breaker_enable" {
+  type        = bool
+  description = "Whether to enable the ECS deployment circuit breaker, which marks a deployment as failed when its tasks repeatedly fail to start or reach a steady state"
+  default     = true
+}
+
+variable "ecs_service_deployment_circuit_breaker_rollback" {
+  type        = bool
+  description = "Whether ECS should roll back to the last completed deployment when the deployment circuit breaker marks a deployment as failed. Only has an effect when ecs_service_deployment_circuit_breaker_enable is true"
+  default     = true
+}
+
+variable "ecs_service_health_check_grace_period_seconds" {
+  type        = number
+  description = "Seconds ECS ignores failing load balancer health checks for newly started tasks. Only valid when the service uses a load balancer (allow_public_access = true). Leave null for the AWS default (0)"
+  default     = null
+
+  validation {
+    condition     = var.ecs_service_health_check_grace_period_seconds == null || try(var.ecs_service_health_check_grace_period_seconds >= 0 && var.ecs_service_health_check_grace_period_seconds <= 2147483647, false)
+    error_message = "The ecs_service_health_check_grace_period_seconds input must be between 0 and 2147483647."
+  }
+}
+
 variable "ecs_service_container_name" {
   type        = string
   description = "Name of container to associated with the load balancer configuration in the ECS service"
