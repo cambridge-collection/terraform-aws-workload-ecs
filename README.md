@@ -125,7 +125,7 @@ The inputs `vpc_subnet_ids` and `vpc_security_groups_extra` are ignored if the `
 
 The ECS service is configured with a [deployment circuit breaker](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-circuit-breaker.html). If the tasks in a new deployment repeatedly fail to start or fail their health checks, ECS marks the deployment as failed and, with rollback enabled, redeploys the last task definition that completed successfully. Without it, ECS keeps launching replacement tasks indefinitely and the deployment never completes. Both settings are enabled by default and can be turned off with the `ecs_service_deployment_circuit_breaker_enable` and `ecs_service_deployment_circuit_breaker_rollback` inputs.
 
-Services behind a load balancer that take a while to start can set `ecs_service_health_check_grace_period_seconds` so that failing target group health checks during startup don't count against new tasks. This input can only be set when `allow_public_access` is true.
+Services that take a while to start can set `ecs_service_health_check_grace_period_seconds` so that failing load balancer or container health checks during startup don't count against new tasks.
 
 ## Requirements
 
@@ -281,7 +281,7 @@ No modules.
 | <a name="input_ecs_service_deployment_maximum_percent"></a> [ecs\_service\_deployment\_maximum\_percent](#input\_ecs\_service\_deployment\_maximum\_percent) | Maximum percentage of tasks to allowed to run during a deployment (percentage of desired count) | `number` | `200` | no |
 | <a name="input_ecs_service_deployment_minimum_healthy_percent"></a> [ecs\_service\_deployment\_minimum\_healthy\_percent](#input\_ecs\_service\_deployment\_minimum\_healthy\_percent) | Minimum percentage of tasks to keep running during a deployment (percentage of desired count) | `number` | `100` | no |
 | <a name="input_ecs_service_desired_count"></a> [ecs\_service\_desired\_count](#input\_ecs\_service\_desired\_count) | Sets the Desired Count for the ECS Service | `number` | `1` | no |
-| <a name="input_ecs_service_health_check_grace_period_seconds"></a> [ecs\_service\_health\_check\_grace\_period\_seconds](#input\_ecs\_service\_health\_check\_grace\_period\_seconds) | Seconds ECS ignores failing load balancer health checks for newly started tasks. Only valid when the service uses a load balancer (allow\_public\_access = true). Leave null for the AWS default (0) | `number` | `null` | no |
+| <a name="input_ecs_service_health_check_grace_period_seconds"></a> [ecs\_service\_health\_check\_grace\_period\_seconds](#input\_ecs\_service\_health\_check\_grace\_period\_seconds) | Seconds ECS ignores failing load balancer and container health checks for newly started tasks. Leave null for the AWS default (0) | `number` | `null` | no |
 | <a name="input_ecs_service_iam_role"></a> [ecs\_service\_iam\_role](#input\_ecs\_service\_iam\_role) | ARN of an IAM role to call load balancer for non-awsvpc network modes. AWSServiceRoleForECS is suitable, but AWS will generate an error if the value is used and the role already exists in the account | `string` | `null` | no |
 | <a name="input_ecs_service_max_capacity"></a> [ecs\_service\_max\_capacity](#input\_ecs\_service\_max\_capacity) | Sets the Maximum Capacity for the ECS Service | `number` | `2` | no |
 | <a name="input_ecs_service_min_capacity"></a> [ecs\_service\_min\_capacity](#input\_ecs\_service\_min\_capacity) | Sets the Minimum Capacity for the ECS Service | `number` | `1` | no |

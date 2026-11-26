@@ -239,7 +239,7 @@ variable "ecs_service_deployment_circuit_breaker_rollback" {
 
 variable "ecs_service_health_check_grace_period_seconds" {
   type        = number
-  description = "Seconds ECS ignores failing load balancer health checks for newly started tasks. Only valid when the service uses a load balancer (allow_public_access = true). Leave null for the AWS default (0)"
+  description = "Seconds ECS ignores failing load balancer and container health checks for newly started tasks. Leave null for the AWS default (0)"
   default     = null
 
   validation {

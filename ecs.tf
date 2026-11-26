@@ -127,9 +127,5 @@ resource "aws_ecs_service" "this" {
       condition     = (var.ecs_network_mode == "awsvpc" && length(var.vpc_subnet_ids) > 0) || var.ecs_network_mode != "awsvpc"
       error_message = "The vpc_subnet_ids input must be provided when ecs_network_mode is set to awsvpc."
     }
-    precondition {
-      condition     = var.ecs_service_health_check_grace_period_seconds == null || var.allow_public_access
-      error_message = "The ecs_service_health_check_grace_period_seconds input can only be set when allow_public_access is true, as ECS only applies it to services with a load balancer."
-    }
   }
 }
