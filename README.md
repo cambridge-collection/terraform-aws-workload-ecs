@@ -121,6 +121,12 @@ InvalidParameterException: Network Configuration is not valid for the given netw
 
 The inputs `vpc_subnet_ids` and `vpc_security_groups_extra` are ignored if the `ecs_network_mode` value is not "awsvpc".
 
+## ECS Deployment Rollback
+
+The ECS service is configured with a [deployment circuit breaker](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-circuit-breaker.html). If the tasks in a new deployment repeatedly fail to start or fail their health checks, ECS marks the deployment as failed and, with rollback enabled, redeploys the last task definition that completed successfully. Without it, ECS keeps launching replacement tasks indefinitely and the deployment never completes. Both settings are enabled by default and can be turned off with the `ecs_service_deployment_circuit_breaker_enable` and `ecs_service_deployment_circuit_breaker_rollback` inputs.
+
+Services that take a while to start can set `ecs_service_health_check_grace_period_seconds` so that failing load balancer or container health checks during startup don't count against new tasks.
+
 ## Requirements
 
 No requirements.
@@ -270,9 +276,12 @@ No modules.
 | <a name="input_ecs_service_capacity_provider_strategy_weight"></a> [ecs\_service\_capacity\_provider\_strategy\_weight](#input\_ecs\_service\_capacity\_provider\_strategy\_weight) | Percentage of tasks to run on the specified ECS Capacity Provider | `number` | `100` | no |
 | <a name="input_ecs_service_container_name"></a> [ecs\_service\_container\_name](#input\_ecs\_service\_container\_name) | Name of container to associated with the load balancer configuration in the ECS service | `string` | n/a | yes |
 | <a name="input_ecs_service_container_port"></a> [ecs\_service\_container\_port](#input\_ecs\_service\_container\_port) | Container port number associated load balancer configuration in the ECS service. This must match a container port in the container definition port mappings | `number` | n/a | yes |
+| <a name="input_ecs_service_deployment_circuit_breaker_enable"></a> [ecs\_service\_deployment\_circuit\_breaker\_enable](#input\_ecs\_service\_deployment\_circuit\_breaker\_enable) | Whether to enable the ECS deployment circuit breaker, which marks a deployment as failed when its tasks repeatedly fail to start or reach a steady state | `bool` | `true` | no |
+| <a name="input_ecs_service_deployment_circuit_breaker_rollback"></a> [ecs\_service\_deployment\_circuit\_breaker\_rollback](#input\_ecs\_service\_deployment\_circuit\_breaker\_rollback) | Whether ECS should roll back to the last completed deployment when the deployment circuit breaker marks a deployment as failed. Only has an effect when ecs\_service\_deployment\_circuit\_breaker\_enable is true | `bool` | `true` | no |
 | <a name="input_ecs_service_deployment_maximum_percent"></a> [ecs\_service\_deployment\_maximum\_percent](#input\_ecs\_service\_deployment\_maximum\_percent) | Maximum percentage of tasks to allowed to run during a deployment (percentage of desired count) | `number` | `200` | no |
 | <a name="input_ecs_service_deployment_minimum_healthy_percent"></a> [ecs\_service\_deployment\_minimum\_healthy\_percent](#input\_ecs\_service\_deployment\_minimum\_healthy\_percent) | Minimum percentage of tasks to keep running during a deployment (percentage of desired count) | `number` | `100` | no |
 | <a name="input_ecs_service_desired_count"></a> [ecs\_service\_desired\_count](#input\_ecs\_service\_desired\_count) | Sets the Desired Count for the ECS Service | `number` | `1` | no |
+| <a name="input_ecs_service_health_check_grace_period_seconds"></a> [ecs\_service\_health\_check\_grace\_period\_seconds](#input\_ecs\_service\_health\_check\_grace\_period\_seconds) | Seconds ECS ignores failing load balancer and container health checks for newly started tasks. Leave null for the AWS default (0) | `number` | `null` | no |
 | <a name="input_ecs_service_iam_role"></a> [ecs\_service\_iam\_role](#input\_ecs\_service\_iam\_role) | ARN of an IAM role to call load balancer for non-awsvpc network modes. AWSServiceRoleForECS is suitable, but AWS will generate an error if the value is used and the role already exists in the account | `string` | `null` | no |
 | <a name="input_ecs_service_max_capacity"></a> [ecs\_service\_max\_capacity](#input\_ecs\_service\_max\_capacity) | Sets the Maximum Capacity for the ECS Service | `number` | `2` | no |
 | <a name="input_ecs_service_min_capacity"></a> [ecs\_service\_min\_capacity](#input\_ecs\_service\_min\_capacity) | Sets the Minimum Capacity for the ECS Service | `number` | `1` | no |
