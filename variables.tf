@@ -243,8 +243,8 @@ variable "ecs_service_health_check_grace_period_seconds" {
   default     = null
 
   validation {
-    condition     = var.ecs_service_health_check_grace_period_seconds == null || try(var.ecs_service_health_check_grace_period_seconds >= 0 && var.ecs_service_health_check_grace_period_seconds <= 2147483647, false)
-    error_message = "The ecs_service_health_check_grace_period_seconds input must be between 0 and 2147483647."
+    condition     = var.ecs_service_health_check_grace_period_seconds == null || try(var.ecs_service_health_check_grace_period_seconds == floor(var.ecs_service_health_check_grace_period_seconds) && var.ecs_service_health_check_grace_period_seconds >= 0 && var.ecs_service_health_check_grace_period_seconds <= 2147483647, false)
+    error_message = "The ecs_service_health_check_grace_period_seconds input must be a whole number between 0 and 2147483647."
   }
 }
 
