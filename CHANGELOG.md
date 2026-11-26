@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.0](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.4.1...v4.5.0) (2026-11-26)
+
+
+### Features
+
+* **ecs:** add deployment circuit breaker and health check grace period ([99a8a16](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/99a8a16447acf336bd63b96e85a49cab460f5059))
+
+
+### Bug Fixes
+
+* **ecs:** allow health check grace period without a load balancer ([58dd766](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/58dd76610c975c7425bb28eb4b09cbb2f8faec72))
+* **ecs:** validate health check grace period as integer ([db3d749](https://github.com/cambridge-collection/terraform-aws-workload-ecs/commit/db3d7490d5c4a035bccdc71353baa5f6ccb335f2))
+
 ## [4.4.1](https://github.com/cambridge-collection/terraform-aws-workload-ecs/compare/v4.4.0...v4.4.1) (2026-10-19)
 
 
