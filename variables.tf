@@ -564,7 +564,7 @@ variable "efs_use_existing_filesystem" {
   default     = false
 }
 
-variable "efs_create_asg_egress_rule" {
+variable "efs_existing_filesystem_create_asg_egress_rule" {
   type        = bool
   description = "Whether to create an egress rule on the ASG Security Group allowing NFS access to the existing EFS Security Group. Only applies when efs_use_existing_filesystem is true. Set to false when the rule is managed elsewhere, e.g. when several workloads share the same ASG and EFS Security Groups"
   default     = true
