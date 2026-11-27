@@ -103,7 +103,7 @@ resource "aws_security_group_rule" "asg_egress_nfs_to_efs" {
 }
 
 resource "aws_security_group_rule" "asg_egress_nfs_to_existing_efs" {
-  count = var.efs_use_existing_filesystem ? 1 : 0
+  count = var.efs_use_existing_filesystem && var.efs_existing_filesystem_create_asg_egress_rule ? 1 : 0
 
   type                     = "egress"
   protocol                 = "tcp"
